@@ -10,31 +10,45 @@
   <meta name="theme-color" content="#030508">
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%23030508'/><circle cx='50' cy='50' r='38' fill='none' stroke='%2300f59b' stroke-width='6'/><text y='65' x='50' text-anchor='middle' font-size='42'>⚡</text></svg>">
   
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    /* БАЗОВЫЕ ТЕМЫ */
     :root, [data-theme="matrix"] {
       --bg: #030508;
-      --surface: rgba(10, 15, 26, 0.75);
-      --surface-card: rgba(14, 21, 37, 0.65);
-      --border: rgba(255, 255, 255, 0.08);
+      --surface: rgba(10, 15, 26, 0.85);
+      --surface-card: rgba(14, 21, 37, 0.75);
+      --border: rgba(255, 255, 255, 0.1);
       --accent: #00f59b;
       --accent-glow: rgba(0, 245, 155, 0.35);
       --accent-subtle: rgba(0, 245, 155, 0.12);
       --accent-text: #021a10;
       --aura-1: rgba(0, 210, 255, 0.12);
       --aura-2: rgba(0, 245, 155, 0.08);
+      
+      --color-yandex: #ffcc00;
+      --color-magnit: #e11d48;
+      --color-samokat: #ff2a85;
+      --color-kuper: #10b981;
+      --color-ozon: #00aaff;
+
+      --neon-cyan: #00d2ff;
+      --neon-amber: #ffaa00;
+      --neon-amber-glow: rgba(255, 170, 0, 0.35);
+      --neon-rose: #ff2a5f;
+      --neon-rose-glow: rgba(255, 42, 95, 0.35);
+
+      --text: #ffffff;
+      --text-muted: #94a3b8;
+      --text-dim: #cbd5e1;
+      --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, sans-serif;
+      --font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
     }
 
     [data-theme="ice"] {
       --bg: #040812;
-      --surface: rgba(12, 20, 38, 0.8);
-      --surface-card: rgba(16, 27, 52, 0.7);
-      --border: rgba(56, 189, 248, 0.16);
+      --surface: rgba(12, 20, 38, 0.85);
+      --surface-card: rgba(16, 27, 52, 0.75);
+      --border: rgba(56, 189, 248, 0.18);
       --accent: #00d2ff;
       --accent-glow: rgba(0, 210, 255, 0.4);
       --accent-subtle: rgba(0, 210, 255, 0.14);
@@ -45,9 +59,9 @@
 
     [data-theme="sunset"] {
       --bg: #0d0705;
-      --surface: rgba(26, 16, 12, 0.8);
-      --surface-card: rgba(36, 22, 17, 0.7);
-      --border: rgba(255, 170, 0, 0.18);
+      --surface: rgba(26, 16, 12, 0.85);
+      --surface-card: rgba(36, 22, 17, 0.75);
+      --border: rgba(255, 170, 0, 0.2);
       --accent: #ff9900;
       --accent-glow: rgba(255, 153, 0, 0.4);
       --accent-subtle: rgba(255, 153, 0, 0.14);
@@ -58,9 +72,9 @@
 
     [data-theme="violet"] {
       --bg: #080510;
-      --surface: rgba(22, 14, 38, 0.8);
-      --surface-card: rgba(30, 19, 52, 0.7);
-      --border: rgba(176, 66, 255, 0.2);
+      --surface: rgba(22, 14, 38, 0.85);
+      --surface-card: rgba(30, 19, 52, 0.75);
+      --border: rgba(176, 66, 255, 0.22);
       --accent: #b042ff;
       --accent-glow: rgba(176, 66, 255, 0.4);
       --accent-subtle: rgba(176, 66, 255, 0.14);
@@ -69,37 +83,18 @@
       --aura-2: rgba(0, 210, 255, 0.08);
     }
 
-    /* ФИРМЕННЫЕ ЦВЕТА АГРЕГАТОРОВ */
-    --color-yandex: #ffcc00;
-    --color-magnit: #e11d48;
-    --color-samokat: #ff2a85;
-    --color-kuper: #10b981;
-    --color-ozon: #00aaff;
-
-    :root {
-      --neon-cyan: #00d2ff;
-      --neon-amber: #ffaa00;
-      --neon-amber-glow: rgba(255, 170, 0, 0.35);
-      --neon-rose: #ff2a5f;
-      --neon-rose-glow: rgba(255, 42, 95, 0.35);
-
-      --text: #f0f4fc;
-      --text-muted: #64748b;
-      --text-dim: #94a3b8;
-      --font-display: "Plus Jakarta Sans", sans-serif;
-      --font-mono: "JetBrains Mono", monospace;
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       -webkit-tap-highlight-color: transparent;
       user-select: none;
+      font-family: var(--font-main);
     }
 
     input, select, textarea {
       user-select: text;
+      font-family: var(--font-main);
     }
 
     body {
@@ -107,17 +102,16 @@
       background-image: 
         radial-gradient(ellipse 80% 50% at 50% -20%, var(--aura-1), transparent),
         radial-gradient(ellipse 60% 40% at 100% 100%, var(--aura-2), transparent),
-        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
       background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
       color: var(--text);
-      font-family: var(--font-display);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       padding: env(safe-area-inset-top, 24px) 16px env(safe-area-inset-bottom, 36px);
       overflow-x: hidden;
-      transition: background 0.4s ease;
+      transition: background 0.3s ease;
     }
 
     .app-viewport {
@@ -130,7 +124,7 @@
     }
 
     .pressable {
-      transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s, border-color 0.2s;
+      transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s, border-color 0.2s;
     }
     .pressable:active {
       transform: scale(0.96) !important;
@@ -159,12 +153,12 @@
       align-items: center;
       justify-content: center;
       font-size: 20px;
-      transition: border-color 0.3s, box-shadow 0.3s;
     }
     .hud-title-col h1 {
-      font-size: 18px;
-      font-weight: 900;
+      font-size: 19px;
+      font-weight: 800;
       letter-spacing: -0.4px;
+      color: #ffffff;
     }
     .hud-title-col span {
       font-size: 11px;
@@ -172,10 +166,10 @@
       color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 1px;
+      font-weight: 700;
       display: flex;
       align-items: center;
       gap: 5px;
-      transition: color 0.3s;
     }
     .hud-title-col span::before {
       content: '';
@@ -184,9 +178,7 @@
       background: var(--accent);
       border-radius: 50%;
       box-shadow: 0 0 8px var(--accent);
-      animation: blink 2s infinite ease-in-out;
     }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
     .header-controls {
       display: flex;
@@ -199,7 +191,7 @@
       border: 1px solid var(--border);
       padding: 3px;
       border-radius: 14px;
-      gap: 4px;
+      gap: 5px;
       backdrop-filter: blur(16px);
     }
     .theme-dot {
@@ -212,7 +204,7 @@
     .theme-dot.active {
       border-color: #fff;
       transform: scale(1.08);
-      box-shadow: 0 0 10px rgba(255,255,255,0.4);
+      box-shadow: 0 0 10px rgba(255,255,255,0.5);
     }
     .hud-icon-btn {
       width: 40px;
@@ -232,7 +224,7 @@
     /* ПЕРИОДЫ */
     .period-dock {
       display: flex;
-      background: rgba(14, 21, 37, 0.6);
+      background: var(--surface);
       border: 1px solid var(--border);
       padding: 5px;
       border-radius: 18px;
@@ -247,22 +239,22 @@
       border: none;
       color: var(--text-muted);
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 700;
       border-radius: 13px;
       cursor: pointer;
     }
     .period-tab.active {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+      background: rgba(255, 255, 255, 0.12);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       box-shadow: 0 4px 16px rgba(0,0,0,0.5);
     }
 
-    /* HERO КАРТОЧКА ПРИБЫЛИ */
+    /* HERO HUD (ГЛАВНЫЙ БАЛАНС) */
     .hero-hud-card {
       background: radial-gradient(circle at 80% 20%, var(--accent-subtle), transparent 70%),
-                  linear-gradient(160deg, rgba(16, 24, 42, 0.8), rgba(6, 10, 18, 0.95));
-      border: 1px solid rgba(255, 255, 255, 0.1);
+                  linear-gradient(160deg, rgba(16, 24, 42, 0.85), rgba(6, 10, 18, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.12);
       box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15);
       border-radius: 26px;
       padding: 22px 20px 20px;
@@ -278,11 +270,10 @@
     }
     .hero-tag {
       font-size: 11px;
-      font-family: var(--font-mono);
       font-weight: 700;
       color: var(--text-dim);
       text-transform: uppercase;
-      letter-spacing: 1.2px;
+      letter-spacing: 0.8px;
     }
     .rank-pill {
       background: var(--accent-subtle);
@@ -293,12 +284,11 @@
       font-size: 11px;
       font-weight: 800;
       box-shadow: 0 0 14px var(--accent-glow);
-      transition: all 0.3s;
     }
     .hero-cash-val {
       font-size: 46px;
       font-weight: 900;
-      letter-spacing: -1.8px;
+      letter-spacing: -1.5px;
       color: #fff;
       margin: 2px 0 6px;
       display: flex;
@@ -311,21 +301,19 @@
       font-weight: 700;
       color: var(--accent);
       text-shadow: 0 0 16px var(--accent-glow);
-      transition: color 0.3s;
     }
 
-    /* БЕЙДЖ НАЛОГА В HERO КАРТОЧКЕ */
+    /* БЕЙДЖ НАЛОГА */
     .tax-hud-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 42, 95, 0.12);
-      border: 1px solid rgba(255, 42, 95, 0.3);
+      background: rgba(255, 42, 95, 0.15);
+      border: 1px solid rgba(255, 42, 95, 0.35);
       color: #ff6b8b;
       padding: 4px 10px;
       border-radius: 10px;
       font-size: 11px;
-      font-family: var(--font-mono);
       font-weight: 700;
       margin-bottom: 12px;
     }
@@ -337,14 +325,13 @@
       display: flex;
       justify-content: space-between;
       font-size: 11px;
-      font-family: var(--font-mono);
       color: var(--text-muted);
       margin-bottom: 6px;
       font-weight: 700;
     }
     .goal-bar-track {
       height: 8px;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 20px;
       overflow: hidden;
     }
@@ -354,7 +341,7 @@
       width: 0%;
       border-radius: 20px;
       box-shadow: 0 0 14px var(--accent-glow);
-      transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s;
+      transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .hero-substats-grid {
@@ -374,12 +361,10 @@
       color: var(--text-muted);
       text-transform: uppercase;
       font-weight: 700;
-      font-family: var(--font-mono);
     }
     .hero-substat .sub-num {
       font-size: 15px;
       font-weight: 800;
-      font-family: var(--font-mono);
       font-variant-numeric: tabular-nums;
     }
 
@@ -399,7 +384,6 @@
       gap: 4px;
       backdrop-filter: blur(20px);
       box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-      position: relative;
     }
     .bento-header-line {
       display: flex;
@@ -411,7 +395,7 @@
       width: 32px;
       height: 32px;
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.05);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -422,12 +406,10 @@
       color: var(--text-muted);
       font-weight: 700;
       text-transform: uppercase;
-      font-family: var(--font-mono);
     }
     .bento-value {
       font-size: 19px;
       font-weight: 800;
-      font-family: var(--font-mono);
       color: #fff;
       font-variant-numeric: tabular-nums;
     }
@@ -440,7 +422,7 @@
 
     /* ГАРАЖ */
     .garage-hud {
-      background: linear-gradient(135deg, rgba(255, 170, 0, 0.07), var(--surface-card));
+      background: linear-gradient(135deg, rgba(255, 170, 0, 0.08), var(--surface-card));
       border: 1px solid rgba(255, 170, 0, 0.25);
       border-radius: 22px;
       padding: 16px 18px;
@@ -462,12 +444,11 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      font-family: var(--font-mono);
       text-transform: uppercase;
     }
     .garage-bar-track {
       height: 7px;
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 10px;
       overflow: hidden;
     }
@@ -484,7 +465,7 @@
       gap: 8px;
     }
     .garage-btn {
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.08);
       border: 1px solid var(--border);
       color: var(--text);
       padding: 7px 12px;
@@ -510,7 +491,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 6px;
-      background: rgba(6, 10, 18, 0.8);
+      background: rgba(6, 10, 18, 0.85);
       padding: 4px;
       border-radius: 16px;
       border: 1px solid var(--border);
@@ -526,17 +507,17 @@
       cursor: pointer;
     }
     .hud-tab-btn.active {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.12);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    /* ЧИПЫ АГРЕГАТОРОВ И ТРАНСПОРТА */
+    /* ЧИПЫ */
     .chips-row {
       display: flex;
       gap: 8px;
       overflow-x: auto;
-      padding-bottom: 2px;
+      padding-bottom: 4px;
       scrollbar-width: none;
     }
     .chips-row::-webkit-scrollbar { display: none; }
@@ -544,10 +525,10 @@
     .chip-item {
       padding: 9px 14px;
       border-radius: 14px;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--border);
       color: var(--text-dim);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -555,36 +536,35 @@
       gap: 6px;
       white-space: nowrap;
       flex-shrink: 0;
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
     }
 
-    /* СТИЛИ АКТИВНЫХ ЧИПОВ АГРЕГАТОРОВ */
     .chip-item.active-yandex {
-      background: rgba(255, 204, 0, 0.16) !important;
+      background: rgba(255, 204, 0, 0.18) !important;
       border-color: #ffcc00 !important;
       color: #ffcc00 !important;
       box-shadow: 0 0 16px rgba(255, 204, 0, 0.4) !important;
     }
     .chip-item.active-magnit {
-      background: rgba(225, 29, 72, 0.18) !important;
+      background: rgba(225, 29, 72, 0.2) !important;
       border-color: #e11d48 !important;
       color: #fb7185 !important;
       box-shadow: 0 0 16px rgba(225, 29, 72, 0.45) !important;
     }
     .chip-item.active-samokat {
-      background: rgba(255, 42, 133, 0.18) !important;
+      background: rgba(255, 42, 133, 0.2) !important;
       border-color: #ff2a85 !important;
       color: #ff6baf !important;
       box-shadow: 0 0 16px rgba(255, 42, 133, 0.45) !important;
     }
     .chip-item.active-kuper {
-      background: rgba(16, 185, 129, 0.18) !important;
+      background: rgba(16, 185, 129, 0.2) !important;
       border-color: #10b981 !important;
       color: #34d399 !important;
       box-shadow: 0 0 16px rgba(16, 185, 129, 0.45) !important;
     }
     .chip-item.active-ozon {
-      background: rgba(0, 170, 255, 0.18) !important;
+      background: rgba(0, 170, 255, 0.2) !important;
       border-color: #00aaff !important;
       color: #38bdf8 !important;
       box-shadow: 0 0 16px rgba(0, 170, 255, 0.45) !important;
@@ -596,7 +576,7 @@
       box-shadow: 0 0 16px var(--accent-glow) !important;
     }
 
-    /* ИНПУТЫ */
+    /* ИНПУТЫ И МЕТКИ */
     .hud-input-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -605,25 +585,23 @@
     .hud-field {
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 6px;
     }
     .hud-field label {
-      font-size: 10px;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 800;
+      color: #cbd5e1;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
     }
     .hud-input {
       width: 100%;
-      background: rgba(6, 10, 18, 0.85);
+      background: rgba(6, 10, 18, 0.9);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 12px 14px;
-      color: #fff;
+      color: #ffffff;
       font-size: 15px;
-      font-family: var(--font-mono);
       font-weight: 700;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
@@ -640,25 +618,24 @@
     }
     .quick-chip-btn {
       flex: 1;
-      padding: 7px 0;
+      padding: 8px 0;
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.08);
       border: 1px solid var(--border);
-      color: var(--text-dim);
-      font-size: 11px;
-      font-family: var(--font-mono);
+      color: #f1f5f9;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
     }
 
     .cyber-btn {
-      margin-top: 4px;
+      margin-top: 6px;
       background: var(--accent);
       color: var(--accent-text);
       border: none;
       padding: 16px;
       border-radius: 16px;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 900;
       letter-spacing: 0.5px;
       cursor: pointer;
@@ -668,8 +645,7 @@
       gap: 8px;
       box-shadow: 0 6px 25px var(--accent-glow);
       text-transform: uppercase;
-      font-family: var(--font-display);
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
     }
     .cyber-btn.blue {
       background: linear-gradient(135deg, var(--neon-cyan), #008cb3);
@@ -703,7 +679,7 @@
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      font-family: var(--font-mono);
+      color: #fff;
     }
 
     .feed-list {
@@ -714,7 +690,7 @@
       overflow-y: auto;
     }
     .feed-item {
-      background: rgba(6, 10, 18, 0.7);
+      background: rgba(6, 10, 18, 0.8);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 12px 14px;
@@ -733,19 +709,17 @@
     .feed-meta {
       font-size: 11px;
       color: var(--text-muted);
-      font-family: var(--font-mono);
-      margin-top: 2px;
+      margin-top: 3px;
     }
     .feed-amount {
       font-size: 16px;
       font-weight: 800;
-      font-family: var(--font-mono);
       letter-spacing: -0.4px;
     }
     .trash-btn {
       background: none;
       border: none;
-      color: #475569;
+      color: #64748b;
       cursor: pointer;
       font-size: 16px;
       padding: 4px;
@@ -769,7 +743,7 @@
     }
     .hud-modal-card {
       background: #090e18;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 30px var(--accent-subtle);
       border-radius: 28px;
       width: 100%;
@@ -898,10 +872,10 @@
   <section class="garage-hud">
     <div class="garage-top">
       <div class="garage-title">🔧 ГАРАЖ // МАСЛО И ТО</div>
-      <span style="font-size:11px; font-family:var(--font-mono); color:var(--text-muted);" id="garage-odometer">ОДОМЕТР: 0 КМ</span>
+      <span style="font-size:11px; color:var(--text-muted);" id="garage-odometer">ОДОМЕТР: 0 КМ</span>
     </div>
     <div>
-      <div style="display:flex; justify-content:space-between; font-size:11px; font-family:var(--font-mono); margin-bottom:5px;">
+      <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:5px;">
         <span id="oil-remain-label">ДО ЗАМЕНЫ: 1 500 КМ</span>
         <span id="oil-interval-label">РЕГЛАМЕНТ: 1 500 КМ</span>
       </div>
@@ -936,7 +910,7 @@
         </div>
       </div>
 
-      <!-- СЕРВИС С ДИНАМИЧЕСКИМ ЦВЕТОМ И АКЦЕНТОМ -->
+      <!-- СЕРВИС -->
       <div class="hud-field">
         <label>Сервис доставки (меняет акцент темы)</label>
         <div class="chips-row">
@@ -1033,8 +1007,8 @@
       </div>
 
       <!-- КАЛЬКУЛЯТОР БЕНЗИНА -->
-      <div id="gas-calc-box" style="background:rgba(255,170,0,0.06); border:1px dashed rgba(255,170,0,0.3); border-radius:16px; padding:12px; display:flex; flex-direction:column; gap:8px;">
-        <div style="font-size:10px; font-family:var(--font-mono); color:var(--neon-amber); font-weight:700;">КАЛЬКУЛЯТОР ТОПЛИВА (ЛИТРЫ × ЦЕНА)</div>
+      <div id="gas-calc-box" style="background:rgba(255,170,0,0.08); border:1px dashed rgba(255,170,0,0.3); border-radius:16px; padding:12px; display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:11px; color:var(--neon-amber); font-weight:800;">КАЛЬКУЛЯТОР ТОПЛИВА (ЛИТРЫ × ЦЕНА)</div>
         <div class="hud-input-row">
           <div class="hud-field">
             <label>Литров</label>
@@ -1075,7 +1049,7 @@
   <section class="history-dock">
     <div class="history-dock-top">
       <h3>📋 ИСТОРИЯ // ЛЕНТА</h3>
-      <span style="font-size:11px; font-family:var(--font-mono); color:var(--text-muted);" id="feed-count-badge">0 ЗАПИСЕЙ</span>
+      <span style="font-size:11px; color:var(--text-muted);" id="feed-count-badge">0 ЗАПИСЕЙ</span>
     </div>
     <div class="feed-list" id="feed-container"></div>
   </section>
@@ -1086,7 +1060,7 @@
 <div class="hud-modal-layer" id="settings-modal">
   <div class="hud-modal-card">
     <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="font-size:16px; font-weight:900; font-family:var(--font-mono);">⚙️ КОНФИГУРАЦИЯ</h3>
+      <h3 style="font-size:17px; font-weight:800;">⚙️ КОНФИГУРАЦИЯ</h3>
       <button class="trash-btn" onclick="closeSettingsModal()">✕</button>
     </div>
 
@@ -1117,14 +1091,14 @@
 <div class="hud-modal-layer" id="garage-modal">
   <div class="hud-modal-card">
     <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="font-size:16px; font-weight:900; font-family:var(--font-mono); color:var(--neon-amber);">🔧 РЕГЛАМЕНТ ТО</h3>
+      <h3 style="font-size:17px; font-weight:800; color:var(--neon-amber);">🔧 РЕГЛАМЕНТ ТО</h3>
       <button class="trash-btn" onclick="closeGarageModal()">✕</button>
     </div>
 
     <div class="hud-field">
       <label>Интервал замены масла (км)</label>
       <input class="hud-input" type="number" id="cfg-oil-interval" placeholder="1500" step="100">
-      <span style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono);">1000–1500 км для скутеров, 7000–8000 км для авто</span>
+      <span style="font-size:11px; color:var(--text-muted);">1000–1500 км для скутеров, 7000–8000 км для авто</span>
     </div>
 
     <div class="hud-field">
@@ -1203,7 +1177,6 @@
       dots.forEach(d => d.classList.remove('active'));
       dots[map[t]].classList.add('active');
     }
-    // Восстанавливаем акцент выбранного сервиса поверх темы
     applyServiceAccent(selectedService);
     renderHUDChart();
   }
@@ -1229,7 +1202,6 @@
     haptic();
     selectedService = serviceName;
     
-    // Снимаем классы активности со всех сервисных чипов
     el.parentElement.querySelectorAll('.chip-item').forEach(c => {
       c.className = 'chip-item pressable';
     });
@@ -1237,7 +1209,6 @@
     const info = serviceColors[serviceName] || serviceColors['Яндекс Доставка'];
     el.classList.add(info.class);
 
-    // Применяем динамический цвет на кнопку записи и акцент интерфейса
     applyServiceAccent(serviceName);
   }
 
@@ -1390,15 +1361,12 @@
       }
     });
 
-    // Расчет налога
     const taxRate = appState.taxRate || 0;
     const taxAmount = taxRate > 0 ? Math.round(delIncome * (taxRate / 100)) : 0;
     const netTotal = (delIncome + extraSum) - expenseSum - taxAmount;
 
-    // Вывод в Hero HUD
     document.getElementById('hero-net-val').innerHTML = `${netTotal.toLocaleString('ru-RU')} <span>₽</span>`;
     
-    // Отображение налога
     const taxBadgeWrap = document.getElementById('hero-tax-badge-wrap');
     if (taxRate > 0) {
       taxBadgeWrap.style.display = 'block';
@@ -1411,20 +1379,17 @@
     document.getElementById('sub-stat-extra').innerText = `+${extraSum.toLocaleString('ru-RU')} ₽`;
     document.getElementById('sub-stat-expenses').innerText = `-${expenseSum.toLocaleString('ru-RU')} ₽`;
 
-    // Цель смены
     const goal = appState.dailyGoal || 5000;
     const pct = Math.max(0, Math.min(100, Math.round((netTotal / goal) * 100)));
     document.getElementById('goal-bar-elem').style.width = `${pct}%`;
     document.getElementById('goal-fraction-label').innerText = `${netTotal.toLocaleString('ru-RU')} / ${goal.toLocaleString('ru-RU')} ₽ (${pct}%)`;
 
-    // Ранг
     let rank = '🔰 СТАЖЕР';
     if (netTotal >= 3000) rank = '⚡ РЕЙДЕР';
     if (netTotal >= 5000) rank = '🚀 ФОРСАЖ';
     if (netTotal >= 8000) rank = '👑 ЛЕГЕНДА УЛИЦ';
     document.getElementById('hero-rank-badge').innerText = rank;
 
-    // Bento метрики
     const hourlyNet = hours > 0 ? Math.round(netTotal / hours) : 0;
     document.getElementById('bento-hourly').innerText = `${hourlyNet.toLocaleString('ru-RU')} ₽/ч`;
     document.getElementById('bento-total-hours').innerText = `${hours.toFixed(1)} ч на линии`;
@@ -1485,7 +1450,7 @@
     document.getElementById('feed-count-badge').innerText = `${list.length} ЗАПИСЕЙ`;
 
     if (list.length === 0) {
-      container.innerHTML = `<div style="text-align:center; padding: 24px; color: var(--text-muted); font-size:12px; font-family:var(--font-mono);">ДАННЫХ ЗА ВЫБРАННЫЙ ПЕРИОД НЕТ</div>`;
+      container.innerHTML = `<div style="text-align:center; padding: 24px; color: var(--text-muted); font-size:12px;">ДАННЫХ ЗА ВЫБРАННЫЙ ПЕРИОД НЕТ</div>`;
       return;
     }
 
@@ -1581,8 +1546,8 @@
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' } } },
-          y: { grid: { color: 'rgba(255, 255, 255, 0.04)' }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' } } }
+          x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10 } } },
+          y: { grid: { color: 'rgba(255, 255, 255, 0.04)' }, ticks: { color: '#64748b', font: { size: 10 } } }
         }
       }
     });
