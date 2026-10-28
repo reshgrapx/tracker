@@ -3,246 +3,361 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Courier Pro Max</title>
+  <title>COURIER // OS</title>
 
-  <!-- PWA НАСТРОЙКИ -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Курьер Pro">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#06080d">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%2306080d'/><text y='66' x='50' text-anchor='middle' font-size='56'>🛵</text></svg>">
-  <link rel="manifest" href='data:application/manifest+json,{"name":"Courier Pro Motion","short_name":"Курьер Pro","start_url":".","display":"standalone","background_color":"#06080d","theme_color":"#06080d","icons":[{"src":"data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><rect width=%27100%27 height=%27100%27 rx=%2724%27 fill=%27%2306080d%27/><text y=%2766%27 x=%2750%27 text-anchor=%27middle%27 font-size=%2756%27>🛵</text></svg>","sizes":"192x192","type":"image/svg+xml"}]}'>
-
+  <meta name="theme-color" content="#030508">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%23030508'/><circle cx='50' cy='50' r='38' fill='none' stroke='%2300f59b' stroke-width='6'/><text y='65' x='50' text-anchor='middle' font-size='42'>⚡</text></svg>">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
-    :root, [data-theme="oled"] {
-      --bg: #05070b;
-      --card-bg: rgba(13, 18, 30, 0.72);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --card-highlight: rgba(255, 255, 255, 0.04);
-      --accent: #10b981;
-      --accent-glow: rgba(16, 185, 129, 0.35);
-      --accent-text: #021a10;
-      --blue: #38bdf8;
-      --blue-glow: rgba(56, 189, 248, 0.3);
-      --orange: #f59e0b;
-      --orange-glow: rgba(245, 158, 11, 0.3);
-      --red: #f43f5e;
-      --purple: #a855f7;
-      --text: #f8fafc;
-      --muted: #8492a6;
-      --input-bg: rgba(10, 14, 24, 0.85);
-    }
+    :root {
+      --bg: #030508;
+      --surface: rgba(10, 15, 26, 0.75);
+      --surface-solid: #090e17;
+      --surface-card: rgba(14, 21, 37, 0.65);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(0, 245, 155, 0.5);
+      
+      --neon-emerald: #00f59b;
+      --neon-emerald-glow: rgba(0, 245, 155, 0.35);
+      --neon-cyan: #00d2ff;
+      --neon-cyan-glow: rgba(0, 210, 255, 0.35);
+      --neon-amber: #ffaa00;
+      --neon-amber-glow: rgba(255, 170, 0, 0.35);
+      --neon-rose: #ff2a5f;
+      --neon-rose-glow: rgba(255, 42, 95, 0.35);
+      --neon-purple: #b042ff;
 
-    [data-theme="midnight"] {
-      --bg: #070b16;
-      --card-bg: rgba(15, 23, 42, 0.75);
-      --card-border: rgba(56, 189, 248, 0.16);
-      --card-highlight: rgba(56, 189, 248, 0.06);
-      --accent: #38bdf8;
-      --accent-glow: rgba(56, 189, 248, 0.4);
-      --accent-text: #041724;
-      --blue: #60a5fa;
-      --blue-glow: rgba(96, 165, 250, 0.3);
-      --orange: #fbbf24;
-      --orange-glow: rgba(251, 191, 36, 0.3);
-      --red: #f87171;
-      --purple: #c084fc;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --input-bg: rgba(11, 18, 33, 0.85);
-    }
-
-    [data-theme="sunset"] {
-      --bg: #0f0a07;
-      --card-bg: rgba(26, 18, 14, 0.75);
-      --card-border: rgba(245, 158, 11, 0.2);
-      --card-highlight: rgba(245, 158, 11, 0.06);
-      --accent: #f59e0b;
-      --accent-glow: rgba(245, 158, 11, 0.45);
-      --accent-text: #261100;
-      --blue: #38bdf8;
-      --blue-glow: rgba(56, 189, 248, 0.3);
-      --orange: #fb923c;
-      --orange-glow: rgba(251, 146, 60, 0.3);
-      --red: #ef4444;
-      --purple: #e879f9;
-      --text: #fef3c7;
-      --muted: #a8a29e;
-      --input-bg: rgba(18, 12, 9, 0.85);
-    }
-
-    [data-theme="amethyst"] {
-      --bg: #090710;
-      --card-bg: rgba(23, 16, 36, 0.75);
-      --card-border: rgba(168, 85, 247, 0.2);
-      --card-highlight: rgba(168, 85, 247, 0.06);
-      --accent: #a855f7;
-      --accent-glow: rgba(168, 85, 247, 0.45);
-      --accent-text: #1d0333;
-      --blue: #38bdf8;
-      --blue-glow: rgba(56, 189, 248, 0.3);
-      --orange: #f59e0b;
-      --orange-glow: rgba(245, 158, 11, 0.3);
-      --red: #f43f5e;
-      --purple: #c084fc;
-      --text: #faf5ff;
-      --muted: #a1a1aa;
-      --input-bg: rgba(16, 10, 26, 0.85);
+      --text: #f0f4fc;
+      --text-muted: #64748b;
+      --text-dim: #94a3b8;
+      --font-display: "Plus Jakarta Sans", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    input, select, textarea {
+      user-select: text;
     }
 
     body {
       background-color: var(--bg);
       background-image: 
-        radial-gradient(circle at 15% 5%, rgba(56, 189, 248, 0.09), transparent 45%),
-        radial-gradient(circle at 85% 85%, var(--accent-glow), transparent 50%);
-      background-attachment: fixed;
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 210, 255, 0.12), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(0, 245, 155, 0.08), transparent),
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
       color: var(--text);
+      font-family: var(--font-display);
       min-height: 100vh;
-      padding: env(safe-area-inset-top, 20px) 14px env(safe-area-inset-bottom, 32px);
       display: flex;
       justify-content: center;
-      transition: background 0.4s ease;
+      padding: env(safe-area-inset-top, 24px) 16px env(safe-area-inset-bottom, 36px);
       overflow-x: hidden;
     }
 
-    .app-container {
+    .app-viewport {
       width: 100%;
-      max-width: 520px;
+      max-width: 480px;
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      animation: appEntrance 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      gap: 16px;
+      position: relative;
     }
 
-    @keyframes appEntrance {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* АНИМАЦИИ НАЖАТИЯ */
+    .pressable {
+      transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s, border-color 0.2s;
+    }
+    .pressable:active {
+      transform: scale(0.96) !important;
     }
 
-    /* ИНТЕРАКТИВНЫЕ ЭФФЕКТЫ (ACTIVE SCALING) */
-    button, .filter-pill, .entry-item, .metric-tile {
-      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-    }
-    button:active, .filter-pill:active {
-      transform: scale(0.96);
-    }
-
-    /* HEADER */
-    .header {
+    /* ШАПКА */
+    .hud-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 4px 2px;
+      padding: 6px 4px;
     }
-    .user-greeting {
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 600;
-      letter-spacing: 0.2px;
-    }
-    .user-greeting span {
-      color: var(--accent);
-      font-weight: 700;
-      text-shadow: 0 0 12px var(--accent-glow);
-    }
-    .header h1 {
-      font-size: 25px;
-      font-weight: 900;
-      letter-spacing: -0.6px;
-      color: #fff;
-    }
-    .header-actions {
+    .hud-profile {
       display: flex;
-      gap: 8px;
+      align-items: center;
+      gap: 12px;
     }
-    .icon-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      color: var(--text);
-      width: 40px;
-      height: 40px;
-      border-radius: 13px;
+    .avatar-hex {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, rgba(0, 245, 155, 0.2), rgba(0, 210, 255, 0.1));
+      border: 1px solid var(--neon-emerald);
+      box-shadow: 0 0 16px var(--neon-emerald-glow);
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
+      font-size: 20px;
+    }
+    .hud-title-col h1 {
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hud-title-col span {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--neon-emerald);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .hud-title-col span::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--neon-emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--neon-emerald);
+      animation: blink 2s infinite ease-in-out;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .header-btns {
+      display: flex;
+      gap: 8px;
+    }
+    .hud-icon-btn {
+      width: 42px;
+      height: 42px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 16px;
       backdrop-filter: blur(20px);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+      cursor: pointer;
     }
 
-    /* ЦЕЛЬ ДНЯ И РАНГ */
-    .target-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 13px 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
+    /* КАРТОЧКА ГЛАВНОГО БАЛАНСА (HERO HUD) */
+    .hero-hud-card {
+      background: radial-gradient(circle at 80% 20%, rgba(0, 245, 155, 0.08), transparent 70%),
+                  linear-gradient(160deg, rgba(16, 24, 42, 0.8), rgba(6, 10, 18, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      border-radius: 26px;
+      padding: 22px 20px 20px;
+      position: relative;
+      overflow: hidden;
       backdrop-filter: blur(24px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
-    .target-header {
+    .hero-top-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12px;
-      font-weight: 700;
+      margin-bottom: 6px;
     }
-    .rank-badge {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--card-border);
-      padding: 4px 10px;
-      border-radius: 20px;
-      color: var(--accent);
+    .hero-tag {
       font-size: 11px;
+      font-family: var(--font-mono);
       font-weight: 700;
-      animation: pulseGlow 3s infinite ease-in-out;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
     }
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 0 rgba(16, 185, 129, 0); }
-      50% { box-shadow: 0 0 14px var(--accent-glow); }
+    .rank-pill {
+      background: rgba(0, 245, 155, 0.1);
+      border: 1px solid rgba(0, 245, 155, 0.3);
+      color: var(--neon-emerald);
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      box-shadow: 0 0 14px var(--neon-emerald-glow);
     }
-    .progress-bar-bg {
+
+    .hero-cash-val {
+      font-size: 46px;
+      font-weight: 900;
+      font-family: var(--font-display);
+      letter-spacing: -1.8px;
+      color: #fff;
+      margin: 2px 0 10px;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .hero-cash-val span {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--neon-emerald);
+      text-shadow: 0 0 16px var(--neon-emerald-glow);
+    }
+
+    /* ПРОГРЕСС ЦЕЛИ СМЕНЫ */
+    .goal-gauge {
+      margin-bottom: 16px;
+    }
+    .goal-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .goal-bar-track {
       height: 8px;
-      background: var(--input-bg);
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
       overflow: hidden;
       position: relative;
     }
-    .progress-bar-fill {
+    .goal-bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--blue));
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-emerald));
       width: 0%;
-      border-radius: 12px;
-      box-shadow: 0 0 12px var(--accent-glow);
-      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      border-radius: 20px;
+      box-shadow: 0 0 14px var(--neon-emerald-glow);
+      transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-substats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+    .hero-substat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .hero-substat .sub-lbl {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+    .hero-substat .sub-num {
+      font-size: 15px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ФИЛЬТР ПЕРИОДОВ В ВИДЕ ТАКТИЛЬНОГО ПЕРЕКЛЮЧАТЕЛЯ */
+    .period-dock {
+      display: flex;
+      background: rgba(14, 21, 37, 0.6);
+      border: 1px solid var(--border);
+      padding: 5px;
+      border-radius: 18px;
+      gap: 5px;
+      backdrop-filter: blur(20px);
+    }
+    .period-tab {
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 13px;
+      cursor: pointer;
+    }
+    .period-tab.active {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    }
+
+    /* BENTO КАРТОЧКИ МЕТРИК */
+    .bento-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .bento-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      position: relative;
+    }
+    .bento-card:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+    .bento-icon {
+      font-size: 18px;
+      margin-bottom: 2px;
+    }
+    .bento-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+    }
+    .bento-value {
+      font-size: 19px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+    .bento-note {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-weight: 600;
+      margin-top: 2px;
     }
 
     /* ГАРАЖ И ТО */
-    .garage-card {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.09), var(--card-bg));
-      border: 1px solid rgba(245, 158, 11, 0.25);
-      border-radius: 18px;
-      padding: 14px;
+    .garage-hud {
+      background: linear-gradient(135deg, rgba(255, 170, 0, 0.07), rgba(14, 21, 37, 0.8));
+      border: 1px solid rgba(255, 170, 0, 0.25);
+      border-radius: 22px;
+      padding: 16px 18px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      backdrop-filter: blur(24px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      gap: 12px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
-    .garage-header {
+    .garage-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -250,780 +365,641 @@
     .garage-title {
       font-size: 13px;
       font-weight: 800;
-      color: var(--orange);
+      color: var(--neon-amber);
       display: flex;
       align-items: center;
-      gap: 6px;
-      text-shadow: 0 0 10px var(--orange-glow);
+      gap: 7px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
     }
-    .oil-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-    .oil-bar-fill {
+    .garage-bar-track {
       height: 7px;
-      background: var(--orange);
-      border-radius: 12px;
-      box-shadow: 0 0 10px var(--orange-glow);
-      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      overflow: hidden;
     }
-    .garage-btn-row {
+    .garage-bar-fill {
+      height: 100%;
+      background: var(--neon-amber);
+      box-shadow: 0 0 12px var(--neon-amber-glow);
+      border-radius: 10px;
+      transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .garage-actions {
       display: flex;
       justify-content: flex-end;
       gap: 8px;
     }
-    .mini-btn {
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
+    .garage-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
       color: var(--text);
-      padding: 6px 12px;
+      padding: 7px 12px;
       border-radius: 10px;
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
     }
 
-    /* ФИЛЬТР ПЕРИОДА */
-    .filter-pills {
+    /* БЛОК ВВОДА В ВИДЕ КИБЕР-ПАНЕЛИ */
+    .cyber-panel {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 18px;
       display: flex;
-      background: var(--input-bg);
-      padding: 4px;
-      border-radius: 15px;
-      border: 1px solid var(--card-border);
-      gap: 4px;
-      backdrop-filter: blur(16px);
+      flex-direction: column;
+      gap: 16px;
+      backdrop-filter: blur(24px);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.4);
     }
-    .filter-pill {
-      flex: 1;
-      padding: 8px 0;
-      text-align: center;
-      background: transparent;
+    .hud-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      background: rgba(6, 10, 18, 0.8);
+      padding: 4px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+    .hud-tab-btn {
+      padding: 10px 4px;
       border: none;
-      color: var(--muted);
+      background: transparent;
+      color: var(--text-muted);
       font-size: 12px;
-      font-weight: 700;
-      border-radius: 11px;
+      font-weight: 800;
+      border-radius: 12px;
       cursor: pointer;
     }
-    .filter-pill.active {
-      background: var(--card-bg);
+    .hud-tab-btn.active {
+      background: rgba(255, 255, 255, 0.1);
       color: #fff;
-      border: 1px solid var(--card-border);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    /* HERO КАРТОЧКА ПРИБЫЛИ */
-    .hero-stat-card {
-      background: linear-gradient(145deg, var(--card-bg), rgba(8, 12, 20, 0.95));
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      padding: 20px 18px;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(28px);
-      box-shadow: 0 12px 35px rgba(0,0,0,0.5);
-    }
-    .hero-stat-card::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), var(--blue), transparent);
-    }
-    .hero-label {
-      font-size: 12px;
-      color: var(--muted);
-      text-transform: uppercase;
-      font-weight: 800;
-      letter-spacing: 0.9px;
-    }
-    .hero-value {
-      font-size: 38px;
-      font-weight: 900;
-      letter-spacing: -1.2px;
-      margin: 4px 0 10px;
-      color: #ffffff;
+    /* ЧИПЫ ВЫБОРА ТРАНСПОРТА И СЕРВИСОВ */
+    .chips-row {
       display: flex;
-      align-items: baseline;
-      gap: 6px;
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
     }
-    .hero-value.pop {
-      transform: scale(1.035);
-    }
-    .hero-value span {
-      font-size: 19px;
-      font-weight: 600;
-      color: var(--accent);
-      text-shadow: 0 0 14px var(--accent-glow);
-    }
+    .chips-row::-webkit-scrollbar { display: none; }
 
-    .tax-tag {
-      display: inline-flex;
+    .chip-item {
+      padding: 9px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(244, 63, 94, 0.12);
-      border: 1px solid rgba(244, 63, 94, 0.28);
-      color: #fb7185;
-      padding: 4px 10px;
-      border-radius: 9px;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      animation: fadeIn 0.3s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
-
-    .hero-substats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      border-top: 1px solid var(--card-border);
-      padding-top: 14px;
-    }
-    .substat-item {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .substat-item .sub-title {
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 600;
-    }
-    .substat-item .sub-val {
-      font-size: 15px;
-      font-weight: 800;
-    }
-
-    .color-green { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
-    .color-blue { color: var(--blue); text-shadow: 0 0 10px var(--blue-glow); }
-    .color-red { color: var(--red); }
-    .color-orange { color: var(--orange); text-shadow: 0 0 10px var(--orange-glow); }
-    .color-purple { color: var(--purple); }
-
-    /* МЕТРИКИ */
-    .metric-tiles {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 11px;
-    }
-    .metric-tile {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 13px 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-    }
-    .metric-tile:hover {
-      border-color: rgba(255,255,255,0.14);
-      transform: translateY(-2px);
-    }
-    .tile-title {
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 600;
-    }
-    .tile-val {
-      font-size: 18px;
-      font-weight: 800;
+    .chip-item.active {
+      background: rgba(0, 245, 155, 0.12);
+      border-color: var(--neon-emerald);
       color: #fff;
-    }
-    .tile-note {
-      font-size: 11px;
-      color: var(--muted);
+      box-shadow: 0 0 16px var(--neon-emerald-glow);
     }
 
-    /* ФОРМЫ */
-    .actions-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      padding: 17px;
-      backdrop-filter: blur(24px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-    }
-    .tab-triggers {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      margin-bottom: 15px;
-      background: var(--input-bg);
-      padding: 4px;
-      border-radius: 14px;
-      border: 1px solid var(--card-border);
-    }
-    .tab-btn {
-      padding: 9px 4px;
-      border-radius: 10px;
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .tab-btn.active {
-      background: rgba(255,255,255,0.09);
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 11px;
-      animation: fadeIn 0.25s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .input-row {
+    /* СТИЛЬНЫЕ ИНПУТЫ */
+    .hud-input-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
-    .input-row-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-    }
-    .field {
+    .hud-field {
       display: flex;
       flex-direction: column;
       gap: 5px;
     }
-    .field label {
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 600;
+    .hud-field label {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .field input, .field select {
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
-      color: #fff;
-      padding: 11px 12px;
-      border-radius: 13px;
-      font-size: 14px;
-      outline: none;
-      transition: border 0.2s, box-shadow 0.2s;
+    .hud-input-wrap {
+      position: relative;
     }
-    .field input:focus, .field select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 14px var(--accent-glow);
-    }
-    .submit-btn {
-      margin-top: 6px;
-      background: linear-gradient(135deg, var(--accent), #059669);
-      color: var(--accent-text);
-      border: none;
-      padding: 14px;
+    .hud-input {
+      width: 100%;
+      background: rgba(6, 10, 18, 0.85);
+      border: 1px solid var(--border);
       border-radius: 14px;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 4px 20px var(--accent-glow);
-    }
-    .submit-btn.blue {
-      background: linear-gradient(135deg, var(--blue), #0284c7);
-      color: #032030;
-      box-shadow: 0 4px 20px var(--blue-glow);
-    }
-    .submit-btn.purple {
-      background: linear-gradient(135deg, var(--purple), #7e22ce);
+      padding: 12px 14px;
       color: #fff;
-      box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+      font-size: 15px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .hud-input:focus {
+      border-color: var(--neon-emerald);
+      box-shadow: 0 0 16px var(--neon-emerald-glow);
     }
 
-    /* ИСТОРИЯ И СПИСКИ */
-    .history-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 22px;
-      padding: 17px;
+    /* БЫСТРЫЕ ЧИПЫ СУММ */
+    .quick-chips {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .quick-chip-btn {
+      flex: 1;
+      padding: 6px 0;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* КНОПКА ЗАПУСКА / СОХРАНЕНИЯ */
+    .cyber-btn {
+      margin-top: 4px;
+      background: linear-gradient(135deg, var(--neon-emerald), #00b875);
+      color: #021a10;
+      border: none;
+      padding: 16px;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 25px var(--neon-emerald-glow);
+      text-transform: uppercase;
+      font-family: var(--font-display);
+    }
+    .cyber-btn.blue {
+      background: linear-gradient(135deg, var(--neon-cyan), #008cb3);
+      color: #02151c;
+      box-shadow: 0 6px 25px var(--neon-cyan-glow);
+    }
+    .cyber-btn.rose {
+      background: linear-gradient(135deg, var(--neon-rose), #b80034);
+      color: #fff;
+      box-shadow: 0 6px 25px var(--neon-rose-glow);
+    }
+
+    /* ИСТОРИЯ И ГРАФИК */
+    .history-dock {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
-      gap: 13px;
+      gap: 14px;
       backdrop-filter: blur(24px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
     }
-    .list-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-      max-height: 400px;
-      overflow-y: auto;
-      padding-right: 2px;
-    }
-    .entry-item {
-      background: var(--input-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 11px 13px;
+    .history-dock-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      animation: itemSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    @keyframes itemSlideUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .history-dock-top h3 {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-family: var(--font-mono);
     }
-    .entry-item:hover {
-      border-color: rgba(255,255,255,0.14);
-      transform: scale(1.01);
+
+    .feed-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 420px;
+      overflow-y: auto;
     }
-    .entry-main-text {
+    .feed-item {
+      background: rgba(6, 10, 18, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .feed-item:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+    .feed-title {
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
       color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .entry-meta {
+    .feed-meta {
       font-size: 11px;
-      color: var(--muted);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
       margin-top: 2px;
     }
-    .entry-amount {
-      font-size: 15px;
+    .feed-amount {
+      font-size: 16px;
       font-weight: 800;
-      letter-spacing: -0.3px;
+      font-family: var(--font-mono);
+      letter-spacing: -0.4px;
     }
-    .del-btn {
+    .trash-btn {
       background: none;
       border: none;
       color: #475569;
       cursor: pointer;
-      font-size: 15px;
-      margin-left: 9px;
+      font-size: 16px;
       padding: 4px;
-      transition: color 0.2s, transform 0.2s;
-    }
-    .del-btn:hover {
-      color: var(--red);
-      transform: scale(1.2);
+      margin-left: 10px;
     }
 
-    /* МОДАЛКИ С ПЛАВНЫМ POP-IN */
-    .modal-overlay {
+    /* МОДАЛКИ В СТИЛЕ КИБЕРПАНК HUD */
+    .hud-modal-layer {
       position: fixed;
-      top:0; left:0; right:0; bottom:0;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(12px);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(2, 4, 8, 0.88);
+      backdrop-filter: blur(16px);
       display: none;
       justify-content: center;
       align-items: center;
       padding: 20px;
-      z-index: 1000;
-      opacity: 0;
-      transition: opacity 0.25s ease;
+      z-index: 9999;
     }
-    .modal-overlay.show {
+    .hud-modal-layer.active {
       display: flex;
-      opacity: 1;
     }
-    .modal-box {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
+    .hud-modal-card {
+      background: #090e18;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 30px rgba(0, 245, 155, 0.1);
+      border-radius: 28px;
       width: 100%;
       max-width: 420px;
-      padding: 22px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      max-height: 90vh;
-      overflow-y: auto;
-      transform: scale(0.92);
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-    }
-    .modal-overlay.show .modal-box {
-      transform: scale(1);
-    }
-    .theme-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-    .theme-opt-btn {
-      padding: 11px;
-      border-radius: 12px;
-      border: 1px solid var(--card-border);
-      background: var(--input-bg);
-      color: var(--text);
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
+      gap: 16px;
     }
   </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="app-viewport">
 
-  <!-- ШАПКА -->
-  <div class="header">
-    <div>
-      <div class="user-greeting">Пилот: <span id="display-user-name">Гонщик</span></div>
-      <h1>Courier Pro Max</h1>
+  <!-- ШАПКА В СТИЛЕ ТАКТИЧЕСКОГО HUD -->
+  <header class="hud-header">
+    <div class="hud-profile">
+      <div class="avatar-hex">⚡</div>
+      <div class="hud-title-col">
+        <h1 id="hud-name-label">RESH // PILOT</h1>
+        <span>ONLINE // TRACKING</span>
+      </div>
     </div>
     <div class="header-actions">
-      <button class="icon-btn" onclick="openSettings()" title="Настройки">⚙️</button>
-      <button class="icon-btn" onclick="exportJSON()" title="Резервная копия">💾</button>
+      <button class="hud-icon-btn pressable" onclick="openSettingsModal()" title="Настройки">⚙️</button>
+      <button class="hud-icon-btn pressable" onclick="exportBackupData()" title="Бекап">💾</button>
+    </div>
+  </header>
+
+  <!-- ПЕРЕКЛЮЧАТЕЛЬ ПЕРИОДОВ (DOCK) -->
+  <div class="period-dock">
+    <button class="period-tab active pressable" onclick="setPeriod('today', this)">СЕГОДНЯ</button>
+    <button class="period-tab pressable" onclick="setPeriod('week', this)">НЕДЕЛЯ</button>
+    <button class="period-tab pressable" onclick="setPeriod('month', this)">МЕСЯЦ</button>
+    <button class="period-tab pressable" onclick="setPeriod('all', this)">ВСЁ ВРЕМЯ</button>
+  </div>
+
+  <!-- КАРТОЧКА БАЛАНСА (HERO HUD) -->
+  <section class="hero-hud-card">
+    <div class="hero-top-row">
+      <span class="hero-tag">ЧИСТАЯ ПРИБЫЛЬ // НА РУКИ</span>
+      <span class="rank-pill" id="hero-rank-badge">⚡ ЛЕГЕНДА УЛИЦ</span>
+    </div>
+
+    <div class="hero-cash-val" id="hero-net-val">0 <span>₽</span></div>
+
+    <!-- ПРОГРЕСС ЦЕЛИ СМЕНЫ -->
+    <div class="goal-gauge">
+      <div class="goal-labels">
+        <span>ПЛАН СМЕНЫ</span>
+        <span id="goal-fraction-label">0 / 5 000 ₽</span>
+      </div>
+      <div class="goal-bar-track">
+        <div class="goal-bar-fill" id="goal-bar-elem"></div>
+      </div>
+    </div>
+
+    <div class="hero-substats-grid">
+      <div class="hero-substat">
+        <span class="sub-lbl">ДОСТАВКА</span>
+        <span class="sub-num" style="color:var(--neon-emerald);" id="sub-stat-delivery">+0 ₽</span>
+      </div>
+      <div class="hero-substat">
+        <span class="sub-lbl">ДОП. ДОХОД</span>
+        <span class="sub-num" style="color:var(--neon-cyan);" id="sub-stat-extra">+0 ₽</span>
+      </div>
+      <div class="hero-substat">
+        <span class="sub-lbl">РАСХОДЫ</span>
+        <span class="sub-num" style="color:var(--neon-rose);" id="sub-stat-expenses">-0 ₽</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENTO СЕТКА МЕТРИК -->
+  <div class="bento-row">
+    <div class="bento-card pressable">
+      <div class="bento-icon">⏱️</div>
+      <div class="bento-title">Чистыми в час</div>
+      <div class="bento-value" style="color:var(--neon-emerald);" id="bento-hourly">0 ₽/ч</div>
+      <div class="bento-note" id="bento-total-hours">0.0 ч на линии</div>
+    </div>
+    <div class="bento-card pressable">
+      <div class="bento-icon">📦</div>
+      <div class="bento-title">Заказы / Ср. чек</div>
+      <div class="bento-value" id="bento-orders">0 шт</div>
+      <div class="bento-note" id="bento-avg-order">ср. 0 ₽ / заказ</div>
+    </div>
+    <div class="bento-card pressable">
+      <div class="bento-icon">⛽</div>
+      <div class="bento-title">Топливо</div>
+      <div class="bento-value" style="color:var(--neon-amber);" id="bento-fuel">0 ₽</div>
+      <div class="bento-note" id="bento-fuel-per100">0.0 л / 100 км</div>
+    </div>
+    <div class="bento-card pressable">
+      <div class="bento-icon">🛵</div>
+      <div class="bento-title">Себестоимость</div>
+      <div class="bento-value" id="bento-cost-km">0 ₽/км</div>
+      <div class="bento-note" id="bento-total-km">0 км накатал</div>
     </div>
   </div>
 
-  <!-- РАНГ И ЦЕЛЬ ДНЯ -->
-  <div class="target-card">
-    <div class="target-header">
-      <div>План на смену: <span id="target-cash-label">0 / 5 000 ₽</span></div>
-      <div class="rank-badge" id="courier-rank">Новичок на линии</div>
-    </div>
-    <div class="progress-bar-bg">
-      <div class="progress-bar-fill" id="goal-progress-bar"></div>
-    </div>
-  </div>
-
-  <!-- СЕРВИСНАЯ КНИЖКА (ТО И МАСЛО) -->
-  <div class="garage-card">
-    <div class="garage-header">
-      <div class="garage-title">🛵 Гараж & ТО: Ресурс масла</div>
-      <span style="font-size:11px; color:var(--muted);" id="garage-total-km">Всего: 0 км</span>
+  <!-- БЛОК ГАРАЖА И МАСЛА -->
+  <section class="garage-hud">
+    <div class="garage-top">
+      <div class="garage-title">🔧 ГАРАЖ // МАСЛО И ТО</div>
+      <span style="font-size:11px; font-family:var(--font-mono); color:var(--text-muted);" id="garage-odometer">ОДОМЕТР: 0 КМ</span>
     </div>
     <div>
-      <div class="oil-meta">
-        <span id="oil-status-text">Осталось: 1 500 км</span>
-        <span id="oil-interval-label">Интервал: 1 500 км</span>
+      <div style="display:flex; justify-content:space-between; font-size:11px; font-family:var(--font-mono); margin-bottom:5px;">
+        <span id="oil-remain-label">ДО ЗАМЕНЫ: 1 500 КМ</span>
+        <span id="oil-interval-label">РЕГЛАМЕНТ: 1 500 КМ</span>
       </div>
-      <div class="progress-bar-bg">
-        <div class="oil-bar-fill" id="oil-progress-bar" style="width: 100%;"></div>
-      </div>
-    </div>
-    <div class="garage-btn-row">
-      <button class="mini-btn" onclick="openGarageModal()">⚙️ Настроить ТО</button>
-      <button class="mini-btn" style="background:var(--orange); color:#1c1000;" onclick="resetOilService()">🛢️ Сделал замену масла</button>
-    </div>
-  </div>
-
-  <!-- ФИЛЬТР ПЕРИОДА -->
-  <div class="filter-pills">
-    <button class="filter-pill active" onclick="setPeriod('today', this)">Сегодня</button>
-    <button class="filter-pill" onclick="setPeriod('week', this)">Неделя</button>
-    <button class="filter-pill" onclick="setPeriod('month', this)">Месяц</button>
-    <button class="filter-pill" onclick="setPeriod('all', this)">Все время</button>
-  </div>
-
-  <!-- ГЛАВНАЯ КАРТОЧКА ПРИБЫЛИ -->
-  <div class="hero-stat-card">
-    <div class="hero-label">Чистая прибыль (на руки)</div>
-    <div class="hero-value" id="stat-net-pocket">0 <span>₽</span></div>
-    
-    <div class="tax-tag" id="stat-tax-row" style="display:none;">
-      <span>🏛️ Налог (Мой налог):</span>
-      <strong id="stat-tax-amount">0 ₽</strong>
-    </div>
-
-    <div class="hero-substats">
-      <div class="substat-item">
-        <span class="sub-title">Доставка</span>
-        <span class="sub-val color-green" id="stat-delivery-income">0 ₽</span>
-      </div>
-      <div class="substat-item">
-        <span class="sub-title">Доп. доход</span>
-        <span class="sub-val color-blue" id="stat-extra-income">0 ₽</span>
-      </div>
-      <div class="substat-item">
-        <span class="sub-title">Расходы</span>
-        <span class="sub-val color-red" id="stat-expenses">0 ₽</span>
+      <div class="garage-bar-track">
+        <div class="garage-bar-fill" id="oil-gauge-elem" style="width: 100%;"></div>
       </div>
     </div>
-  </div>
+    <div class="garage-actions">
+      <button class="garage-btn pressable" onclick="openGarageModal()">⚙️ Настроить</button>
+      <button class="garage-btn pressable" style="background:var(--neon-amber); color:#1c1000; border:none; font-weight:800;" onclick="handleResetOil()">🛢️ Заменил масло</button>
+    </div>
+  </section>
 
-  <!-- КУРЬЕРСКИЕ МЕТРИКИ -->
-  <div class="metric-tiles">
-    <div class="metric-tile">
-      <div class="tile-title">📦 Заказы & Средний чек</div>
-      <div class="tile-val" id="stat-orders-avg">0 шт • 0 ₽</div>
-      <div class="tile-note" id="stat-orders-hourly">0 зак/час</div>
-    </div>
-    <div class="metric-tile">
-      <div class="tile-title">⛽ Бензин & Расход на 100 км</div>
-      <div class="tile-val color-orange" id="stat-gas">0 ₽</div>
-      <div class="tile-note" id="stat-fuel-per-100">0 л / 100 км</div>
-    </div>
-    <div class="metric-tile">
-      <div class="tile-title">⏱️ Чистыми в час</div>
-      <div class="tile-val color-green" id="stat-net-hourly">0 ₽/ч</div>
-      <div class="tile-note" id="stat-total-hours">0 ч на линии</div>
-    </div>
-    <div class="metric-tile">
-      <div class="tile-title">🛵 Себестоимость 1 км</div>
-      <div class="tile-val" id="stat-cost-km">0 ₽/км</div>
-      <div class="tile-note" id="stat-total-km">0 км пробега</div>
-    </div>
-  </div>
-
-  <!-- ФОРМЫ ВВОДА -->
-  <div class="actions-card">
-    <div class="tab-triggers">
-      <button class="tab-btn active" onclick="switchTab('shift', this)">+ Смена</button>
-      <button class="tab-btn" onclick="switchTab('extra', this)">+ Доп. доход</button>
-      <button class="tab-btn" onclick="switchTab('expense', this)">- Расход / АЗС</button>
+  <!-- КИБЕР-ПАНЕЛЬ ВВОДА СМЕН И ОПЕРАЦИЙ -->
+  <section class="cyber-panel">
+    <div class="hud-tabs">
+      <button class="hud-tab-btn active pressable" onclick="switchFormTab('shift', this)">+ СМЕНА</button>
+      <button class="hud-tab-btn pressable" onclick="switchFormTab('extra', this)">+ ДОП. ДОХОД</button>
+      <button class="hud-tab-btn pressable" onclick="switchFormTab('expense', this)">- РАСХОД / АЗС</button>
     </div>
 
-    <!-- Вкладка: Смена -->
-    <form id="form-shift" class="form-group" onsubmit="addShift(event)">
-      <div class="input-row-3">
-        <div class="field">
-          <label>Транспорт</label>
-          <select id="shift-transport">
-            <option value="Скутер">🛵 Скутер</option>
-            <option value="Авто">🚗 Авто</option>
-            <option value="Пеший">🚶 Пеший</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Сервис</label>
-          <select id="shift-service">
-            <option value="Яндекс Доставка">Яндекс</option>
-            <option value="Магнит Доставка">Магнит</option>
-            <option value="Самокат">Самокат</option>
-            <option value="Купер">Купер</option>
-            <option value="Ozon fresh">Ozon</option>
-            <option value="Другое">Другое</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Дата</label>
-          <input type="date" id="shift-date" required>
+    <!-- ФОРМА СМЕНЫ -->
+    <form id="form-shift" onsubmit="handleShiftSubmit(event)" style="display:flex; flex-direction:column; gap:12px;">
+      
+      <!-- ЧИПЫ ВЫБОРА ТРАНСПОРТА -->
+      <div class="hud-field">
+        <label>Транспорт</label>
+        <div class="chips-row">
+          <div class="chip-item active pressable" onclick="selectTransport('🛵 Скутер', this)">🛵 Скутер</div>
+          <div class="chip-item pressable" onclick="selectTransport('🚗 Авто', this)">🚗 Авто</div>
+          <div class="chip-item pressable" onclick="selectTransport('🚶 Пеший', this)">🚶 Пеший</div>
         </div>
       </div>
 
-      <div class="input-row">
-        <div class="field">
-          <label>Оплата за заказы (₽)</label>
-          <input type="number" id="shift-income" placeholder="0" min="0" step="any" required>
+      <!-- ЧИПЫ ВЫБОРА СЕРВИСА -->
+      <div class="hud-field">
+        <label>Сервис доставки</label>
+        <div class="chips-row">
+          <div class="chip-item active pressable" onclick="selectService('Яндекс Доставка', this)">⚡ Яндекс</div>
+          <div class="chip-item pressable" onclick="selectService('Магнит Доставка', this)">🛒 Магнит</div>
+          <div class="chip-item pressable" onclick="selectService('Самокат', this)">🚲 Самокат</div>
+          <div class="chip-item pressable" onclick="selectService('Купер', this)">📦 Купер</div>
+          <div class="chip-item pressable" onclick="selectService('Ozon Fresh', this)">🔵 Ozon Fresh</div>
         </div>
-        <div class="field">
+      </div>
+
+      <div class="hud-input-row">
+        <div class="hud-field">
+          <label>Оплата заказов (₽)</label>
+          <input class="hud-input" type="number" id="inp-shift-cash" placeholder="0" min="0" step="any" required>
+        </div>
+        <div class="hud-field">
           <label>Чаевые (₽)</label>
-          <input type="number" id="shift-tips" placeholder="0" min="0" step="any">
+          <input class="hud-input" type="number" id="inp-shift-tips" placeholder="0" min="0" step="any">
         </div>
       </div>
 
-      <div class="input-row-3">
-        <div class="field">
-          <label>Заказов (шт)</label>
-          <input type="number" id="shift-orders" placeholder="15" min="0">
+      <!-- БЫСТРЫЕ КНОПКИ ДЛЯ СУММ -->
+      <div class="quick-chips">
+        <button type="button" class="quick-chip-btn pressable" onclick="addShiftCash(1000)">+1 000</button>
+        <button type="button" class="quick-chip-btn pressable" onclick="addShiftCash(2000)">+2 000</button>
+        <button type="button" class="quick-chip-btn pressable" onclick="addShiftCash(3000)">+3 000</button>
+        <button type="button" class="quick-chip-btn pressable" onclick="addShiftCash(5000)">+5 000</button>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px;">
+        <div class="hud-field">
+          <label>Заказов</label>
+          <input class="hud-input" type="number" id="inp-shift-orders" placeholder="15" min="0">
         </div>
-        <div class="field">
+        <div class="hud-field">
           <label>Часов</label>
-          <input type="number" id="shift-hours" placeholder="6.5" min="0" step="0.1">
+          <input class="hud-input" type="number" id="inp-shift-hours" placeholder="6.5" min="0" step="0.1">
         </div>
-        <div class="field">
+        <div class="hud-field">
           <label>Пробег (км)</label>
-          <input type="number" id="shift-km" placeholder="50" min="0" step="0.5">
+          <input class="hud-input" type="number" id="inp-shift-km" placeholder="50" min="0" step="0.5">
         </div>
       </div>
 
-      <div class="field">
-        <label>Заметка к смене</label>
-        <input type="text" id="shift-notes" placeholder="Локация, погода, заказы...">
-      </div>
-
-      <button type="submit" class="submit-btn">Записать смену</button>
+      <button type="submit" class="cyber-btn pressable">⚡ ЗАПИСАТЬ СМЕНУ</button>
     </form>
 
-    <!-- Вкладка: Дополнительный доход -->
-    <form id="form-extra" class="form-group" style="display:none;" onsubmit="addExtraIncome(event)">
-      <div class="input-row">
-        <div class="field">
+    <!-- ФОРМА ДОП. ДОХОДА -->
+    <form id="form-extra" onsubmit="handleExtraSubmit(event)" style="display:none; flex-direction:column; gap:12px;">
+      <div class="hud-input-row">
+        <div class="hud-field">
           <label>Сумма (₽)</label>
-          <input type="number" id="extra-amount" placeholder="0" min="1" step="any" required>
+          <input class="hud-input" type="number" id="inp-extra-val" placeholder="0" min="1" step="any" required>
         </div>
-        <div class="field">
+        <div class="hud-field">
           <label>Дата</label>
-          <input type="date" id="extra-date" required>
+          <input class="hud-input" type="date" id="inp-extra-date" required>
         </div>
       </div>
 
-      <div class="field">
-        <label>Категория дохода</label>
-        <select id="extra-category">
+      <div class="hud-field">
+        <label>Категория</label>
+        <select class="hud-input" id="inp-extra-cat">
           <option value="Бонус агрегатора">Бонус / Акция агрегатора</option>
-          <option value="Доплата парка">Доплата парка / партнера</option>
-          <option value="Продажа запчастей/стафа">Продажа запчастей / стафа</option>
+          <option value="Доплата парка">Доплата парка / таксопарка</option>
+          <option value="Продажа запчастей">Продажа запчастей / стафа</option>
           <option value="Подработка / Поручение">Подработка / Поручение</option>
           <option value="Другое">Другое</option>
         </select>
       </div>
 
-      <div class="field">
-        <label>Описание</label>
-        <input type="text" id="extra-desc" placeholder="За что получено...">
+      <div class="hud-field">
+        <label>Заметка</label>
+        <input class="hud-input" type="text" id="inp-extra-desc" placeholder="За что начислено...">
       </div>
 
-      <button type="submit" class="submit-btn blue">Записать доп. доход</button>
+      <button type="submit" class="cyber-btn blue pressable">💎 ЗАПИСАТЬ ДОХОД</button>
     </form>
 
-    <!-- Вкладка: Расход -->
-    <form id="form-expense" class="form-group" style="display:none;" onsubmit="addExpense(event)">
-      <div class="input-row">
-        <div class="field">
-          <label>Категория</label>
-          <select id="exp-category" onchange="toggleGas(this.value)">
-            <option value="Бензин / Топливо">⛽ Бензин / Топливо</option>
-            <option value="Ремонт и запчасти">🛠️ Ремонт и запчасти</option>
-            <option value="Расходники и масло">🛢️ Расходники и масло</option>
-            <option value="Обед / Питание">🍔 Обед / Вода</option>
-            <option value="Связь и интернет">📱 Связь и интернет</option>
-            <option value="Штрафы">⚠️ Штраф / Парковка</option>
-            <option value="Экипировка">🪖 Экипировка / Одежда</option>
-            <option value="Прочее">📦 Прочее</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Дата</label>
-          <input type="date" id="exp-date" required>
-        </div>
+    <!-- ФОРМА РАСХОДОВ -->
+    <form id="form-expense" onsubmit="handleExpenseSubmit(event)" style="display:none; flex-direction:column; gap:12px;">
+      <div class="hud-field">
+        <label>Категория расхода</label>
+        <select class="hud-input" id="inp-exp-cat" onchange="toggleGasInputs(this.value)">
+          <option value="Бензин / Топливо">⛽ Бензин / Топливо</option>
+          <option value="Ремонт и запчасти">🛠️ Ремонт и запчасти</option>
+          <option value="Расходники и масло">🛢️ Расходники и масло</option>
+          <option value="Обед / Питание">🍔 Обед / Вода</option>
+          <option value="Связь и интернет">📱 Связь и интернет</option>
+          <option value="Штрафы / Парковка">⚠️ Штраф / Парковка</option>
+          <option value="Экипировка">🪖 Экипировка</option>
+          <option value="Прочее">📦 Прочее</option>
+        </select>
       </div>
 
-      <div id="gas-calc-box" style="background:rgba(245,158,11,0.08); border:1px dashed rgba(245,158,11,0.3); border-radius:12px; padding:10px; display:flex; flex-direction:column; gap:8px;">
-        <div class="input-row">
-          <div class="field">
+      <!-- КАЛЬКУЛЯТОР БЕНЗИНА -->
+      <div id="gas-calc-box" style="background:rgba(255,170,0,0.06); border:1px dashed rgba(255,170,0,0.3); border-radius:16px; padding:12px; display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:10px; font-family:var(--font-mono); color:var(--neon-amber); font-weight:700;">КАЛЬКУЛЯТОР ТОПЛИВА (ЛИТРЫ × ЦЕНА)</div>
+        <div class="hud-input-row">
+          <div class="hud-field">
             <label>Литров</label>
-            <input type="number" id="gas-liters" placeholder="напр. 4.5" min="0" step="0.1" oninput="calcGas()">
+            <input class="hud-input" type="number" id="inp-gas-liters" placeholder="напр. 4.5" min="0" step="0.1" oninput="calcFuelTotal()">
           </div>
-          <div class="field">
+          <div class="hud-field">
             <label>Цена за литр (₽)</label>
-            <input type="number" id="gas-price" placeholder="напр. 65" min="0" step="0.5" oninput="calcGas()">
+            <input class="hud-input" type="number" id="inp-gas-price" placeholder="65" min="0" step="0.5" oninput="calcFuelTotal()">
           </div>
         </div>
       </div>
 
-      <div class="field">
-        <label>Итоговая сумма (₽)</label>
-        <input type="number" id="exp-amount" placeholder="0" min="1" step="any" required>
+      <div class="hud-field">
+        <label>Итоговая сумма расхода (₽)</label>
+        <input class="hud-input" type="number" id="inp-exp-amount" placeholder="0" min="1" step="any" required>
       </div>
 
-      <div class="field">
+      <div class="hud-field">
         <label>Примечание</label>
-        <input type="text" id="exp-notes" placeholder="АЗС / Магазин / Деталь...">
+        <input class="hud-input" type="text" id="inp-exp-notes" placeholder="АЗС / Магазин / Деталь...">
       </div>
 
-      <button type="submit" class="submit-btn purple">Записать расход</button>
+      <button type="submit" class="cyber-btn rose pressable">🔥 ЗАПИСАТЬ РАСХОД</button>
     </form>
-  </div>
+  </section>
 
-  <!-- ГРАФИК -->
-  <div class="history-card">
-    <h3 style="font-size:15px; font-weight:800;">Динамика дохода</h3>
-    <div style="position: relative; height: 165px; width: 100%;">
+  <!-- ДИНАМИКА НА CHART.JS -->
+  <section class="history-dock">
+    <div class="history-dock-top">
+      <h3>📈 ГРАФИК // ДИНАМИКА</h3>
+    </div>
+    <div style="position: relative; height: 160px; width: 100%;">
       <canvas id="profitChart"></canvas>
     </div>
-  </div>
+  </section>
 
-  <!-- ИСТОРИЯ ОПЕРАЦИЙ -->
-  <div class="history-card">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="font-size:15px; font-weight:800;">История операций</h3>
-      <span style="font-size:11px; color:var(--muted);" id="records-count">0 записей</span>
+  <!-- ЛЕНТА ОПЕРАЦИЙ -->
+  <section class="history-dock">
+    <div class="history-dock-top">
+      <h3>📋 ИСТОРИЯ // ЛЕНТА</h3>
+      <span style="font-size:11px; font-family:var(--font-mono); color:var(--text-muted);" id="feed-count-badge">0 ЗАПИСЕЙ</span>
     </div>
-    <div class="list-wrapper" id="operations-list"></div>
-  </div>
+    <div class="feed-list" id="feed-container"></div>
+  </section>
 
 </div>
 
-<!-- МОДАЛКА: ИМЯ -->
-<div class="modal-overlay" id="welcome-modal">
-  <div class="modal-box">
-    <h2 style="font-size:20px; font-weight:800; text-align:center;">Добро пожаловать 👋</h2>
-    <p style="font-size:13px; color:var(--muted); text-align:center;">Введи своё имя или никнейм для профиля:</p>
-    <div class="field">
-      <input type="text" id="modal-name-input" placeholder="Твое имя...">
-    </div>
-    <button class="submit-btn" onclick="saveUserName()">Погнали</button>
-  </div>
-</div>
-
-<!-- МОДАЛКА: НАСТРОЙКИ -->
-<div class="modal-overlay" id="settings-modal">
-  <div class="modal-box">
+<!-- НАСТРОЙКИ МОДАЛКА -->
+<div class="hud-modal-layer" id="settings-modal">
+  <div class="hud-modal-card">
     <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="font-size:17px; font-weight:800;">Настройки</h3>
-      <button class="del-btn" onclick="closeSettings()" style="font-size:18px;">✕</button>
+      <h3 style="font-size:16px; font-weight:900; font-family:var(--font-mono);">⚙️ КОНФИГУРАЦИЯ</h3>
+      <button class="trash-btn" onclick="closeSettingsModal()">✕</button>
     </div>
 
-    <div class="field">
-      <label>Имя курьера</label>
-      <input type="text" id="settings-name-input">
+    <div class="hud-field">
+      <label>Позывной / Имя</label>
+      <input class="hud-input" type="text" id="cfg-user-name">
     </div>
 
-    <div class="field">
+    <div class="hud-field">
       <label>Цель на день (₽)</label>
-      <input type="number" id="settings-goal-input" step="500">
+      <input class="hud-input" type="number" id="cfg-daily-goal" step="500">
     </div>
 
-    <div class="field">
-      <label>Самозанятость: Ставка налога (%)</label>
-      <select id="settings-tax-rate">
-        <option value="0">Без налога (0%)</option>
+    <div class="hud-field">
+      <label>Ставка налога самозанятого (%)</label>
+      <select class="hud-input" id="cfg-tax-rate">
+        <option value="0">0% (Без вычета)</option>
         <option value="4">4% (Физлица)</option>
         <option value="6">6% (Юрлица / Агрегаторы)</option>
       </select>
     </div>
 
-    <div class="field">
-      <label>Тема оформления</label>
-      <div class="theme-grid">
-        <button class="theme-opt-btn" onclick="applyTheme('oled')">⚫ OLED Cyber</button>
-        <button class="theme-opt-btn" onclick="applyTheme('midnight')">🔵 Midnight</button>
-        <button class="theme-opt-btn" onclick="applyTheme('sunset')">🟠 Sunset</button>
-        <button class="theme-opt-btn" onclick="applyTheme('amethyst')">🟣 Amethyst</button>
-      </div>
-    </div>
-
-    <button class="submit-btn" onclick="saveSettings()">Сохранить</button>
+    <button class="cyber-btn pressable" onclick="saveConfiguration()">СОХРАНИТЬ</button>
   </div>
 </div>
 
-<!-- МОДАЛКА: НАСТРОЙКА ТО -->
-<div class="modal-overlay" id="garage-modal">
-  <div class="modal-box">
+<!-- ТО И МАСЛО МОДАЛКА -->
+<div class="hud-modal-layer" id="garage-modal">
+  <div class="hud-modal-card">
     <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="font-size:17px; font-weight:800;">Настройки ТО & Ресурса</h3>
-      <button class="del-btn" onclick="closeGarageModal()" style="font-size:18px;">✕</button>
+      <h3 style="font-size:16px; font-weight:900; font-family:var(--font-mono); color:var(--neon-amber);">🔧 РЕГЛАМЕНТ ТО</h3>
+      <button class="trash-btn" onclick="closeGarageModal()">✕</button>
     </div>
 
-    <div class="field">
-      <label>Интервал замены моторного масла (км)</label>
-      <input type="number" id="oil-interval-input" placeholder="1500" step="100">
-      <span style="font-size:11px; color:var(--muted);">1000–1500 км для 50cc скутеров или 7000–8000 км для авто</span>
+    <div class="hud-field">
+      <label>Интервал замены масла (км)</label>
+      <input class="hud-input" type="number" id="cfg-oil-interval" placeholder="1500" step="100">
+      <span style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono);">Обычно 1000–1500 км для скутеров, 7000–8000 км для авто</span>
     </div>
 
-    <div class="field">
-      <label>Пробег на последней замене масла (км)</label>
-      <input type="number" id="oil-last-km-input" placeholder="0">
+    <div class="hud-field">
+      <label>Пробег на последней замене (км)</label>
+      <input class="hud-input" type="number" id="cfg-oil-last-km" placeholder="0">
     </div>
 
-    <button class="submit-btn" onclick="saveGarageSettings()">Сохранить параметры ТО</button>
+    <button class="cyber-btn pressable" style="background:var(--neon-amber); color:#1c1000;" onclick="saveGarageConfig()">ПРИМЕНИТЬ</button>
   </div>
 </div>
 
 <script>
-  let appData = {
-    userName: '',
-    theme: 'oled',
+  // БАЗОВЫЕ ДАННЫЕ
+  let appState = {
+    userName: 'RESH // PILOT',
     dailyGoal: 5000,
     taxRate: 6,
     garage: {
@@ -1035,213 +1011,156 @@
     expenses: []
   };
 
+  let selectedTransport = '🛵 Скутер';
+  let selectedService = 'Яндекс Доставка';
   let currentPeriod = 'today';
-  let chartInstance = null;
+  let chartRef = null;
 
-  function loadData() {
-    const saved = localStorage.getItem('courier_pro_max_v3');
-    if (saved) {
+  function haptic() {
+    if (navigator.vibrate) navigator.vibrate(15);
+  }
+
+  function loadState() {
+    const raw = localStorage.getItem('courier_hud_cyber_v1');
+    if (raw) {
       try {
-        const parsed = JSON.parse(saved);
-        appData = { ...appData, ...parsed };
-        if (!appData.garage) appData.garage = { oilInterval: 1500, lastOilKm: 0 };
-      } catch(e) {
+        appState = { ...appState, ...JSON.parse(raw) };
+      } catch (e) {
         console.error(e);
       }
     }
-
-    if (!appData.userName) {
-      showModal('welcome-modal');
-    } else {
-      document.getElementById('display-user-name').innerText = appData.userName;
-    }
-
-    applyTheme(appData.theme || 'oled', false);
+    document.getElementById('hud-name-label').innerText = appState.userName || 'RESH // PILOT';
   }
 
-  function saveData() {
-    localStorage.setItem('courier_pro_max_v3', JSON.stringify(appData));
-    updateUI();
+  function saveState() {
+    localStorage.setItem('courier_hud_cyber_v1', JSON.stringify(appState));
+    refreshUI();
   }
 
-  function showModal(id) {
-    const m = document.getElementById(id);
-    m.style.display = 'flex';
-    setTimeout(() => m.classList.add('show'), 10);
-  }
-
-  function hideModal(id) {
-    const m = document.getElementById(id);
-    m.classList.remove('show');
-    setTimeout(() => m.style.display = 'none', 250);
-  }
-
-  function saveUserName() {
-    const name = document.getElementById('modal-name-input').value.trim() || 'Гонщик';
-    appData.userName = name;
-    document.getElementById('display-user-name').innerText = name;
-    hideModal('welcome-modal');
-    saveData();
-  }
-
-  function openSettings() {
-    document.getElementById('settings-name-input').value = appData.userName || '';
-    document.getElementById('settings-goal-input').value = appData.dailyGoal || 5000;
-    document.getElementById('settings-tax-rate').value = appData.taxRate !== undefined ? appData.taxRate : 6;
-    showModal('settings-modal');
-  }
-
-  function closeSettings() {
-    hideModal('settings-modal');
-  }
-
-  function saveSettings() {
-    const name = document.getElementById('settings-name-input').value.trim();
-    if (name) appData.userName = name;
-    appData.dailyGoal = parseFloat(document.getElementById('settings-goal-input').value) || 5000;
-    appData.taxRate = parseFloat(document.getElementById('settings-tax-rate').value) || 0;
-    document.getElementById('display-user-name').innerText = appData.userName;
-    closeSettings();
-    saveData();
-  }
-
-  function openGarageModal() {
-    document.getElementById('oil-interval-input').value = appData.garage.oilInterval || 1500;
-    document.getElementById('oil-last-km-input').value = appData.garage.lastOilKm || 0;
-    showModal('garage-modal');
-  }
-
-  function closeGarageModal() {
-    hideModal('garage-modal');
-  }
-
-  function saveGarageSettings() {
-    appData.garage.oilInterval = parseFloat(document.getElementById('oil-interval-input').value) || 1500;
-    appData.garage.lastOilKm = parseFloat(document.getElementById('oil-last-km-input').value) || 0;
-    closeGarageModal();
-    saveData();
-  }
-
-  function resetOilService() {
-    const totalKm = getTotalAllTimeKm();
-    if (confirm(`Зафиксировать замену масла на текущем пробеге (${totalKm} км)?`)) {
-      appData.garage.lastOilKm = totalKm;
-      saveData();
-    }
-  }
-
-  function getTotalAllTimeKm() {
-    return appData.shifts.reduce((sum, s) => sum + (s.km || 0), 0);
-  }
-
-  function applyTheme(t, save = true) {
-    document.documentElement.setAttribute('data-theme', t);
-    appData.theme = t;
-    if (save) saveData();
-  }
-
-  function setTodayDates() {
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('shift-date').value = today;
-    document.getElementById('extra-date').value = today;
-    document.getElementById('exp-date').value = today;
-  }
-
-  function switchTab(tab, btn) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  // ТАБЫ ФОРМЫ
+  function switchFormTab(type, btn) {
+    haptic();
+    document.querySelectorAll('.hud-tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('form-shift').style.display = tab === 'shift' ? 'flex' : 'none';
-    document.getElementById('form-extra').style.display = tab === 'extra' ? 'flex' : 'none';
-    document.getElementById('form-expense').style.display = tab === 'expense' ? 'flex' : 'none';
+
+    document.getElementById('form-shift').style.display = type === 'shift' ? 'flex' : 'none';
+    document.getElementById('form-extra').style.display = type === 'extra' ? 'flex' : 'none';
+    document.getElementById('form-expense').style.display = type === 'expense' ? 'flex' : 'none';
+  }
+
+  function selectTransport(val, el) {
+    haptic();
+    selectedTransport = val;
+    el.parentElement.querySelectorAll('.chip-item').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function selectService(val, el) {
+    haptic();
+    selectedService = val;
+    el.parentElement.querySelectorAll('.chip-item').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function addShiftCash(val) {
+    haptic();
+    const inp = document.getElementById('inp-shift-cash');
+    const cur = parseFloat(inp.value) || 0;
+    inp.value = cur + val;
   }
 
   function setPeriod(p, btn) {
+    haptic();
     currentPeriod = p;
-    document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.period-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    updateUI();
+    refreshUI();
   }
 
-  function toggleGas(cat) {
-    const box = document.getElementById('gas-calc-box');
-    box.style.display = cat === 'Бензин / Топливо' ? 'flex' : 'none';
+  function toggleGasInputs(val) {
+    document.getElementById('gas-calc-box').style.display = (val === 'Бензин / Топливо') ? 'flex' : 'none';
   }
 
-  function calcGas() {
-    const l = parseFloat(document.getElementById('gas-liters').value) || 0;
-    const p = parseFloat(document.getElementById('gas-price').value) || 0;
-    if (l > 0 && p > 0) document.getElementById('exp-amount').value = Math.round(l * p);
+  function calcFuelTotal() {
+    const l = parseFloat(document.getElementById('inp-gas-liters').value) || 0;
+    const p = parseFloat(document.getElementById('inp-gas-price').value) || 0;
+    if (l > 0 && p > 0) {
+      document.getElementById('inp-exp-amount').value = Math.round(l * p);
+    }
   }
 
-  function triggerPopAnimation(elId) {
-    const el = document.getElementById(elId);
-    if (!el) return;
-    el.classList.add('pop');
-    setTimeout(() => el.classList.remove('pop'), 260);
-  }
-
-  function addShift(e) {
+  // ОБРАБОТКА ФОРМ
+  function handleShiftSubmit(e) {
     e.preventDefault();
-    appData.shifts.unshift({
+    haptic();
+
+    const income = parseFloat(document.getElementById('inp-shift-cash').value) || 0;
+    const tips = parseFloat(document.getElementById('inp-shift-tips').value) || 0;
+    const orders = parseInt(document.getElementById('inp-shift-orders').value) || 0;
+    const hours = parseFloat(document.getElementById('inp-shift-hours').value) || 0;
+    const km = parseFloat(document.getElementById('inp-shift-km').value) || 0;
+
+    appState.shifts.unshift({
       id: Date.now(),
-      transport: document.getElementById('shift-transport').value,
-      service: document.getElementById('shift-service').value,
-      date: document.getElementById('shift-date').value,
-      income: parseFloat(document.getElementById('shift-income').value) || 0,
-      tips: parseFloat(document.getElementById('shift-tips').value) || 0,
-      orders: parseInt(document.getElementById('shift-orders').value) || 0,
-      hours: parseFloat(document.getElementById('shift-hours').value) || 0,
-      km: parseFloat(document.getElementById('shift-km').value) || 0,
-      notes: document.getElementById('shift-notes').value.trim()
+      transport: selectedTransport,
+      service: selectedService,
+      date: new Date().toISOString().split('T')[0],
+      income, tips, orders, hours, km
     });
-    saveData();
-    triggerPopAnimation('stat-net-pocket');
+
+    saveState();
     e.target.reset();
-    setTodayDates();
   }
 
-  function addExtraIncome(e) {
+  function handleExtraSubmit(e) {
     e.preventDefault();
-    appData.extraIncomes.unshift({
+    haptic();
+
+    const amount = parseFloat(document.getElementById('inp-extra-val').value) || 0;
+    const date = document.getElementById('inp-extra-date').value;
+    const category = document.getElementById('inp-extra-cat').value;
+    const desc = document.getElementById('inp-extra-desc').value.trim();
+
+    appState.extraIncomes.unshift({
       id: Date.now(),
-      amount: parseFloat(document.getElementById('extra-amount').value) || 0,
-      date: document.getElementById('extra-date').value,
-      category: document.getElementById('extra-category').value,
-      desc: document.getElementById('extra-desc').value.trim()
+      amount, date, category, desc
     });
-    saveData();
-    triggerPopAnimation('stat-net-pocket');
+
+    saveState();
     e.target.reset();
-    setTodayDates();
   }
 
-  function addExpense(e) {
+  function handleExpenseSubmit(e) {
     e.preventDefault();
-    appData.expenses.unshift({
+    haptic();
+
+    const category = document.getElementById('inp-exp-cat').value;
+    const amount = parseFloat(document.getElementById('inp-exp-amount').value) || 0;
+    const liters = parseFloat(document.getElementById('inp-gas-liters').value) || 0;
+    const notes = document.getElementById('inp-exp-notes').value.trim();
+
+    appState.expenses.unshift({
       id: Date.now(),
-      category: document.getElementById('exp-category').value,
-      date: document.getElementById('exp-date').value,
-      amount: parseFloat(document.getElementById('exp-amount').value) || 0,
-      liters: parseFloat(document.getElementById('gas-liters').value) || 0,
-      notes: document.getElementById('exp-notes').value.trim()
+      category, amount, liters, notes,
+      date: new Date().toISOString().split('T')[0]
     });
-    saveData();
-    triggerPopAnimation('stat-net-pocket');
+
+    saveState();
     e.target.reset();
-    setTodayDates();
   }
 
-  function deleteItem(type, id) {
-    if (!confirm('Удалить эту запись?')) return;
-    if (type === 'shift') appData.shifts = appData.shifts.filter(i => i.id !== id);
-    if (type === 'extra') appData.extraIncomes = appData.extraIncomes.filter(i => i.id !== id);
-    if (type === 'expense') appData.expenses = appData.expenses.filter(i => i.id !== id);
-    saveData();
+  function deleteRecord(type, id) {
+    if (!confirm('Удалить эту запись из базы?')) return;
+    haptic();
+    if (type === 'shift') appState.shifts = appState.shifts.filter(i => i.id !== id);
+    if (type === 'extra') appState.extraIncomes = appState.extraIncomes.filter(i => i.id !== id);
+    if (type === 'expense') appState.expenses = appState.expenses.filter(i => i.id !== id);
+    saveState();
   }
 
-  function filterByPeriod(itemDateStr) {
+  function filterByDate(dateStr) {
     if (currentPeriod === 'all') return true;
-    const date = new Date(itemDateStr + 'T00:00:00');
+    const date = new Date(dateStr + 'T00:00:00');
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
@@ -1256,10 +1175,10 @@
     return true;
   }
 
-  function updateUI() {
-    const fShifts = appData.shifts.filter(s => filterByPeriod(s.date));
-    const fExtras = appData.extraIncomes.filter(e => filterByPeriod(e.date));
-    const fExpenses = appData.expenses.filter(e => filterByPeriod(e.date));
+  function refreshUI() {
+    const fShifts = appState.shifts.filter(s => filterByDate(s.date));
+    const fExtras = appState.extraIncomes.filter(e => filterByDate(e.date));
+    const fExpenses = appState.expenses.filter(x => filterByDate(x.date));
 
     let delIncome = 0, tips = 0, hours = 0, km = 0, orders = 0;
     fShifts.forEach(s => {
@@ -1270,227 +1189,259 @@
       orders += (s.orders || 0);
     });
 
-    let extraIncome = 0;
-    fExtras.forEach(e => extraIncome += (e.amount || 0));
+    let extraSum = 0;
+    fExtras.forEach(e => extraSum += (e.amount || 0));
 
-    let expenses = 0, gasSum = 0, gasLiters = 0;
-    fExpenses.forEach(e => {
-      expenses += (e.amount || 0);
-      if (e.category === 'Бензин / Топливо') {
-        gasSum += (e.amount || 0);
-        gasLiters += (e.liters || 0);
+    let expenseSum = 0, fuelSum = 0, fuelLiters = 0;
+    fExpenses.forEach(x => {
+      expenseSum += (x.amount || 0);
+      if (x.category === 'Бензин / Топливо') {
+        fuelSum += (x.amount || 0);
+        fuelLiters += (x.liters || 0);
       }
     });
 
-    const taxRate = appData.taxRate || 0;
-    const taxableIncome = delIncome; 
-    const taxAmount = taxRate > 0 ? Math.round(taxableIncome * (taxRate / 100)) : 0;
+    // Налог
+    const taxRate = appState.taxRate || 0;
+    const taxAmount = taxRate > 0 ? Math.round(delIncome * (taxRate / 100)) : 0;
+    const netTotal = (delIncome + extraSum) - expenseSum - taxAmount;
 
-    const netBeforeTax = (delIncome + extraIncome) - expenses;
-    const netPocket = netBeforeTax - taxAmount;
+    // Вывод в Hero HUD
+    document.getElementById('hero-net-val').innerHTML = `${netTotal.toLocaleString('ru-RU')} <span>₽</span>`;
+    document.getElementById('sub-stat-delivery').innerText = `+${delIncome.toLocaleString('ru-RU')} ₽`;
+    document.getElementById('sub-stat-extra').innerText = `+${extraSum.toLocaleString('ru-RU')} ₽`;
+    document.getElementById('sub-stat-expenses').innerText = `-${expenseSum.toLocaleString('ru-RU')} ₽`;
 
-    // Вывод в Hero
-    document.getElementById('stat-net-pocket').innerHTML = `${netPocket.toLocaleString('ru-RU')} <span>₽</span>`;
-    
-    const taxRow = document.getElementById('stat-tax-row');
-    if (taxRate > 0) {
-      taxRow.style.display = 'inline-flex';
-      document.getElementById('stat-tax-amount').innerText = `-${taxAmount.toLocaleString('ru-RU')} ₽ (${taxRate}%)`;
-    } else {
-      taxRow.style.display = 'none';
-    }
+    // Цель смены
+    const goal = appState.dailyGoal || 5000;
+    const pct = Math.max(0, Math.min(100, Math.round((netTotal / goal) * 100)));
+    document.getElementById('goal-bar-elem').style.width = `${pct}%`;
+    document.getElementById('goal-fraction-label').innerText = `${netTotal.toLocaleString('ru-RU')} / ${goal.toLocaleString('ru-RU')} ₽ (${pct}%)`;
 
-    document.getElementById('stat-delivery-income').innerText = `+${delIncome.toLocaleString('ru-RU')} ₽`;
-    document.getElementById('stat-extra-income').innerText = `+${extraIncome.toLocaleString('ru-RU')} ₽`;
-    document.getElementById('stat-expenses').innerText = `-${expenses.toLocaleString('ru-RU')} ₽`;
+    // Ранг
+    let rank = '🔰 СТАЖЕР';
+    if (netTotal >= 3000) rank = '⚡ РЕЙДЕР';
+    if (netTotal >= 5000) rank = '🚀 ФОРСАЖ';
+    if (netTotal >= 8000) rank = '👑 ЛЕГЕНДА УЛИЦ';
+    document.getElementById('hero-rank-badge').innerText = rank;
 
-    // Метрики
-    const avgOrder = orders > 0 ? Math.round(delIncome / orders) : 0;
-    const ordersHourly = hours > 0 ? (orders / hours).toFixed(1) : 0;
-    document.getElementById('stat-orders-avg').innerText = `${orders} шт • ср. ${avgOrder} ₽`;
-    document.getElementById('stat-orders-hourly').innerText = `${ordersHourly} зак/час`;
+    // Bento метрики
+    const hourlyNet = hours > 0 ? Math.round(netTotal / hours) : 0;
+    document.getElementById('bento-hourly').innerText = `${hourlyNet.toLocaleString('ru-RU')} ₽/ч`;
+    document.getElementById('bento-total-hours').innerText = `${hours.toFixed(1)} ч на линии`;
 
-    document.getElementById('stat-gas').innerText = `${gasSum.toLocaleString('ru-RU')} ₽`;
-    const fuelPer100 = (km > 0 && gasLiters > 0) ? ((gasLiters / km) * 100).toFixed(1) : 0;
-    document.getElementById('stat-fuel-per-100').innerText = fuelPer100 > 0 ? `${fuelPer100} л / 100 км` : `${gasLiters.toFixed(1)} л сожжено`;
+    const avgCheck = orders > 0 ? Math.round(delIncome / orders) : 0;
+    document.getElementById('bento-orders').innerText = `${orders} заказов`;
+    document.getElementById('bento-avg-order').innerText = `ср. ${avgCheck} ₽ / зак`;
 
-    const netHourly = hours > 0 ? Math.round(netPocket / hours) : 0;
-    document.getElementById('stat-net-hourly').innerText = `${netHourly.toLocaleString('ru-RU')} ₽/ч`;
-    document.getElementById('stat-total-hours').innerText = `${hours.toFixed(1)} ч на линии`;
+    document.getElementById('bento-fuel').innerText = `${fuelSum.toLocaleString('ru-RU')} ₽`;
+    const fuel100 = (km > 0 && fuelLiters > 0) ? ((fuelLiters / km) * 100).toFixed(1) : 0;
+    document.getElementById('bento-fuel-per100').innerText = fuel100 > 0 ? `${fuel100} л / 100 км` : `${fuelLiters.toFixed(1)} л сожжено`;
 
-    const costPerKm = km > 0 ? (expenses / km).toFixed(1) : 0;
-    document.getElementById('stat-cost-km').innerText = `${costPerKm} ₽/км`;
-    document.getElementById('stat-total-km').innerText = `${km.toFixed(0)} км пробега`;
+    const costKm = km > 0 ? (expenseSum / km).toFixed(1) : 0;
+    document.getElementById('bento-cost-km').innerText = `${costKm} ₽/км`;
+    document.getElementById('bento-total-km').innerText = `${km.toFixed(0)} км пробега`;
 
-    // План на смену
-    const goal = appData.dailyGoal || 5000;
-    const progress = Math.min(100, Math.round((netPocket / goal) * 100));
-    document.getElementById('goal-progress-bar').style.width = `${Math.max(0, progress)}%`;
-    document.getElementById('target-cash-label').innerText = `${netPocket.toLocaleString('ru-RU')} / ${goal.toLocaleString('ru-RU')} ₽ (${progress}%)`;
+    // Гараж
+    updateGarageHUD();
 
-    let rank = 'Новичок на линии';
-    if (netPocket >= 2500) rank = '⚡ Скоростной курьер';
-    if (netPocket >= 5000) rank = '🚀 Мастер доставок';
-    if (netPocket >= 8000) rank = '👑 Легенда улиц';
-    document.getElementById('courier-rank').innerText = rank;
-
-    updateGarageUI();
-    renderHistory(fShifts, fExtras, fExpenses);
-    renderChart();
+    // Лента и графики
+    renderFeedList(fShifts, fExtras, fExpenses);
+    renderHUDChart();
   }
 
-  function updateGarageUI() {
-    const totalKm = getTotalAllTimeKm();
-    const interval = appData.garage.oilInterval || 1500;
-    const lastKm = appData.garage.lastOilKm || 0;
-    const passedSinceOil = Math.max(0, totalKm - lastKm);
-    const leftKm = Math.max(0, interval - passedSinceOil);
+  function updateGarageHUD() {
+    const totalAllTimeKm = appState.shifts.reduce((acc, s) => acc + (s.km || 0), 0);
+    const interval = appState.garage.oilInterval || 1500;
+    const lastKm = appState.garage.lastOilKm || 0;
+    const leftKm = Math.max(0, interval - (totalAllTimeKm - lastKm));
 
-    document.getElementById('garage-total-km').innerText = `Всего: ${totalKm} км`;
-    document.getElementById('oil-interval-label').innerText = `Интервал: ${interval} км`;
+    document.getElementById('garage-odometer').innerText = `ОДОМЕТР: ${totalAllTimeKm} КМ`;
+    document.getElementById('oil-interval-label').innerText = `РЕГЛАМЕНТ: ${interval} КМ`;
+    document.getElementById('oil-remain-label').innerText = leftKm === 0 ? `🚨 СРОЧНО ЗАМЕНИТЬ!` : `ДО ЗАМЕНЫ: ${leftKm.toFixed(0)} КМ`;
 
-    const percentLeft = Math.max(0, Math.min(100, (leftKm / interval) * 100));
-    const bar = document.getElementById('oil-progress-bar');
-    bar.style.width = `${percentLeft}%`;
+    const gaugePct = Math.max(0, Math.min(100, (leftKm / interval) * 100));
+    const gaugeEl = document.getElementById('oil-gauge-elem');
+    gaugeEl.style.width = `${gaugePct}%`;
+    gaugeEl.style.background = leftKm < 300 ? 'var(--neon-rose)' : 'var(--neon-amber)';
+  }
 
-    if (leftKm <= 0) {
-      document.getElementById('oil-status-text').innerText = `СРОЧНО ЗАМЕНИТЕ МАСЛО! (Просрочено на ${Math.abs(interval - passedSinceOil)} км)`;
-      document.getElementById('oil-status-text').style.color = 'var(--red)';
-      bar.style.background = 'var(--red)';
-    } else {
-      document.getElementById('oil-status-text').innerText = `Осталось до замены: ${leftKm.toFixed(0)} км`;
-      document.getElementById('oil-status-text').style.color = 'var(--text)';
-      bar.style.background = leftKm < 300 ? 'var(--red)' : 'var(--orange)';
+  function handleResetOil() {
+    haptic();
+    const totalKm = appState.shifts.reduce((acc, s) => acc + (s.km || 0), 0);
+    if (confirm(`Зафиксировать замену моторного масла на одометре (${totalKm} км)?`)) {
+      appState.garage.lastOilKm = totalKm;
+      saveState();
     }
   }
 
-  function renderHistory(shifts, extras, expenses) {
-    const listEl = document.getElementById('operations-list');
-    listEl.innerHTML = '';
+  function renderFeedList(shifts, extras, expenses) {
+    const container = document.getElementById('feed-container');
+    container.innerHTML = '';
 
-    const allOps = [
-      ...shifts.map(s => ({ ...s, _type: 'shift', timestamp: new Date(s.date).getTime() })),
-      ...extras.map(e => ({ ...e, _type: 'extra', timestamp: new Date(e.date).getTime() })),
-      ...expenses.map(x => ({ ...x, _type: 'expense', timestamp: new Date(x.date).getTime() }))
+    const list = [
+      ...shifts.map(s => ({ ...s, _kind: 'shift', time: new Date(s.date).getTime() })),
+      ...extras.map(e => ({ ...e, _kind: 'extra', time: new Date(e.date).getTime() })),
+      ...expenses.map(x => ({ ...x, _kind: 'expense', time: new Date(x.date).getTime() }))
     ];
 
-    allOps.sort((a, b) => b.timestamp - a.timestamp || b.id - a.id);
-    document.getElementById('records-count').innerText = `${allOps.length} записей`;
+    list.sort((a, b) => b.time - a.time || b.id - a.id);
+    document.getElementById('feed-count-badge').innerText = `${list.length} ЗАПИСЕЙ`;
 
-    if (allOps.length === 0) {
-      listEl.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--muted); font-size:12px;">Записей нет</div>`;
+    if (list.length === 0) {
+      container.innerHTML = `<div style="text-align:center; padding: 24px; color: var(--text-muted); font-size:12px; font-family:var(--font-mono);">ДАННЫХ ЗА ВЫБРАННЫЙ ПЕРИОД НЕТ</div>`;
       return;
     }
 
-    allOps.slice(0, 30).forEach((item, index) => {
+    list.slice(0, 30).forEach(item => {
       const row = document.createElement('div');
-      row.className = 'entry-item';
-      row.style.animationDelay = `${index * 0.04}s`;
+      row.className = 'feed-item';
 
-      if (item._type === 'shift') {
-        const total = (item.income || 0) + (item.tips || 0);
-        const icon = item.transport === 'Авто' ? '🚗' : (item.transport === 'Пеший' ? '🚶' : '🛵');
+      if (item._kind === 'shift') {
+        const sum = (item.income || 0) + (item.tips || 0);
         row.innerHTML = `
           <div>
-            <div class="entry-main-text">${icon} ${item.service} (${item.orders || 0} зак)</div>
-            <div class="entry-meta">${item.date} • ${item.hours || 0}ч • ${item.km || 0}км ${item.notes ? '• ' + item.notes : ''}</div>
+            <div class="feed-title">${item.transport} ${item.service}</div>
+            <div class="feed-meta">${item.date} • ${item.orders || 0} зак • ${item.hours || 0}ч • ${item.km || 0}км</div>
           </div>
           <div style="display:flex; align-items:center;">
-            <span class="entry-amount color-green">+${total.toLocaleString('ru-RU')} ₽</span>
-            <button class="del-btn" onclick="deleteItem('shift', ${item.id})">✕</button>
+            <span class="feed-amount" style="color:var(--neon-emerald);">+${sum.toLocaleString('ru-RU')} ₽</span>
+            <button class="trash-btn" onclick="deleteRecord('shift', ${item.id})">✕</button>
           </div>
         `;
-      } else if (item._type === 'extra') {
+      } else if (item._kind === 'extra') {
         row.innerHTML = `
           <div>
-            <div class="entry-main-text">💰 ${item.category}</div>
-            <div class="entry-meta">${item.date} ${item.desc ? '• ' + item.desc : ''}</div>
+            <div class="feed-title">💎 ${item.category}</div>
+            <div class="feed-meta">${item.date} ${item.desc ? '• ' + item.desc : ''}</div>
           </div>
           <div style="display:flex; align-items:center;">
-            <span class="entry-amount color-blue">+${(item.amount || 0).toLocaleString('ru-RU')} ₽</span>
-            <button class="del-btn" onclick="deleteItem('extra', ${item.id})">✕</button>
+            <span class="feed-amount" style="color:var(--neon-cyan);">+${(item.amount || 0).toLocaleString('ru-RU')} ₽</span>
+            <button class="trash-btn" onclick="deleteRecord('extra', ${item.id})">✕</button>
           </div>
         `;
       } else {
         row.innerHTML = `
           <div>
-            <div class="entry-main-text">${item.category} ${item.liters ? '(' + item.liters + ' л)' : ''}</div>
-            <div class="entry-meta">${item.date} ${item.notes ? '• ' + item.notes : ''}</div>
+            <div class="feed-title">${item.category} ${item.liters ? '(' + item.liters + ' л)' : ''}</div>
+            <div class="feed-meta">${item.date} ${item.notes ? '• ' + item.notes : ''}</div>
           </div>
           <div style="display:flex; align-items:center;">
-            <span class="entry-amount color-red">-${(item.amount || 0).toLocaleString('ru-RU')} ₽</span>
-            <button class="del-btn" onclick="deleteItem('expense', ${item.id})">✕</button>
+            <span class="feed-amount" style="color:var(--neon-rose);">-${(item.amount || 0).toLocaleString('ru-RU')} ₽</span>
+            <button class="trash-btn" onclick="deleteRecord('expense', ${item.id})">✕</button>
           </div>
         `;
       }
-      listEl.appendChild(row);
+
+      container.appendChild(row);
     });
   }
 
-  function renderChart() {
+  function renderHUDChart() {
     const ctx = document.getElementById('profitChart').getContext('2d');
     const allDates = new Set();
-    appData.shifts.forEach(s => allDates.add(s.date));
-    appData.extraIncomes.forEach(e => allDates.add(e.date));
-    appData.expenses.forEach(x => allDates.add(x.date));
+    appState.shifts.forEach(s => allDates.add(s.date));
+    appState.extraIncomes.forEach(e => allDates.add(e.date));
+    appState.expenses.forEach(x => allDates.add(x.date));
 
-    const sortedDates = Array.from(allDates).sort().slice(-7);
-    const daysMap = {};
-    sortedDates.forEach(d => daysMap[d] = 0);
+    const sorted = Array.from(allDates).sort().slice(-7);
+    const map = {};
+    sorted.forEach(d => map[d] = 0);
 
-    appData.shifts.forEach(s => { if (daysMap[s.date] !== undefined) daysMap[s.date] += (s.income || 0) + (s.tips || 0); });
-    appData.extraIncomes.forEach(e => { if (daysMap[e.date] !== undefined) daysMap[e.date] += (e.amount || 0); });
-    appData.expenses.forEach(x => { if (daysMap[x.date] !== undefined) daysMap[x.date] -= (x.amount || 0); });
+    appState.shifts.forEach(s => { if (map[s.date] !== undefined) map[s.date] += (s.income || 0) + (s.tips || 0); });
+    appState.extraIncomes.forEach(e => { if (map[e.date] !== undefined) map[e.date] += (e.amount || 0); });
+    appState.expenses.forEach(x => { if (map[x.date] !== undefined) map[x.date] -= (x.amount || 0); });
 
-    const labels = sortedDates.map(d => d.slice(5));
-    const values = sortedDates.map(d => daysMap[d]);
+    const labels = sorted.map(d => d.slice(5));
+    const vals = sorted.map(d => map[d]);
 
-    if (chartInstance) chartInstance.destroy();
+    if (chartRef) chartRef.destroy();
 
-    const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#10b981';
-
-    chartInstance = new Chart(ctx, {
+    chartRef = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: labels.length ? labels : ['-'],
+        labels: labels.length ? labels : ['--'],
         datasets: [{
-          data: values.length ? values : [0],
-          borderColor: accentColor,
+          data: vals.length ? vals : [0],
+          borderColor: '#00f59b',
           borderWidth: 2.4,
-          backgroundColor: 'rgba(255, 255, 255, 0.02)',
+          backgroundColor: 'rgba(0, 245, 155, 0.04)',
           fill: true,
           tension: 0.38,
           pointRadius: 3,
-          pointHoverRadius: 6
+          pointHoverRadius: 6,
+          pointBackgroundColor: '#00f59b'
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: {
-          duration: 900,
-          easing: 'easeOutQuart'
-        },
         plugins: { legend: { display: false } },
         scales: {
-          x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10 } } },
-          y: { grid: { color: 'rgba(255, 255, 255, 0.04)' }, ticks: { color: '#64748b', font: { size: 10 } } }
+          x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' } } },
+          y: { grid: { color: 'rgba(255, 255, 255, 0.04)' }, ticks: { color: '#64748b', font: { size: 10, family: 'JetBrains Mono' } } }
         }
       }
     });
   }
 
-  function exportJSON() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
-    const link = document.createElement('a');
-    link.href = dataStr;
-    link.download = `courier_pro_backup_${new Date().toISOString().split('T')[0]}.json`;
-    link.click();
+  // НАСТРОЙКИ
+  function openSettingsModal() {
+    haptic();
+    document.getElementById('cfg-user-name').value = appState.userName || '';
+    document.getElementById('cfg-daily-goal').value = appState.dailyGoal || 5000;
+    document.getElementById('cfg-tax-rate').value = appState.taxRate || 6;
+    document.getElementById('settings-modal').classList.add('active');
   }
 
-  loadData();
-  setTodayDates();
-  updateUI();
+  function closeSettingsModal() {
+    haptic();
+    document.getElementById('settings-modal').classList.remove('active');
+  }
+
+  function saveConfiguration() {
+    haptic();
+    appState.userName = document.getElementById('cfg-user-name').value.trim() || 'RESH // PILOT';
+    appState.dailyGoal = parseFloat(document.getElementById('cfg-daily-goal').value) || 5000;
+    appState.taxRate = parseFloat(document.getElementById('cfg-tax-rate').value) || 0;
+    document.getElementById('hud-name-label').innerText = appState.userName;
+    closeSettingsModal();
+    saveState();
+  }
+
+  function openGarageModal() {
+    haptic();
+    document.getElementById('cfg-oil-interval').value = appState.garage.oilInterval || 1500;
+    document.getElementById('cfg-oil-last-km').value = appState.garage.lastOilKm || 0;
+    document.getElementById('garage-modal').classList.add('active');
+  }
+
+  function closeGarageModal() {
+    haptic();
+    document.getElementById('garage-modal').classList.remove('active');
+  }
+
+  function saveGarageConfig() {
+    haptic();
+    appState.garage.oilInterval = parseFloat(document.getElementById('cfg-oil-interval').value) || 1500;
+    appState.garage.lastOilKm = parseFloat(document.getElementById('cfg-oil-last-km').value) || 0;
+    closeGarageModal();
+    saveState();
+  }
+
+  function exportBackupData() {
+    haptic();
+    const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+    const a = document.createElement('a');
+    a.href = str;
+    a.download = `courier_hud_backup_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+  }
+
+  // СТАРТ
+  loadState();
+  document.getElementById('inp-extra-date').value = new Date().toISOString().split('T')[0];
+  refreshUI();
 </script>
 
 </body>
