@@ -1,1002 +1,1081 @@
 <!DOCTYPE html>
-<html lang="ru" class="dark">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Courier Tracker Pro</title>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              500: '#10b981',
-              600: '#059669',
-              accent: '#6366f1'
-            },
-            surface: {
-              800: '#1e293b',
-              900: '#0f172a',
-              950: '#090d16'
-            }
-          }
-        }
-      }
-    };
-  </script>
-
-  <!-- Google Fonts: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Lucide Icons & Chart.js -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Courier Pro Tracker</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#07090e">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
+    :root {
+      --bg: #07090e;
+      --card-bg: rgba(16, 22, 34, 0.78);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover: rgba(255, 255, 255, 0.04);
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.28);
+      --blue: #38bdf8;
+      --blue-glow: rgba(56, 189, 248, 0.25);
+      --orange: #f59e0b;
+      --red: #f43f5e;
+      --purple: #a855f7;
+      --text: #f1f5f9;
+      --muted: #8492a6;
+      --input-bg: #0d121d;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font);
       -webkit-tap-highlight-color: transparent;
     }
-    /* Стилизация скроллбара */
-    ::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.07), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.08), transparent 45%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: env(safe-area-inset-top, 20px) 16px env(safe-area-inset-bottom, 30px);
+      display: flex;
+      justify-content: center;
     }
-    ::-webkit-scrollbar-track {
-      background: #0f172a;
+
+    .app-container {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* HEADER */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 4px;
+    }
+    .header-titles h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fff 30%, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header-titles span {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .quick-backup-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(12px);
+    }
+
+    /* PERIOD SWITCHER */
+    .filter-pills {
+      display: flex;
+      background: var(--input-bg);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid var(--card-border);
+      gap: 4px;
+    }
+    .filter-pill {
+      flex: 1;
+      padding: 9px 0;
+      text-align: center;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .filter-pill.active {
+      background: var(--card-bg);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      border: 1px solid var(--card-border);
+    }
+
+    /* DASHBOARD CARDS */
+    .hero-stat-card {
+      background: linear-gradient(145deg, rgba(16, 22, 34, 0.9), rgba(11, 15, 23, 0.95));
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+    }
+    .hero-stat-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--blue));
+    }
+    .hero-label {
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+    }
+    .hero-value {
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin: 8px 0 16px;
+      color: #ffffff;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .hero-value span {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .hero-substats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      border-top: 1px solid var(--card-border);
+      padding-top: 14px;
+    }
+    .substat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .substat-item .sub-title {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .substat-item .sub-val {
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .color-green { color: var(--accent); }
+    .color-blue { color: var(--blue); }
+    .color-red { color: var(--red); }
+    .color-orange { color: var(--orange); }
+    .color-purple { color: var(--purple); }
+
+    /* METRICS TILES */
+    .metric-tiles {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .metric-tile {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .tile-title {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tile-val {
+      font-size: 19px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .tile-note {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ACTION TABS */
+    .actions-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 18px;
+      backdrop-filter: blur(16px);
+    }
+    .tab-triggers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 16px;
+      background: var(--input-bg);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+    }
+    .tab-btn {
+      padding: 9px 4px;
+      border-radius: 9px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: #1e293b;
+      color: #fff;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .field label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .field input, .field select {
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .field input:focus, .field select:focus {
+      border-color: var(--accent);
+    }
+
+    .submit-btn {
+      margin-top: 8px;
+      background: linear-gradient(135deg, var(--accent), #059669);
+      color: #022013;
+      border: none;
+      padding: 14px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 18px var(--accent-glow);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.1s;
+    }
+    .submit-btn:active {
+      transform: scale(0.98);
+    }
+    .submit-btn.blue {
+      background: linear-gradient(135deg, var(--blue), #0284c7);
+      color: #032333;
+      box-shadow: 0 4px 18px var(--blue-glow);
+    }
+    .submit-btn.purple {
+      background: linear-gradient(135deg, var(--purple), #7e22ce);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(168, 85, 247, 0.3);
+    }
+
+    /* CHARTS & HISTORY */
+    .history-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 18px;
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .history-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .list-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .entry-item {
+      background: rgba(13, 18, 29, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .entry-left {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .entry-main-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .entry-meta {
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .entry-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .entry-amount {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .del-btn {
+      background: none;
+      border: none;
+      color: #475569;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+    .del-btn:hover {
+      color: var(--red);
+    }
+
+    .gas-calc-box {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px dashed rgba(245, 158, 11, 0.3);
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .data-tools {
+      display: flex;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .tool-btn {
+      flex: 1;
+      background: var(--input-bg);
+      border: 1px solid var(--card-border);
+      color: var(--muted);
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
     }
     ::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #475569;
-    }
-    .neon-glow-green {
-      box-shadow: 0 0 15px -3px rgba(16, 185, 129, 0.25);
-    }
-    .neon-glow-red {
-      box-shadow: 0 0 15px -3px rgba(239, 68, 68, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
     }
   </style>
 </head>
-<body class="bg-surface-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+<body>
 
-  <!-- Навбар -->
-  <header class="sticky top-0 z-30 bg-surface-900/80 backdrop-blur-md border-b border-slate-800/80 px-4 py-3 sm:px-6">
-    <div class="max-w-5xl mx-auto flex items-center justify-between">
-      <div class="flex items-center space-x-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
-          <i data-lucide="navigation" class="w-5 h-5"></i>
-        </div>
-        <div>
-          <h1 class="text-base font-bold tracking-tight text-white leading-tight">Курьер<span class="text-emerald-400">Трекер</span></h1>
-          <p class="text-[11px] text-slate-400 font-medium">Учет смен &amp; аналитика</p>
-        </div>
+<div class="app-container">
+
+  <!-- ШАПКА -->
+  <div class="header">
+    <div class="header-titles">
+      <h1>Courier Tracker Pro</h1>
+      <span id="current-date-label">Сегодня</span>
+    </div>
+    <button class="quick-backup-btn" onclick="exportJSON()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+      Бекап
+    </button>
+  </div>
+
+  <!-- ФИЛЬТР ПЕРИОДА -->
+  <div class="filter-pills">
+    <button class="filter-pill active" onclick="setPeriod('today', this)">Сегодня</button>
+    <button class="filter-pill" onclick="setPeriod('week', this)">Неделя</button>
+    <button class="filter-pill" onclick="setPeriod('month', this)">Месяц</button>
+    <button class="filter-pill" onclick="setPeriod('all', this)">Все время</button>
+  </div>
+
+  <!-- КАРТОЧКА ЧИСТОЙ ПРИБЫЛИ -->
+  <div class="hero-stat-card">
+    <div class="hero-label">Чистая прибыль за период</div>
+    <div class="hero-value" id="stat-net">0 <span>₽</span></div>
+
+    <div class="hero-substats">
+      <div class="substat-item">
+        <span class="sub-title">Доставка</span>
+        <span class="sub-val color-green" id="stat-delivery-income">0 ₽</span>
       </div>
-
-      <!-- Кнопки управления данными -->
-      <div class="flex items-center space-x-2">
-        <button id="exportCsvBtn" title="Экспорт в CSV" class="p-2 rounded-lg bg-surface-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs flex items-center gap-1 transition">
-          <i data-lucide="download" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">CSV</span>
-        </button>
-        <button id="exportJsonBtn" title="Резервная копия (JSON)" class="p-2 rounded-lg bg-surface-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs flex items-center gap-1 transition">
-          <i data-lucide="file-json" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">JSON</span>
-        </button>
-        <button id="importBtnTrigger" title="Восстановить" class="p-2 rounded-lg bg-surface-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs flex items-center gap-1 transition">
-          <i data-lucide="upload" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">Импорт</span>
-        </button>
-        <input type="file" id="importInput" accept=".json" class="hidden" />
+      <div class="substat-item">
+        <span class="sub-title">Доп. доход</span>
+        <span class="sub-val color-blue" id="stat-extra-income">0 ₽</span>
+      </div>
+      <div class="substat-item">
+        <span class="sub-title">Все расходы</span>
+        <span class="sub-val color-red" id="stat-expenses">0 ₽</span>
       </div>
     </div>
-  </header>
+  </div>
 
-  <!-- Основной контейнер -->
-  <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 space-y-6">
+  <!-- ПЛИТКИ МЕТРИК -->
+  <div class="metric-tiles">
+    <div class="metric-tile">
+      <div class="tile-title">⛽ Бензин / Топливо</div>
+      <div class="tile-val color-orange" id="stat-gas">0 ₽</div>
+      <div class="tile-note" id="stat-gas-liters">0 л за период</div>
+    </div>
+    <div class="metric-tile">
+      <div class="tile-title">⏱️ Чистыми в час</div>
+      <div class="tile-val color-green" id="stat-net-hourly">0 ₽/ч</div>
+      <div class="tile-note" id="stat-total-hours">0 ч на линии</div>
+    </div>
+    <div class="metric-tile">
+      <div class="tile-title">🛵 Себестоимость км</div>
+      <div class="tile-val" id="stat-cost-km">0 ₽/км</div>
+      <div class="tile-note" id="stat-total-km">0 км пробега</div>
+    </div>
+    <div class="metric-tile">
+      <div class="tile-title">🎁 Чаевые</div>
+      <div class="tile-val color-purple" id="stat-tips">0 ₽</div>
+      <div class="tile-note">учтены в доходе</div>
+    </div>
+  </div>
 
-    <!-- Период / Фильтры -->
-    <div class="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between bg-surface-900/60 p-2.5 rounded-2xl border border-slate-800/80">
-      <div class="flex items-center gap-1 overflow-x-auto pb-1 sm:pb-0" id="filterTabs">
-        <button data-filter="today" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">Сегодня</button>
-        <button data-filter="week" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">Неделя</button>
-        <button data-filter="month" class="filter-btn active px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500 text-white shadow-sm shadow-emerald-500/30 transition">Месяц</button>
-        <button data-filter="all" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition">Все время</button>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <button id="openShiftModalBtn" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-emerald-500/25 active:scale-95 transition">
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
-          Добавить смену
-        </button>
-        <button id="openExpenseModalBtn" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-rose-500/25 active:scale-95 transition">
-          <i data-lucide="minus-circle" class="w-4 h-4"></i>
-          Расход
-        </button>
-      </div>
+  <!-- БЛОК ВВОДА ДАННЫХ С ВКЛАДКАМИ -->
+  <div class="actions-card">
+    <div class="tab-triggers">
+      <button class="tab-btn active" onclick="switchTab('shift', this)">+ Смена</button>
+      <button class="tab-btn" onclick="switchTab('extra', this)">+ Доп. доход</button>
+      <button class="tab-btn" onclick="switchTab('expense', this)">- Расход / Бензин</button>
     </div>
 
-    <!-- Ключевые показатели (KPI Cards) -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <!-- Чистая прибыль -->
-      <div class="p-4 sm:p-5 rounded-2xl bg-surface-900 border border-slate-800/80 relative overflow-hidden neon-glow-green">
-        <div class="flex justify-between items-start">
-          <div>
-            <p class="text-xs uppercase tracking-wider font-semibold text-slate-400">Чистая прибыль</p>
-            <h3 id="statNetIncome" class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mt-1">0 ₽</h3>
-          </div>
-          <span class="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
-            <i data-lucide="wallet" class="w-6 h-6"></i>
-          </span>
-        </div>
-        <p class="text-[11px] text-slate-400 mt-2 flex items-center gap-1">
-          <span id="statNetSubtitle">Финальный чистый остаток</span>
-        </p>
-      </div>
-
-      <!-- Грязный доход -->
-      <div class="p-4 sm:p-5 rounded-2xl bg-surface-900 border border-slate-800/80">
-        <div class="flex justify-between items-start">
-          <div>
-            <p class="text-xs uppercase tracking-wider font-semibold text-slate-400">Общий доход</p>
-            <h3 id="statGrossIncome" class="text-2xl sm:text-3xl font-extrabold text-white mt-1">0 ₽</h3>
-          </div>
-          <span class="p-2.5 rounded-xl bg-slate-800 text-slate-300">
-            <i data-lucide="trending-up" class="w-6 h-6"></i>
-          </span>
-        </div>
-        <div class="text-[11px] text-slate-400 mt-2 flex justify-between">
-          <span>Заказы: <span id="statOrdersIncome" class="text-slate-200 font-semibold">0 ₽</span></span>
-          <span>Чаевые: <span id="statTipsIncome" class="text-slate-200 font-semibold">0 ₽</span></span>
-        </div>
-      </div>
-
-      <!-- Суммарные расходы -->
-      <div class="p-4 sm:p-5 rounded-2xl bg-surface-900 border border-slate-800/80 neon-glow-red">
-        <div class="flex justify-between items-start">
-          <div>
-            <p class="text-xs uppercase tracking-wider font-semibold text-slate-400">Всего расходов</p>
-            <h3 id="statTotalExpenses" class="text-2xl sm:text-3xl font-extrabold text-rose-400 mt-1">0 ₽</h3>
-          </div>
-          <span class="p-2.5 rounded-xl bg-rose-500/10 text-rose-400">
-            <i data-lucide="trending-down" class="w-6 h-6"></i>
-          </span>
-        </div>
-        <div class="text-[11px] text-slate-400 mt-2 flex justify-between">
-          <span>Топливо: <span id="statFuelExpenses" class="text-slate-200 font-semibold">0 ₽</span></span>
-          <span>Остальное: <span id="statOtherExpenses" class="text-slate-200 font-semibold">0 ₽</span></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Метрики эффективности (Почасовка и Км) -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      <div class="p-3.5 rounded-xl bg-surface-900 border border-slate-800">
-        <div class="flex items-center gap-1.5 text-slate-400 text-xs">
-          <i data-lucide="clock" class="w-3.5 h-3.5 text-indigo-400"></i>
-          <span>В час (грязный)</span>
-        </div>
-        <div id="statPerHour" class="text-base sm:text-lg font-bold text-white mt-1">0 ₽/ч</div>
-        <div id="statTotalHours" class="text-[10px] text-slate-500 mt-0.5">Всего: 0 ч</div>
-      </div>
-
-      <div class="p-3.5 rounded-xl bg-surface-900 border border-slate-800">
-        <div class="flex items-center gap-1.5 text-slate-400 text-xs">
-          <i data-lucide="zap" class="w-3.5 h-3.5 text-emerald-400"></i>
-          <span>В час (чистый)</span>
-        </div>
-        <div id="statNetPerHour" class="text-base sm:text-lg font-bold text-emerald-400 mt-1">0 ₽/ч</div>
-        <div class="text-[10px] text-slate-500 mt-0.5">С учетом расходов</div>
-      </div>
-
-      <div class="p-3.5 rounded-xl bg-surface-900 border border-slate-800">
-        <div class="flex items-center gap-1.5 text-slate-400 text-xs">
-          <i data-lucide="gauge" class="w-3.5 h-3.5 text-teal-400"></i>
-          <span>Доход на 1 км</span>
-        </div>
-        <div id="statPerKm" class="text-base sm:text-lg font-bold text-white mt-1">0 ₽/км</div>
-        <div id="statTotalKm" class="text-[10px] text-slate-500 mt-0.5">Пробег: 0 км</div>
-      </div>
-
-      <div class="p-3.5 rounded-xl bg-surface-900 border border-slate-800">
-        <div class="flex items-center gap-1.5 text-slate-400 text-xs">
-          <i data-lucide="fuel" class="w-3.5 h-3.5 text-rose-400"></i>
-          <span>Расход на 1 км</span>
-        </div>
-        <div id="statExpensePerKm" class="text-base sm:text-lg font-bold text-rose-400 mt-1">0 ₽/км</div>
-        <div class="text-[10px] text-slate-500 mt-0.5">Себестоимость</div>
-      </div>
-    </div>
-
-    <!-- Графики -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Линейный график динамики прибыли -->
-      <div class="lg:col-span-2 bg-surface-900 p-4 sm:p-5 rounded-2xl border border-slate-800 flex flex-col justify-between">
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-            <h3 class="font-semibold text-sm text-slate-200">Динамика чистой прибыли (по дням)</h3>
-          </div>
-        </div>
-        <div class="relative h-60 w-full">
-          <canvas id="timelineChart"></canvas>
-        </div>
-      </div>
-
-      <!-- Круговая диаграмма расходов -->
-      <div class="bg-surface-900 p-4 sm:p-5 rounded-2xl border border-slate-800 flex flex-col justify-between">
-        <div class="flex items-center gap-2 mb-3">
-          <span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span>
-          <h3 class="font-semibold text-sm text-slate-200">Структура расходов</h3>
-        </div>
-        <div class="relative h-60 w-full flex items-center justify-center">
-          <canvas id="expenseChart"></canvas>
-          <div id="noExpenseNotice" class="absolute inset-0 flex flex-col items-center justify-center text-xs text-slate-500 hidden">
-            <i data-lucide="check-circle-2" class="w-8 h-8 mb-1 text-slate-600"></i>
-            Нет расходов в этом периоде
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Список последних записей -->
-    <div class="bg-surface-900 rounded-2xl border border-slate-800 overflow-hidden">
-      <div class="p-4 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <div class="flex items-center gap-2">
-          <i data-lucide="history" class="w-4 h-4 text-slate-400"></i>
-          <h3 class="font-semibold text-sm text-slate-200">История смен и расходов</h3>
-        </div>
-        <div class="text-xs text-slate-400">
-          Всего записей в фильтре: <span id="recordsCount" class="font-semibold text-white">0</span>
-        </div>
-      </div>
-
-      <!-- Список карточек / таблица -->
-      <div id="recordsList" class="divide-y divide-slate-800/80">
-        <!-- Заполняется динамически -->
-      </div>
-      
-      <!-- Пустое состояние -->
-      <div id="emptyState" class="py-12 px-4 text-center hidden">
-        <div class="w-12 h-12 mx-auto rounded-full bg-slate-800/80 flex items-center justify-center text-slate-500 mb-3">
-          <i data-lucide="calendar-x-2" class="w-6 h-6"></i>
-        </div>
-        <h4 class="text-sm font-semibold text-slate-300">Записей не найдено</h4>
-        <p class="text-xs text-slate-500 mt-1 max-w-xs mx-auto">Добавьте свою первую отработанную смену или расход за выбранный период.</p>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- Футер -->
-  <footer class="mt-auto border-t border-slate-800/80 py-4 px-4 text-center text-xs text-slate-500">
-    <p>КурьерТрекер &bull; Все данные хранятся локально в вашем браузере.</p>
-  </footer>
-
-  <!-- ================= МОДАЛКИ ================= -->
-
-  <!-- 1. Модальное окно смены -->
-  <div id="shiftModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
-    <div class="bg-surface-900 border border-slate-800 w-full max-w-md rounded-2xl p-5 shadow-2xl overflow-y-auto max-h-[90vh] animate-in fade-in duration-150">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-        <h3 class="text-base font-bold text-white flex items-center gap-2">
-          <i data-lucide="bike" class="w-5 h-5 text-emerald-400"></i>
-          Новая смена
-        </h3>
-        <button data-close-modal="shiftModal" class="text-slate-400 hover:text-white p-1 rounded-lg">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <form id="shiftForm" class="mt-4 space-y-3.5">
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Дата смены</label>
-          <input type="date" id="shiftDate" required class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
-        </div>
-
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Сервис доставки</label>
-          <select id="shiftService" required class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
-            <option value="Яндекс Доставка">Яндекс Доставка / Еда</option>
+    <!-- Вкладка: Смена -->
+    <form id="form-shift" class="form-group" onsubmit="addShift(event)">
+      <div class="input-row">
+        <div class="field">
+          <label>Сервис / Парк</label>
+          <select id="shift-service">
+            <option value="Яндекс Доставка">Яндекс Доставка</option>
+            <option value="Магнит Доставка">Магнит Доставка</option>
             <option value="Самокат">Самокат</option>
-            <option value="Магнит">Магнит Доставка</option>
-            <option value="Ozon">Ozon Fresh / Доставка</option>
-            <option value="ВкусВилл">ВкусВилл</option>
-            <option value="СберМаркет (Купер)">Купер (СберМаркет)</option>
-            <option value="Достависта">Достависта</option>
+            <option value="Купер">Купер</option>
+            <option value="Ozon fresh">Ozon Fresh</option>
             <option value="Другое">Другое</option>
           </select>
         </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Доход с заказов (₽)</label>
-            <input type="number" id="shiftOrdersPay" min="0" step="1" required placeholder="0" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-semibold focus:outline-none focus:border-emerald-500" />
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Чаевые (₽)</label>
-            <input type="number" id="shiftTips" min="0" step="1" placeholder="0" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-semibold focus:outline-none focus:border-emerald-500" />
-          </div>
+        <div class="field">
+          <label>Дата</label>
+          <input type="date" id="shift-date" required>
         </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Часы на линии</label>
-            <input type="number" id="shiftHours" min="0.1" max="24" step="0.5" required placeholder="8" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Пробег (км)</label>
-            <input type="number" id="shiftKm" min="0" step="1" required placeholder="50" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Комментарий (необязательно)</label>
-          <input type="text" id="shiftComment" placeholder="Например: центр, плохая погода, +бонус" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" />
-        </div>
-
-        <div class="pt-2">
-          <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold text-sm shadow-lg shadow-emerald-500/20 transition">
-            Сохранить смену
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- 2. Модальное окно расходов -->
-  <div id="expenseModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden">
-    <div class="bg-surface-900 border border-slate-800 w-full max-w-md rounded-2xl p-5 shadow-2xl overflow-y-auto max-h-[90vh]">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-        <h3 class="text-base font-bold text-white flex items-center gap-2">
-          <i data-lucide="receipt" class="w-5 h-5 text-rose-400"></i>
-          Новый расход
-        </h3>
-        <button data-close-modal="expenseModal" class="text-slate-400 hover:text-white p-1 rounded-lg">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
       </div>
 
-      <form id="expenseForm" class="mt-4 space-y-3.5">
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Дата</label>
-          <input type="date" id="expenseDate" required class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500" />
+      <div class="input-row">
+        <div class="field">
+          <label>Оплата за заказы (₽)</label>
+          <input type="number" id="shift-income" placeholder="0" min="0" step="any" required>
         </div>
+        <div class="field">
+          <label>Чаевые (₽)</label>
+          <input type="number" id="shift-tips" placeholder="0" min="0" step="any">
+        </div>
+      </div>
 
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Категория расхода</label>
-          <select id="expenseCategory" required class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500">
-            <option value="Топливо">Бензин / Топливо / Зарядка</option>
-            <option value="Обслуживание">Ремонт, ТО, масло, запчасти, шиномонтаж</option>
-            <option value="Связь">Связь и мобильный интернет</option>
-            <option value="Питание">Обед / кофе в смене</option>
-            <option value="Штрафы">Штрафы ПДД / стоянка</option>
-            <option value="Аренда">Аренда транспорта / экипировки</option>
-            <option value="Прочее">Прочее</option>
+      <div class="input-row">
+        <div class="field">
+          <label>Часов на линии</label>
+          <input type="number" id="shift-hours" placeholder="напр. 6.5" min="0" step="0.1">
+        </div>
+        <div class="field">
+          <label>Пробег (км)</label>
+          <input type="number" id="shift-km" placeholder="напр. 55" min="0" step="0.5">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Заметка к смене</label>
+        <input type="text" id="shift-notes" placeholder="Локация, погода, нюансы...">
+      </div>
+
+      <button type="submit" class="submit-btn">Записать смену</button>
+    </form>
+
+    <!-- Вкладка: Дополнительный доход -->
+    <form id="form-extra" class="form-group" style="display:none;" onsubmit="addExtraIncome(event)">
+      <div class="input-row">
+        <div class="field">
+          <label>Сумма дохода (₽)</label>
+          <input type="number" id="extra-amount" placeholder="0" min="1" step="any" required>
+        </div>
+        <div class="field">
+          <label>Дата</label>
+          <input type="date" id="extra-date" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Категория дохода</label>
+        <select id="extra-category">
+          <option value="Бонус от агрегатора">Бонус / Акция агрегатора</option>
+          <option value="Доплата парка">Доплата таксопарка / партнера</option>
+          <option value="Продажа запчастей/вещей">Продажа запчастей / стафа</option>
+          <option value="Подработка / Поручение">Подработка / Поручение</option>
+          <option value="Другое">Другое</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Описание</label>
+        <input type="text" id="extra-desc" placeholder="За что получено...">
+      </div>
+
+      <button type="submit" class="submit-btn blue">Записать доп. доход</button>
+    </form>
+
+    <!-- Вкладка: Расходы и Бензин -->
+    <form id="form-expense" class="form-group" style="display:none;" onsubmit="addExpense(event)">
+      <div class="input-row">
+        <div class="field">
+          <label>Категория</label>
+          <select id="exp-category" onchange="toggleGasFields(this.value)">
+            <option value="Бензин / Топливо">⛽ Бензин / Топливо</option>
+            <option value="Ремонт и запчасти">🛠️ Ремонт и запчасти</option>
+            <option value="Расходники и масло">🛢️ Расходники и масло</option>
+            <option value="Обед / Питание">🍔 Обед / Вода</option>
+            <option value="Связь и интернет">📱 Связь и интернет</option>
+            <option value="Штрафы">⚠️ Штраф / Парковка</option>
+            <option value="Экипировка">🪖 Экипировка / Одежда</option>
+            <option value="Прочее">📦 Прочее</option>
           </select>
         </div>
-
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Сумма (₽)</label>
-          <input type="number" id="expenseAmount" min="1" step="1" required placeholder="0" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white font-semibold focus:outline-none focus:border-rose-500" />
+        <div class="field">
+          <label>Дата</label>
+          <input type="date" id="exp-date" required>
         </div>
+      </div>
 
-        <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1">Описание / Заметка</label>
-          <input type="text" id="expenseComment" placeholder="Например: АИ-95 15 литров или замена колодок" class="w-full bg-surface-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500" />
+      <!-- Калькулятор бензина -->
+      <div id="gas-calc-wrapper" class="gas-calc-box">
+        <div style="font-size:11px; font-weight:700; color:var(--orange);">КАЛЬКУЛЯТОР ТОПЛИВА (НЕОБЯЗАТЕЛЬНО)</div>
+        <div class="input-row">
+          <div class="field">
+            <label>Литров</label>
+            <input type="number" id="gas-liters" placeholder="напр. 4.2" min="0" step="0.1" oninput="calcGasSum()">
+          </div>
+          <div class="field">
+            <label>Цена за литр (₽)</label>
+            <input type="number" id="gas-price" placeholder="напр. 65" min="0" step="0.5" oninput="calcGasSum()">
+          </div>
         </div>
+      </div>
 
-        <div class="pt-2">
-          <button type="submit" class="w-full py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 active:scale-95 text-white font-bold text-sm shadow-lg shadow-rose-500/20 transition">
-            Сохранить расход
-          </button>
-        </div>
-      </form>
+      <div class="field">
+        <label>Итоговая сумма расхода (₽)</label>
+        <input type="number" id="exp-amount" placeholder="0" min="1" step="any" required>
+      </div>
+
+      <div class="field">
+        <label>Примечание</label>
+        <input type="text" id="exp-notes" placeholder="АЗС Роснефть / ремень вариатора / фильтр...">
+      </div>
+
+      <button type="submit" class="submit-btn purple">Записать расход</button>
+    </form>
+  </div>
+
+  <!-- ГРАФИК ДИНАМИКИ -->
+  <div class="history-card">
+    <div class="history-header">
+      <h3>Динамика заработка</h3>
+    </div>
+    <div style="position: relative; height: 180px; width: 100%;">
+      <canvas id="profitChart"></canvas>
     </div>
   </div>
 
-  <!-- Toast уведомления (всплывающее окно) -->
-  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden max-w-sm px-4 py-3 rounded-xl bg-slate-800 text-white text-xs border border-slate-700 shadow-xl flex items-center gap-2">
-    <i id="toastIcon" data-lucide="info" class="w-4 h-4 text-emerald-400"></i>
-    <span id="toastMsg">Успешно!</span>
+  <!-- ИСТОРИЯ ОПЕРАЦИЙ -->
+  <div class="history-card">
+    <div class="history-header">
+      <h3>История операций</h3>
+      <span style="font-size:12px; color:var(--muted);" id="records-count">0 записей</span>
+    </div>
+    <div class="list-wrapper" id="operations-list">
+      <!-- Список заполняется динамически -->
+    </div>
+
+    <div class="data-tools">
+      <button class="tool-btn" onclick="exportCSV()">Экспорт в Excel (CSV)</button>
+      <button class="tool-btn" onclick="document.getElementById('import-input').click()">Импорт JSON</button>
+      <input type="file" id="import-input" style="display:none;" accept=".json" onchange="importJSON(event)">
+    </div>
   </div>
 
-  <!-- ================= Скрипт приложения ================= -->
-  <script>
-    // Инициализация Lucide иконок
-    lucide.createIcons();
+</div>
 
-    // Состояние приложения
-    const STORAGE_KEY = 'courier_tracker_data_v1';
-    let appData = {
-      shifts: [],
-      expenses: []
+<script>
+  // ИНИЦИАЛИЗАЦИЯ ДАННЫХ
+  let appData = {
+    shifts: [],
+    extraIncomes: [],
+    expenses: []
+  };
+
+  let currentPeriod = 'all';
+  let chartInstance = null;
+
+  function loadData() {
+    const saved = localStorage.getItem('courier_pro_data');
+    if (saved) {
+      try {
+        appData = JSON.parse(saved);
+        if (!appData.extraIncomes) appData.extraIncomes = [];
+      } catch(e) {
+        console.error(e);
+      }
+    }
+  }
+
+  function saveData() {
+    localStorage.setItem('courier_pro_data', JSON.stringify(appData));
+    updateUI();
+  }
+
+  function setTodayDates() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('shift-date').value = today;
+    document.getElementById('extra-date').value = today;
+    document.getElementById('exp-date').value = today;
+  }
+
+  // ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК ФОРМ
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.getElementById('form-shift').style.display = tab === 'shift' ? 'flex' : 'none';
+    document.getElementById('form-extra').style.display = tab === 'extra' ? 'flex' : 'none';
+    document.getElementById('form-expense').style.display = tab === 'expense' ? 'flex' : 'none';
+  }
+
+  // ПЕРЕКЛЮЧЕНИЕ ПЕРИОДА
+  function setPeriod(period, btn) {
+    currentPeriod = period;
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    updateUI();
+  }
+
+  // БЕНЗИНОВЫЙ КАЛЬКУЛЯТОР
+  function toggleGasFields(cat) {
+    const box = document.getElementById('gas-calc-wrapper');
+    if (cat === 'Бензин / Топливо') {
+      box.style.display = 'flex';
+    } else {
+      box.style.display = 'none';
+      document.getElementById('gas-liters').value = '';
+      document.getElementById('gas-price').value = '';
+    }
+  }
+
+  function calcGasSum() {
+    const liters = parseFloat(document.getElementById('gas-liters').value) || 0;
+    const price = parseFloat(document.getElementById('gas-price').value) || 0;
+    if (liters > 0 && price > 0) {
+      document.getElementById('exp-amount').value = Math.round(liters * price);
+    }
+  }
+
+  // ДОБАВЛЕНИЕ ЗАПИСЕЙ
+  function addShift(e) {
+    e.preventDefault();
+    const service = document.getElementById('shift-service').value;
+    const date = document.getElementById('shift-date').value;
+    const income = parseFloat(document.getElementById('shift-income').value) || 0;
+    const tips = parseFloat(document.getElementById('shift-tips').value) || 0;
+    const hours = parseFloat(document.getElementById('shift-hours').value) || 0;
+    const km = parseFloat(document.getElementById('shift-km').value) || 0;
+    const notes = document.getElementById('shift-notes').value.trim();
+
+    appData.shifts.unshift({
+      id: Date.now(),
+      service, date, income, tips, hours, km, notes
+    });
+
+    saveData();
+    document.getElementById('shift-income').value = '';
+    document.getElementById('shift-tips').value = '';
+    document.getElementById('shift-hours').value = '';
+    document.getElementById('shift-km').value = '';
+    document.getElementById('shift-notes').value = '';
+  }
+
+  function addExtraIncome(e) {
+    e.preventDefault();
+    const amount = parseFloat(document.getElementById('extra-amount').value) || 0;
+    const date = document.getElementById('extra-date').value;
+    const category = document.getElementById('extra-category').value;
+    const desc = document.getElementById('extra-desc').value.trim();
+
+    appData.extraIncomes.unshift({
+      id: Date.now(),
+      amount, date, category, desc
+    });
+
+    saveData();
+    document.getElementById('extra-amount').value = '';
+    document.getElementById('extra-desc').value = '';
+  }
+
+  function addExpense(e) {
+    e.preventDefault();
+    const category = document.getElementById('exp-category').value;
+    const date = document.getElementById('exp-date').value;
+    const amount = parseFloat(document.getElementById('exp-amount').value) || 0;
+    const notes = document.getElementById('exp-notes').value.trim();
+    const liters = parseFloat(document.getElementById('gas-liters').value) || 0;
+
+    appData.expenses.unshift({
+      id: Date.now(),
+      category, date, amount, notes, liters
+    });
+
+    saveData();
+    document.getElementById('exp-amount').value = '';
+    document.getElementById('exp-notes').value = '';
+    document.getElementById('gas-liters').value = '';
+    document.getElementById('gas-price').value = '';
+  }
+
+  function deleteItem(type, id) {
+    if (!confirm('Удалить эту запись?')) return;
+    if (type === 'shift') appData.shifts = appData.shifts.filter(i => i.id !== id);
+    if (type === 'extra') appData.extraIncomes = appData.extraIncomes.filter(i => i.id !== id);
+    if (type === 'expense') appData.expenses = appData.expenses.filter(i => i.id !== id);
+    saveData();
+  }
+
+  // ФИЛЬТРАЦИЯ ПО ДАТАМ
+  function filterByPeriod(itemDateStr) {
+    if (currentPeriod === 'all') return true;
+    const date = new Date(itemDateStr + 'T00:00:00');
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    if (currentPeriod === 'today') {
+      return date.getTime() === today.getTime();
+    }
+    if (currentPeriod === 'week') {
+      const dayOfWeek = (today.getDay() + 6) % 7; // Понедельник = 0
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() - dayOfWeek);
+      return date >= startOfWeek;
+    }
+    if (currentPeriod === 'month') {
+      return date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth();
+    }
+    return true;
+  }
+
+  // ОБНОВЛЕНИЕ ИНТЕРФЕЙСА И РАСЧЕТОВ
+  function updateUI() {
+    const fShifts = appData.shifts.filter(s => filterByPeriod(s.date));
+    const fExtras = appData.extraIncomes.filter(e => filterByPeriod(e.date));
+    const fExpenses = appData.expenses.filter(e => filterByPeriod(e.date));
+
+    // Суммы
+    let delIncome = 0;
+    let tips = 0;
+    let hours = 0;
+    let km = 0;
+    fShifts.forEach(s => {
+      delIncome += (s.income || 0) + (s.tips || 0);
+      tips += (s.tips || 0);
+      hours += (s.hours || 0);
+      km += (s.km || 0);
+    });
+
+    let extraIncome = 0;
+    fExtras.forEach(e => extraIncome += (e.amount || 0));
+
+    let expenses = 0;
+    let gasSum = 0;
+    let gasLiters = 0;
+    fExpenses.forEach(e => {
+      expenses += (e.amount || 0);
+      if (e.category === 'Бензин / Топливо') {
+        gasSum += (e.amount || 0);
+        gasLiters += (e.liters || 0);
+      }
+    });
+
+    const netProfit = (delIncome + extraIncome) - expenses;
+
+    // Вставка в Hero
+    document.getElementById('stat-net').innerHTML = `${netProfit.toLocaleString('ru-RU')} <span>₽</span>`;
+    document.getElementById('stat-delivery-income').innerText = `+${delIncome.toLocaleString('ru-RU')} ₽`;
+    document.getElementById('stat-extra-income').innerText = `+${extraIncome.toLocaleString('ru-RU')} ₽`;
+    document.getElementById('stat-expenses').innerText = `-${expenses.toLocaleString('ru-RU')} ₽`;
+
+    // Метрики
+    document.getElementById('stat-gas').innerText = `${gasSum.toLocaleString('ru-RU')} ₽`;
+    document.getElementById('stat-gas-liters').innerText = gasLiters > 0 ? `${gasLiters.toFixed(1)} л за период` : 'Без учета литража';
+
+    const netHourly = hours > 0 ? Math.round(netProfit / hours) : 0;
+    document.getElementById('stat-net-hourly').innerText = `${netHourly.toLocaleString('ru-RU')} ₽/ч`;
+    document.getElementById('stat-total-hours').innerText = `${hours.toFixed(1)} ч на линии`;
+
+    const costPerKm = km > 0 ? (expenses / km).toFixed(1) : 0;
+    document.getElementById('stat-cost-km').innerText = `${costPerKm} ₽/км`;
+    document.getElementById('stat-total-km').innerText = `${km.toFixed(0)} км пробега`;
+
+    document.getElementById('stat-tips').innerText = `+${tips.toLocaleString('ru-RU')} ₽`;
+
+    // Объединяем и рендерим операции
+    renderHistory(fShifts, fExtras, fExpenses);
+    renderChart();
+  }
+
+  function renderHistory(shifts, extras, expenses) {
+    const listEl = document.getElementById('operations-list');
+    listEl.innerHTML = '';
+
+    const allOps = [
+      ...shifts.map(s => ({ ...s, _type: 'shift', timestamp: new Date(s.date).getTime() })),
+      ...extras.map(e => ({ ...e, _type: 'extra', timestamp: new Date(e.date).getTime() })),
+      ...expenses.map(x => ({ ...x, _type: 'expense', timestamp: new Date(x.date).getTime() }))
+    ];
+
+    allOps.sort((a, b) => b.timestamp - a.timestamp || b.id - a.id);
+    document.getElementById('records-count').innerText = `${allOps.length} записей`;
+
+    if (allOps.length === 0) {
+      listEl.innerHTML = `<div style="text-align:center; padding: 24px; color: var(--muted); font-size:13px;">Записей за этот период пока нет</div>`;
+      return;
+    }
+
+    allOps.slice(0, 40).forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'entry-item';
+
+      if (item._type === 'shift') {
+        const total = (item.income || 0) + (item.tips || 0);
+        row.innerHTML = `
+          <div class="entry-left">
+            <div class="entry-main-text">🛵 ${item.service}</div>
+            <div class="entry-meta">${formatDate(item.date)} • ${item.hours || 0} ч • ${item.km || 0} км ${item.notes ? '• ' + item.notes : ''}</div>
+          </div>
+          <div class="entry-right">
+            <span class="entry-amount color-green">+${total.toLocaleString('ru-RU')} ₽</span>
+            <button class="del-btn" onclick="deleteItem('shift', ${item.id})">✕</button>
+          </div>
+        `;
+      } else if (item._type === 'extra') {
+        row.innerHTML = `
+          <div class="entry-left">
+            <div class="entry-main-text">💰 ${item.category}</div>
+            <div class="entry-meta">${formatDate(item.date)} ${item.desc ? '• ' + item.desc : ''}</div>
+          </div>
+          <div class="entry-right">
+            <span class="entry-amount color-blue">+${(item.amount || 0).toLocaleString('ru-RU')} ₽</span>
+            <button class="del-btn" onclick="deleteItem('extra', ${item.id})">✕</button>
+          </div>
+        `;
+      } else {
+        const gasInfo = item.liters ? ` (${item.liters} л)` : '';
+        row.innerHTML = `
+          <div class="entry-left">
+            <div class="entry-main-text">${item.category}${gasInfo}</div>
+            <div class="entry-meta">${formatDate(item.date)} ${item.notes ? '• ' + item.notes : ''}</div>
+          </div>
+          <div class="entry-right">
+            <span class="entry-amount color-red">-${(item.amount || 0).toLocaleString('ru-RU')} ₽</span>
+            <button class="del-btn" onclick="deleteItem('expense', ${item.id})">✕</button>
+          </div>
+        `;
+      }
+      listEl.appendChild(row);
+    });
+  }
+
+  function formatDate(dStr) {
+    if (!dStr) return '';
+    const parts = dStr.split('-');
+    return `${parts[2]}.${parts[1]}`;
+  }
+
+  // ГРАФИК ЧИСТОЙ ПРИБЫЛИ
+  function renderChart() {
+    const ctx = document.getElementById('profitChart').getContext('2d');
+    
+    // Собираем данные за последние 7 дней с записями
+    const daysMap = {};
+    const allDates = new Set();
+    
+    appData.shifts.forEach(s => allDates.add(s.date));
+    appData.extraIncomes.forEach(e => allDates.add(e.date));
+    appData.expenses.forEach(x => allDates.add(x.date));
+
+    const sortedDates = Array.from(allDates).sort().slice(-7);
+
+    sortedDates.forEach(d => {
+      daysMap[d] = { income: 0, expense: 0 };
+    });
+
+    appData.shifts.forEach(s => {
+      if (daysMap[s.date]) daysMap[s.date].income += (s.income || 0) + (s.tips || 0);
+    });
+    appData.extraIncomes.forEach(e => {
+      if (daysMap[e.date]) daysMap[e.date].income += (e.amount || 0);
+    });
+    appData.expenses.forEach(x => {
+      if (daysMap[x.date]) daysMap[x.date].expense += (x.amount || 0);
+    });
+
+    const labels = sortedDates.map(d => formatDate(d));
+    const dataPoints = sortedDates.map(d => daysMap[d].income - daysMap[d].expense);
+
+    if (chartInstance) chartInstance.destroy();
+
+    chartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels.length ? labels : ['Нет данных'],
+        datasets: [{
+          data: dataPoints.length ? dataPoints : [0],
+          borderColor: '#10b981',
+          borderWidth: 2.5,
+          backgroundColor: 'rgba(16, 185, 129, 0.12)',
+          fill: true,
+          tension: 0.35,
+          pointBackgroundColor: '#10b981',
+          pointRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#64748b', font: { size: 10 } } },
+          y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#64748b', font: { size: 10 } } }
+        }
+      }
+    });
+  }
+
+  // ЭКСПОРТ И ИМПОРТ
+  function exportCSV() {
+    let csv = 'Тип;Дата;Категория/Сервис;Сумма;Чаевые;Часы;Пробег;Заметка\n';
+    appData.shifts.forEach(s => {
+      csv += `Смена;${s.date};${s.service};${(s.income || 0) + (s.tips || 0)};${s.tips || 0};${s.hours || 0};${s.km || 0};"${s.notes || ''}"\n`;
+    });
+    appData.extraIncomes.forEach(e => {
+      csv += `Доп.Доход;${e.date};${e.category};${e.amount};0;0;0;"${e.desc || ''}"\n`;
+    });
+    appData.expenses.forEach(x => {
+      csv += `Расход;${x.date};${x.category};${x.amount};0;0;0;"${x.notes || ''}"\n`;
+    });
+
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `courier_tracker_${new Date().toISOString().split('T')[0]}.csv`;
+    link.click();
+  }
+
+  function exportJSON() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
+    const link = document.createElement('a');
+    link.setAttribute("href", dataStr);
+    link.setAttribute("download", `courier_backup_${new Date().toISOString().split('T')[0]}.json`);
+    link.click();
+  }
+
+  function importJSON(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const imported = JSON.parse(e.target.result);
+        if (imported.shifts || imported.expenses || imported.extraIncomes) {
+          appData = {
+            shifts: imported.shifts || [],
+            extraIncomes: imported.extraIncomes || [],
+            expenses: imported.expenses || []
+          };
+          saveData();
+          alert('Данные успешно импортированы!');
+        }
+      } catch (err) {
+        alert('Ошибка при чтении файла');
+      }
     };
-    let currentFilter = 'month'; // 'today', 'week', 'month', 'all'
-    let timelineChart = null;
-    let expenseChart = null;
+    reader.readAsText(file);
+  }
+
+  // СТАРТ
+  loadData();
+  setTodayDates();
+  updateUI();
+</script>
 
-    // Загрузка начальных или сохраненных данных
-    function loadData() {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        try {
-          appData = JSON.parse(stored);
-          if (!Array.isArray(appData.shifts)) appData.shifts = [];
-          if (!Array.isArray(appData.expenses)) appData.expenses = [];
-        } catch (e) {
-          console.error("Ошибка парсинга LocalStorage", e);
-          initDemoData();
-        }
-      } else {
-        initDemoData();
-      }
-    }
-
-    function saveData() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-      render();
-    }
-
-    // Демо-данные для наглядности при первом входе
-    function initDemoData() {
-      const now = new Date();
-      const formatDate = (d) => d.toISOString().split('T')[0];
-
-      const d1 = new Date(now);
-      const d2 = new Date(now); d2.setDate(now.getDate() - 1);
-      const d3 = new Date(now); d3.setDate(now.getDate() - 3);
-
-      appData = {
-        shifts: [
-          { id: 's1', type: 'shift', date: formatDate(d1), service: 'Яндекс Доставка', ordersPay: 3600, tips: 450, hours: 7.5, km: 68, comment: 'Высокий спрос' },
-          { id: 's2', type: 'shift', date: formatDate(d2), service: 'Самокат', ordersPay: 3100, tips: 200, hours: 6, km: 45, comment: 'Вечерний слот' },
-          { id: 's3', type: 'shift', date: formatDate(d3), service: 'Магнит', ordersPay: 4200, tips: 600, hours: 8.5, km: 82, comment: 'Много мультизаказов' }
-        ],
-        expenses: [
-          { id: 'e1', type: 'expense', date: formatDate(d1), category: 'Топливо', amount: 850, comment: 'АИ-95 Лукойл' },
-          { id: 'e2', type: 'expense', date: formatDate(d2), category: 'Питание', amount: 320, comment: 'Шаурма и чай' },
-          { id: 'e3', type: 'expense', date: formatDate(d3), category: 'Обслуживание', amount: 1200, comment: 'Шиномонтаж (жгут)' }
-        ]
-      };
-      saveData();
-    }
-
-    // Фильтрация записей
-    function filterItemsByDate(items) {
-      const now = new Date();
-      const todayStr = now.toISOString().split('T')[0];
-
-      return items.filter(item => {
-        const itemDate = new Date(item.date);
-
-        if (currentFilter === 'today') {
-          return item.date === todayStr;
-        }
-
-        if (currentFilter === 'week') {
-          // За последние 7 дней
-          const weekAgo = new Date();
-          weekAgo.setDate(now.getDate() - 7);
-          return itemDate >= weekAgo;
-        }
-
-        if (currentFilter === 'month') {
-          // Текущий календарный месяц
-          return itemDate.getMonth() === now.getMonth() && itemDate.getFullYear() === now.getFullYear();
-        }
-
-        if (currentFilter === 'all') {
-          return true;
-        }
-
-        return true;
-      });
-    }
-
-    // Уведомление Toast
-    function showToast(msg, isError = false) {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toastMsg');
-      const toastIcon = document.getElementById('toastIcon');
-
-      toastMsg.innerText = msg;
-      toastIcon.setAttribute('data-lucide', isError ? 'alert-triangle' : 'check-circle');
-      toastIcon.className = `w-4 h-4 ${isError ? 'text-rose-400' : 'text-emerald-400'}`;
-      lucide.createIcons();
-
-      toast.classList.remove('hidden');
-      setTimeout(() => {
-        toast.classList.add('hidden');
-      }, 2800);
-    }
-
-    // Рендеринг аналитики и списков
-    function render() {
-      const filteredShifts = filterItemsByDate(appData.shifts);
-      const filteredExpenses = filterItemsByDate(appData.expenses);
-
-      // 1. Расчет агрегатов
-      let totalOrdersPay = 0;
-      let totalTips = 0;
-      let totalHours = 0;
-      let totalKm = 0;
-
-      filteredShifts.forEach(s => {
-        totalOrdersPay += Number(s.ordersPay || 0);
-        totalTips += Number(s.tips || 0);
-        totalHours += Number(s.hours || 0);
-        totalKm += Number(s.km || 0);
-      });
-
-      const totalGrossIncome = totalOrdersPay + totalTips;
-
-      let totalExpenses = 0;
-      let fuelExpenses = 0;
-      const expenseByCategory = {};
-
-      filteredExpenses.forEach(e => {
-        const amt = Number(e.amount || 0);
-        totalExpenses += amt;
-        if (e.category === 'Топливо') {
-          fuelExpenses += amt;
-        }
-        expenseByCategory[e.category] = (expenseByCategory[e.category] || 0) + amt;
-      });
-
-      const netIncome = totalGrossIncome - totalExpenses;
-      const otherExpenses = totalExpenses - fuelExpenses;
-
-      // Метрики эффективности
-      const perHour = totalHours > 0 ? (totalGrossIncome / totalHours) : 0;
-      const netPerHour = totalHours > 0 ? (netIncome / totalHours) : 0;
-      const perKm = totalKm > 0 ? (totalGrossIncome / totalKm) : 0;
-      const expensePerKm = totalKm > 0 ? (totalExpenses / totalKm) : 0;
-
-      // 2. Обновление DOM карточек
-      document.getElementById('statNetIncome').innerText = `${netIncome.toLocaleString('ru-RU')} ₽`;
-      document.getElementById('statGrossIncome').innerText = `${totalGrossIncome.toLocaleString('ru-RU')} ₽`;
-      document.getElementById('statTotalExpenses').innerText = `${totalExpenses.toLocaleString('ru-RU')} ₽`;
-
-      document.getElementById('statOrdersIncome').innerText = `${totalOrdersPay.toLocaleString('ru-RU')} ₽`;
-      document.getElementById('statTipsIncome').innerText = `${totalTips.toLocaleString('ru-RU')} ₽`;
-      document.getElementById('statFuelExpenses').innerText = `${fuelExpenses.toLocaleString('ru-RU')} ₽`;
-      document.getElementById('statOtherExpenses').innerText = `${otherExpenses.toLocaleString('ru-RU')} ₽`;
-
-      document.getElementById('statPerHour').innerText = `${Math.round(perHour).toLocaleString('ru-RU')} ₽/ч`;
-      document.getElementById('statTotalHours').innerText = `Всего: ${totalHours.toFixed(1)} ч`;
-      document.getElementById('statNetPerHour').innerText = `${Math.round(netPerHour).toLocaleString('ru-RU')} ₽/ч`;
-
-      document.getElementById('statPerKm').innerText = `${perKm.toFixed(1)} ₽/км`;
-      document.getElementById('statTotalKm').innerText = `Пробег: ${totalKm} км`;
-      document.getElementById('statExpensePerKm').innerText = `${expensePerKm.toFixed(1)} ₽/км`;
-
-      // 3. Рендеринг объединенного списка операций
-      const combined = [
-        ...filteredShifts.map(s => ({ ...s, itemType: 'shift' })),
-        ...filteredExpenses.map(e => ({ ...e, itemType: 'expense' }))
-      ];
-
-      // Сортировка по дате (сначала новые)
-      combined.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-      const listContainer = document.getElementById('recordsList');
-      const emptyState = document.getElementById('emptyState');
-      document.getElementById('recordsCount').innerText = combined.length;
-
-      listContainer.innerHTML = '';
-
-      if (combined.length === 0) {
-        emptyState.classList.remove('hidden');
-      } else {
-        emptyState.classList.add('hidden');
-        combined.forEach(item => {
-          const isShift = item.itemType === 'shift';
-          const card = document.createElement('div');
-          card.className = 'p-3.5 sm:p-4 hover:bg-slate-800/40 transition flex items-center justify-between gap-3';
-
-          if (isShift) {
-            const shiftTotal = Number(item.ordersPay || 0) + Number(item.tips || 0);
-            card.innerHTML = `
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-                  <i data-lucide="bike" class="w-5 h-5"></i>
-                </div>
-                <div>
-                  <div class="flex items-center gap-2">
-                    <span class="font-bold text-sm text-white">${escapeHtml(item.service)}</span>
-                    <span class="text-[11px] text-slate-400 px-2 py-0.5 rounded-full bg-slate-800">${item.date}</span>
-                  </div>
-                  <div class="text-xs text-slate-400 mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                    <span>${item.hours} ч</span>
-                    <span>&bull;</span>
-                    <span>${item.km} км</span>
-                    ${item.tips > 0 ? `<span>&bull;</span><span class="text-emerald-400">Чай: +${item.tips} ₽</span>` : ''}
-                    ${item.comment ? `<span>&bull;</span><span class="italic text-slate-500 max-w-[150px] sm:max-w-xs truncate">${escapeHtml(item.comment)}</span>` : ''}
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex items-center gap-2 sm:gap-4 shrink-0">
-                <div class="text-right">
-                  <span class="font-bold text-sm sm:text-base text-emerald-400">+${shiftTotal.toLocaleString('ru-RU')} ₽</span>
-                  <div class="text-[10px] text-slate-400">${item.ordersPay} + ${item.tips || 0}</div>
-                </div>
-                <button onclick="deleteRecord('shift', '${item.id}')" title="Удалить" class="text-slate-500 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-              </div>
-            `;
-          } else {
-            card.innerHTML = `
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center shrink-0">
-                  <i data-lucide="receipt" class="w-5 h-5"></i>
-                </div>
-                <div>
-                  <div class="flex items-center gap-2">
-                    <span class="font-bold text-sm text-white">${escapeHtml(item.category)}</span>
-                    <span class="text-[11px] text-slate-400 px-2 py-0.5 rounded-full bg-slate-800">${item.date}</span>
-                  </div>
-                  <div class="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
-                    ${item.comment ? `<span class="italic text-slate-400 max-w-[180px] sm:max-w-xs truncate">${escapeHtml(item.comment)}</span>` : '<span class="text-slate-500">Без описания</span>'}
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex items-center gap-2 sm:gap-4 shrink-0">
-                <div class="text-right">
-                  <span class="font-bold text-sm sm:text-base text-rose-400">-${Number(item.amount).toLocaleString('ru-RU')} ₽</span>
-                  <div class="text-[10px] text-slate-500">Расход</div>
-                </div>
-                <button onclick="deleteRecord('expense', '${item.id}')" title="Удалить" class="text-slate-500 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-              </div>
-            `;
-          }
-
-          listContainer.appendChild(card);
-        });
-      }
-
-      lucide.createIcons();
-
-      // 4. Обновление графиков
-      updateCharts(filteredShifts, filteredExpenses, expenseByCategory);
-    }
-
-    // Вспомогательная санитизация
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    // Удаление записи
-    window.deleteRecord = function(type, id) {
-      if (type === 'shift') {
-        appData.shifts = appData.shifts.filter(s => s.id !== id);
-      } else {
-        appData.expenses = appData.expenses.filter(e => e.id !== id);
-      }
-      saveData();
-      showToast('Запись удалена');
-    };
-
-    // Отрисовка графиков Chart.js
-    function updateCharts(shifts, expenses, expenseCategories) {
-      // 1. Динамика чистой прибыли по дням
-      const dateMap = {};
-
-      // Заполняем датами
-      shifts.forEach(s => {
-        const val = Number(s.ordersPay || 0) + Number(s.tips || 0);
-        dateMap[s.date] = (dateMap[s.date] || 0) + val;
-      });
-
-      expenses.forEach(e => {
-        const val = Number(e.amount || 0);
-        dateMap[e.date] = (dateMap[e.date] || 0) - val;
-      });
-
-      const sortedDates = Object.keys(dateMap).sort();
-      const labels = sortedDates.map(d => {
-        const parts = d.split('-');
-        return `${parts[2]}.${parts[1]}`;
-      });
-      const dataPoints = sortedDates.map(d => dateMap[d]);
-
-      const timelineCtx = document.getElementById('timelineChart').getContext('2d');
-      if (timelineChart) timelineChart.destroy();
-
-      timelineChart = new Chart(timelineCtx, {
-        type: 'line',
-        data: {
-          labels: labels.length ? labels : ['Нет данных'],
-          datasets: [{
-            label: 'Чистая прибыль (₽)',
-            data: dataPoints.length ? dataPoints : [0],
-            borderColor: '#10b981',
-            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-            borderWidth: 2.5,
-            tension: 0.35,
-            fill: true,
-            pointBackgroundColor: '#10b981',
-            pointRadius: 4,
-            pointHoverRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              backgroundColor: '#1e293b',
-              titleColor: '#fff',
-              bodyColor: '#34d399',
-              borderColor: '#334155',
-              borderWidth: 1,
-              callbacks: {
-                label: (context) => ` Прибыль: ${context.parsed.y.toLocaleString('ru-RU')} ₽`
-              }
-            }
-          },
-          scales: {
-            x: {
-              grid: { color: 'rgba(51, 65, 85, 0.3)' },
-              ticks: { color: '#94a3b8', font: { size: 10 } }
-            },
-            y: {
-              grid: { color: 'rgba(51, 65, 85, 0.3)' },
-              ticks: {
-                color: '#94a3b8',
-                font: { size: 10 },
-                callback: (val) => `${val} ₽`
-              }
-            }
-          }
-        }
-      });
-
-      // 2. Круговая диаграмма расходов
-      const catLabels = Object.keys(expenseCategories);
-      const catValues = Object.values(expenseCategories);
-      const expenseNotice = document.getElementById('noExpenseNotice');
-      const expenseCanvas = document.getElementById('expenseChart');
-
-      if (expenseChart) expenseChart.destroy();
-
-      if (catLabels.length === 0) {
-        expenseNotice.classList.remove('hidden');
-        expenseCanvas.classList.add('opacity-0');
-      } else {
-        expenseNotice.classList.add('hidden');
-        expenseCanvas.classList.remove('opacity-0');
-
-        const expenseCtx = expenseCanvas.getContext('2d');
-        expenseChart = new Chart(expenseCtx, {
-          type: 'doughnut',
-          data: {
-            labels: catLabels,
-            datasets: [{
-              data: catValues,
-              backgroundColor: [
-                '#f43f5e', // Топливо (rose)
-                '#f59e0b', // Обслуживание (amber)
-                '#3b82f6', // Связь (blue)
-                '#10b981', // Питание (emerald)
-                '#8b5cf6', // Штрафы (violet)
-                '#ec4899', // Аренда (pink)
-                '#64748b'  // Прочее (slate)
-              ],
-              borderColor: '#0f172a',
-              borderWidth: 2
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: 'bottom',
-                labels: {
-                  color: '#cbd5e1',
-                  boxWidth: 12,
-                  font: { size: 11 },
-                  padding: 12
-                }
-              },
-              tooltip: {
-                backgroundColor: '#1e293b',
-                titleColor: '#fff',
-                borderColor: '#334155',
-                borderWidth: 1,
-                callbacks: {
-                  label: (ctx) => ` ${ctx.label}: ${ctx.raw.toLocaleString('ru-RU')} ₽`
-                }
-              }
-            },
-            cutout: '65%'
-          }
-        });
-      }
-    }
-
-    // ================= СОБЫТИЯ И МОДАЛКИ =================
-
-    // Установка сегодняшней даты по умолчанию в инпутах
-    const todayISO = new Date().toISOString().split('T')[0];
-    document.getElementById('shiftDate').value = todayISO;
-    document.getElementById('expenseDate').value = todayISO;
-
-    // Открытие/закрытие модальных окон
-    const shiftModal = document.getElementById('shiftModal');
-    const expenseModal = document.getElementById('expenseModal');
-
-    document.getElementById('openShiftModalBtn').addEventListener('click', () => {
-      shiftModal.classList.remove('hidden');
-    });
-
-    document.getElementById('openExpenseModalBtn').addEventListener('click', () => {
-      expenseModal.classList.remove('hidden');
-    });
-
-    document.querySelectorAll('[data-close-modal]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const modalId = btn.getAttribute('data-close-modal');
-        document.getElementById(modalId).classList.add('hidden');
-      });
-    });
-
-    // Закрытие по клику вне модалки
-    [shiftModal, expenseModal].forEach(modal => {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) modal.classList.add('hidden');
-      });
-    });
-
-    // Обработка добавления смены
-    document.getElementById('shiftForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const newShift = {
-        id: 'shift_' + Date.now(),
-        date: document.getElementById('shiftDate').value,
-        service: document.getElementById('shiftService').value,
-        ordersPay: parseFloat(document.getElementById('shiftOrdersPay').value) || 0,
-        tips: parseFloat(document.getElementById('shiftTips').value) || 0,
-        hours: parseFloat(document.getElementById('shiftHours').value) || 0,
-        km: parseFloat(document.getElementById('shiftKm').value) || 0,
-        comment: document.getElementById('shiftComment').value.trim()
-      };
-
-      appData.shifts.unshift(newShift);
-      saveData();
-
-      // Очистка и закрытие
-      document.getElementById('shiftForm').reset();
-      document.getElementById('shiftDate').value = todayISO;
-      shiftModal.classList.add('hidden');
-      showToast('Смена успешно записана!');
-    });
-
-    // Обработка добавления расхода
-    document.getElementById('expenseForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const newExpense = {
-        id: 'exp_' + Date.now(),
-        date: document.getElementById('expenseDate').value,
-        category: document.getElementById('expenseCategory').value,
-        amount: parseFloat(document.getElementById('expenseAmount').value) || 0,
-        comment: document.getElementById('expenseComment').value.trim()
-      };
-
-      appData.expenses.unshift(newExpense);
-      saveData();
-
-      // Очистка и закрытие
-      document.getElementById('expenseForm').reset();
-      document.getElementById('expenseDate').value = todayISO;
-      expenseModal.classList.add('hidden');
-      showToast('Расход сохранен');
-    });
-
-    // Переключение фильтра
-    document.querySelectorAll('#filterTabs button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('#filterTabs button').forEach(b => {
-          b.className = 'filter-btn px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition';
-        });
-        btn.className = 'filter-btn active px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500 text-white shadow-sm shadow-emerald-500/30 transition';
-        currentFilter = btn.getAttribute('data-filter');
-        render();
-      });
-    });
-
-    // ================= ЭКСПОРТ И ИМПОРТ =================
-
-    // Экспорт в CSV
-    document.getElementById('exportCsvBtn').addEventListener('click', () => {
-      let csvContent = 'data:text/csv;charset=utf-8,\uFEFF';
-      csvContent += 'Тип;Дата;Категория/Сервис;Сумма_Доход;Чаевые;Сумма_Расход;Часы;Км;Комментарий\n';
-
-      appData.shifts.forEach(s => {
-        csvContent += `Смена;${s.date};"${s.service}";${s.ordersPay};${s.tips};0;${s.hours};${s.km};"${(s.comment || '').replace(/"/g, '""')}"\n`;
-      });
-
-      appData.expenses.forEach(e => {
-        csvContent += `Расход;${e.date};"${e.category}";0;0;${e.amount};0;0;"${(e.comment || '').replace(/"/g, '""')}"\n`;
-      });
-
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', `courier_tracker_${todayISO}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      showToast('CSV отчет сформирован!');
-    });
-
-    // Экспорт в JSON
-    document.getElementById('exportJsonBtn').addEventListener('click', () => {
-      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(appData, null, 2));
-      const link = document.createElement('a');
-      link.setAttribute('href', dataStr);
-      link.setAttribute('download', `courier_backup_${todayISO}.json`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      showToast('Резервная копия скачана!');
-    });
-
-    // Импорт JSON
-    const importInput = document.getElementById('importInput');
-    document.getElementById('importBtnTrigger').addEventListener('click', () => {
-      importInput.click();
-    });
-
-    importInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        try {
-          const imported = JSON.parse(evt.target.result);
-          if (Array.isArray(imported.shifts) && Array.isArray(imported.expenses)) {
-            appData = imported;
-            saveData();
-            showToast('Данные успешно импортированы!');
-          } else {
-            showToast('Некорректный формат файла!', true);
-          }
-        } catch (err) {
-          showToast('Ошибка чтения JSON', true);
-        }
-      };
-      reader.readAsText(file);
-      e.target.value = '';
-    });
-
-    // Старт работы при загрузке страницы
-    window.onload = function () {
-      loadData();
-      render();
-    };
-  </script>
 </body>
 </html>
