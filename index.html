@@ -16,23 +16,68 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    :root {
+    /* ТЕМА 1: OLED MATRIX (DEFAULT) */
+    :root, [data-theme="matrix"] {
       --bg: #030508;
       --surface: rgba(10, 15, 26, 0.75);
-      --surface-solid: #090e17;
       --surface-card: rgba(14, 21, 37, 0.65);
       --border: rgba(255, 255, 255, 0.08);
-      --border-focus: rgba(0, 245, 155, 0.5);
-      
-      --neon-emerald: #00f59b;
-      --neon-emerald-glow: rgba(0, 245, 155, 0.35);
+      --accent: #00f59b;
+      --accent-glow: rgba(0, 245, 155, 0.35);
+      --accent-subtle: rgba(0, 245, 155, 0.12);
+      --accent-text: #021a10;
+      --aura-1: rgba(0, 210, 255, 0.12);
+      --aura-2: rgba(0, 245, 155, 0.08);
+    }
+
+    /* ТЕМА 2: CYBERPUNK ICE */
+    [data-theme="ice"] {
+      --bg: #040812;
+      --surface: rgba(12, 20, 38, 0.8);
+      --surface-card: rgba(16, 27, 52, 0.7);
+      --border: rgba(56, 189, 248, 0.16);
+      --accent: #00d2ff;
+      --accent-glow: rgba(0, 210, 255, 0.4);
+      --accent-subtle: rgba(0, 210, 255, 0.14);
+      --accent-text: #02141c;
+      --aura-1: rgba(0, 210, 255, 0.16);
+      --aura-2: rgba(99, 102, 241, 0.1);
+    }
+
+    /* ТЕМА 3: SUNSET DRIFT */
+    [data-theme="sunset"] {
+      --bg: #0d0705;
+      --surface: rgba(26, 16, 12, 0.8);
+      --surface-card: rgba(36, 22, 17, 0.7);
+      --border: rgba(255, 170, 0, 0.18);
+      --accent: #ff9900;
+      --accent-glow: rgba(255, 153, 0, 0.4);
+      --accent-subtle: rgba(255, 153, 0, 0.14);
+      --accent-text: #1f0c00;
+      --aura-1: rgba(255, 153, 0, 0.14);
+      --aura-2: rgba(255, 42, 95, 0.1);
+    }
+
+    /* ТЕМА 4: TOKYO VIOLET */
+    [data-theme="violet"] {
+      --bg: #080510;
+      --surface: rgba(22, 14, 38, 0.8);
+      --surface-card: rgba(30, 19, 52, 0.7);
+      --border: rgba(176, 66, 255, 0.2);
+      --accent: #b042ff;
+      --accent-glow: rgba(176, 66, 255, 0.4);
+      --accent-subtle: rgba(176, 66, 255, 0.14);
+      --accent-text: #160224;
+      --aura-1: rgba(176, 66, 255, 0.16);
+      --aura-2: rgba(0, 210, 255, 0.08);
+    }
+
+    :root {
       --neon-cyan: #00d2ff;
-      --neon-cyan-glow: rgba(0, 210, 255, 0.35);
       --neon-amber: #ffaa00;
       --neon-amber-glow: rgba(255, 170, 0, 0.35);
       --neon-rose: #ff2a5f;
       --neon-rose-glow: rgba(255, 42, 95, 0.35);
-      --neon-purple: #b042ff;
 
       --text: #f0f4fc;
       --text-muted: #64748b;
@@ -56,8 +101,8 @@
     body {
       background-color: var(--bg);
       background-image: 
-        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 210, 255, 0.12), transparent),
-        radial-gradient(ellipse 60% 40% at 100% 100%, rgba(0, 245, 155, 0.08), transparent),
+        radial-gradient(ellipse 80% 50% at 50% -20%, var(--aura-1), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 100%, var(--aura-2), transparent),
         linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
       background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
@@ -68,6 +113,7 @@
       justify-content: center;
       padding: env(safe-area-inset-top, 24px) 16px env(safe-area-inset-bottom, 36px);
       overflow-x: hidden;
+      transition: background 0.4s ease;
     }
 
     .app-viewport {
@@ -75,11 +121,10 @@
       max-width: 480px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 15px;
       position: relative;
     }
 
-    /* АНИМАЦИИ НАЖАТИЯ */
     .pressable {
       transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s, border-color 0.2s;
     }
@@ -87,12 +132,12 @@
       transform: scale(0.96) !important;
     }
 
-    /* ШАПКА */
+    /* ШАПКА + БЫСТРЫЙ ПЕРЕКЛЮЧАТЕЛЬ ТЕМ */
     .hud-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 4px;
+      padding: 4px 2px;
     }
     .hud-profile {
       display: flex;
@@ -102,54 +147,78 @@
     .avatar-hex {
       width: 44px;
       height: 44px;
-      background: linear-gradient(135deg, rgba(0, 245, 155, 0.2), rgba(0, 210, 255, 0.1));
-      border: 1px solid var(--neon-emerald);
-      box-shadow: 0 0 16px var(--neon-emerald-glow);
+      background: linear-gradient(135deg, var(--accent-subtle), rgba(255,255,255,0.03));
+      border: 1px solid var(--accent);
+      box-shadow: 0 0 16px var(--accent-glow);
       border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 20px;
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
     .hud-title-col h1 {
       font-size: 18px;
       font-weight: 900;
       letter-spacing: -0.4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
     .hud-title-col span {
       font-size: 11px;
       font-family: var(--font-mono);
-      color: var(--neon-emerald);
+      color: var(--accent);
       text-transform: uppercase;
       letter-spacing: 1px;
       display: flex;
       align-items: center;
       gap: 5px;
+      transition: color 0.3s;
     }
     .hud-title-col span::before {
       content: '';
       width: 6px;
       height: 6px;
-      background: var(--neon-emerald);
+      background: var(--accent);
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--neon-emerald);
+      box-shadow: 0 0 8px var(--accent);
       animation: blink 2s infinite ease-in-out;
     }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-    .header-btns {
+    .header-controls {
       display: flex;
+      align-items: center;
       gap: 8px;
     }
-    .hud-icon-btn {
-      width: 42px;
-      height: 42px;
+    
+    /* БЫСТРЫЙ СЕЛЕКТОР ТЕМ В ШАПКЕ */
+    .theme-quick-bar {
+      display: flex;
       background: var(--surface);
       border: 1px solid var(--border);
+      padding: 3px;
       border-radius: 14px;
+      gap: 4px;
+      backdrop-filter: blur(16px);
+    }
+    .theme-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 9px;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+    .theme-dot.active {
+      border-color: #fff;
+      transform: scale(1.08);
+      box-shadow: 0 0 10px rgba(255,255,255,0.4);
+    }
+
+    .hud-icon-btn {
+      width: 40px;
+      height: 40px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 13px;
       color: var(--text);
       display: flex;
       align-items: center;
@@ -159,9 +228,9 @@
       cursor: pointer;
     }
 
-    /* КАРТОЧКА ГЛАВНОГО БАЛАНСА (HERO HUD) */
+    /* HERO HUD (ГЛАВНЫЙ БАЛАНС) */
     .hero-hud-card {
-      background: radial-gradient(circle at 80% 20%, rgba(0, 245, 155, 0.08), transparent 70%),
+      background: radial-gradient(circle at 80% 20%, var(--accent-subtle), transparent 70%),
                   linear-gradient(160deg, rgba(16, 24, 42, 0.8), rgba(6, 10, 18, 0.95));
       border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255, 255, 255, 0.15);
@@ -175,7 +244,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .hero-tag {
       font-size: 11px;
@@ -186,23 +255,23 @@
       letter-spacing: 1.2px;
     }
     .rank-pill {
-      background: rgba(0, 245, 155, 0.1);
-      border: 1px solid rgba(0, 245, 155, 0.3);
-      color: var(--neon-emerald);
-      padding: 3px 9px;
+      background: var(--accent-subtle);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 3px 10px;
       border-radius: 20px;
       font-size: 11px;
       font-weight: 800;
-      box-shadow: 0 0 14px var(--neon-emerald-glow);
+      box-shadow: 0 0 14px var(--accent-glow);
+      transition: all 0.3s;
     }
 
     .hero-cash-val {
       font-size: 46px;
       font-weight: 900;
-      font-family: var(--font-display);
       letter-spacing: -1.8px;
       color: #fff;
-      margin: 2px 0 10px;
+      margin: 2px 0 12px;
       display: flex;
       align-items: baseline;
       gap: 6px;
@@ -211,11 +280,11 @@
     .hero-cash-val span {
       font-size: 24px;
       font-weight: 700;
-      color: var(--neon-emerald);
-      text-shadow: 0 0 16px var(--neon-emerald-glow);
+      color: var(--accent);
+      text-shadow: 0 0 16px var(--accent-glow);
+      transition: color 0.3s;
     }
 
-    /* ПРОГРЕСС ЦЕЛИ СМЕНЫ */
     .goal-gauge {
       margin-bottom: 16px;
     }
@@ -233,15 +302,14 @@
       background: rgba(255, 255, 255, 0.05);
       border-radius: 20px;
       overflow: hidden;
-      position: relative;
     }
     .goal-bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-emerald));
+      background: linear-gradient(90deg, var(--neon-cyan), var(--accent));
       width: 0%;
       border-radius: 20px;
-      box-shadow: 0 0 14px var(--neon-emerald-glow);
-      transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 14px var(--accent-glow);
+      transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s;
     }
 
     .hero-substats-grid {
@@ -270,7 +338,7 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* ФИЛЬТР ПЕРИОДОВ В ВИДЕ ТАКТИЛЬНОГО ПЕРЕКЛЮЧАТЕЛЯ */
+    /* СЕЛЕКТОР ПЕРИОДОВ */
     .period-dock {
       display: flex;
       background: rgba(14, 21, 37, 0.6);
@@ -299,7 +367,7 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.5);
     }
 
-    /* BENTO КАРТОЧКИ МЕТРИК */
+    /* BENTO-GRID МЕТРИКИ (С КРУПНЫМИ 3D-ИКОНКАМИ) */
     .bento-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -317,12 +385,21 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.3);
       position: relative;
     }
-    .bento-card:hover {
-      border-color: rgba(255, 255, 255, 0.16);
-    }
-    .bento-icon {
-      font-size: 18px;
+    .bento-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 2px;
+    }
+    .bento-icon-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
     }
     .bento-title {
       font-size: 11px;
@@ -345,9 +422,9 @@
       margin-top: 2px;
     }
 
-    /* ГАРАЖ И ТО */
+    /* ГАРАЖ */
     .garage-hud {
-      background: linear-gradient(135deg, rgba(255, 170, 0, 0.07), rgba(14, 21, 37, 0.8));
+      background: linear-gradient(135deg, rgba(255, 170, 0, 0.07), var(--surface-card));
       border: 1px solid rgba(255, 170, 0, 0.25);
       border-radius: 22px;
       padding: 16px 18px;
@@ -401,7 +478,7 @@
       cursor: pointer;
     }
 
-    /* БЛОК ВВОДА В ВИДЕ КИБЕР-ПАНЕЛИ */
+    /* КИБЕР-ПАНЕЛЬ ВВОДА */
     .cyber-panel {
       background: var(--surface-card);
       border: 1px solid var(--border);
@@ -438,7 +515,7 @@
       border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    /* ЧИПЫ ВЫБОРА ТРАНСПОРТА И СЕРВИСОВ */
+    /* ЧИПЫ */
     .chips-row {
       display: flex;
       gap: 8px;
@@ -464,13 +541,13 @@
       flex-shrink: 0;
     }
     .chip-item.active {
-      background: rgba(0, 245, 155, 0.12);
-      border-color: var(--neon-emerald);
+      background: var(--accent-subtle);
+      border-color: var(--accent);
       color: #fff;
-      box-shadow: 0 0 16px var(--neon-emerald-glow);
+      box-shadow: 0 0 16px var(--accent-glow);
     }
 
-    /* СТИЛЬНЫЕ ИНПУТЫ */
+    /* ИНПУТЫ */
     .hud-input-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -489,9 +566,6 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    .hud-input-wrap {
-      position: relative;
-    }
     .hud-input {
       width: 100%;
       background: rgba(6, 10, 18, 0.85);
@@ -506,11 +580,10 @@
       transition: border-color 0.2s, box-shadow 0.2s;
     }
     .hud-input:focus {
-      border-color: var(--neon-emerald);
-      box-shadow: 0 0 16px var(--neon-emerald-glow);
+      border-color: var(--accent);
+      box-shadow: 0 0 16px var(--accent-glow);
     }
 
-    /* БЫСТРЫЕ ЧИПЫ СУММ */
     .quick-chips {
       display: flex;
       gap: 6px;
@@ -518,8 +591,8 @@
     }
     .quick-chip-btn {
       flex: 1;
-      padding: 6px 0;
-      border-radius: 8px;
+      padding: 7px 0;
+      border-radius: 10px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border);
       color: var(--text-dim);
@@ -529,11 +602,10 @@
       cursor: pointer;
     }
 
-    /* КНОПКА ЗАПУСКА / СОХРАНЕНИЯ */
     .cyber-btn {
       margin-top: 4px;
-      background: linear-gradient(135deg, var(--neon-emerald), #00b875);
-      color: #021a10;
+      background: linear-gradient(135deg, var(--accent), #00b875);
+      color: var(--accent-text);
       border: none;
       padding: 16px;
       border-radius: 16px;
@@ -545,14 +617,15 @@
       justify-content: center;
       align-items: center;
       gap: 8px;
-      box-shadow: 0 6px 25px var(--neon-emerald-glow);
+      box-shadow: 0 6px 25px var(--accent-glow);
       text-transform: uppercase;
       font-family: var(--font-display);
+      transition: background 0.3s, box-shadow 0.3s, color 0.3s;
     }
     .cyber-btn.blue {
       background: linear-gradient(135deg, var(--neon-cyan), #008cb3);
       color: #02151c;
-      box-shadow: 0 6px 25px var(--neon-cyan-glow);
+      box-shadow: 0 6px 25px rgba(0, 210, 255, 0.35);
     }
     .cyber-btn.rose {
       background: linear-gradient(135deg, var(--neon-rose), #b80034);
@@ -600,9 +673,6 @@
       justify-content: space-between;
       align-items: center;
     }
-    .feed-item:hover {
-      border-color: rgba(255, 255, 255, 0.16);
-    }
     .feed-title {
       font-size: 13px;
       font-weight: 800;
@@ -633,7 +703,7 @@
       margin-left: 10px;
     }
 
-    /* МОДАЛКИ В СТИЛЕ КИБЕРПАНК HUD */
+    /* МОДАЛКИ */
     .hud-modal-layer {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -651,7 +721,7 @@
     .hud-modal-card {
       background: #090e18;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 30px rgba(0, 245, 155, 0.1);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 30px var(--accent-subtle);
       border-radius: 28px;
       width: 100%;
       max-width: 420px;
@@ -666,7 +736,7 @@
 
 <div class="app-viewport">
 
-  <!-- ШАПКА В СТИЛЕ ТАКТИЧЕСКОГО HUD -->
+  <!-- ШАПКА В СТИЛЕ ТАКТИЧЕСКОГО HUD С БЫСТРЫМИ ТЕМАМИ -->
   <header class="hud-header">
     <div class="hud-profile">
       <div class="avatar-hex">⚡</div>
@@ -675,13 +745,20 @@
         <span>ONLINE // TRACKING</span>
       </div>
     </div>
-    <div class="header-actions">
+    <div class="header-controls">
+      <!-- БЫСТРЫЕ ТЕМЫ -->
+      <div class="theme-quick-bar">
+        <div class="theme-dot active" style="background:#00f59b;" onclick="setTheme('matrix', this)" title="Matrix"></div>
+        <div class="theme-dot" style="background:#00d2ff;" onclick="setTheme('ice', this)" title="Ice"></div>
+        <div class="theme-dot" style="background:#ff9900;" onclick="setTheme('sunset', this)" title="Sunset"></div>
+        <div class="theme-dot" style="background:#b042ff;" onclick="setTheme('violet', this)" title="Violet"></div>
+      </div>
       <button class="hud-icon-btn pressable" onclick="openSettingsModal()" title="Настройки">⚙️</button>
       <button class="hud-icon-btn pressable" onclick="exportBackupData()" title="Бекап">💾</button>
     </div>
   </header>
 
-  <!-- ПЕРЕКЛЮЧАТЕЛЬ ПЕРИОДОВ (DOCK) -->
+  <!-- ПЕРЕКЛЮЧАТЕЛЬ ПЕРИОДОВ -->
   <div class="period-dock">
     <button class="period-tab active pressable" onclick="setPeriod('today', this)">СЕГОДНЯ</button>
     <button class="period-tab pressable" onclick="setPeriod('week', this)">НЕДЕЛЯ</button>
@@ -689,7 +766,7 @@
     <button class="period-tab pressable" onclick="setPeriod('all', this)">ВСЁ ВРЕМЯ</button>
   </div>
 
-  <!-- КАРТОЧКА БАЛАНСА (HERO HUD) -->
+  <!-- КАРТОЧКА БАЛАНСА -->
   <section class="hero-hud-card">
     <div class="hero-top-row">
       <span class="hero-tag">ЧИСТАЯ ПРИБЫЛЬ // НА РУКИ</span>
@@ -712,7 +789,7 @@
     <div class="hero-substats-grid">
       <div class="hero-substat">
         <span class="sub-lbl">ДОСТАВКА</span>
-        <span class="sub-num" style="color:var(--neon-emerald);" id="sub-stat-delivery">+0 ₽</span>
+        <span class="sub-num" style="color:var(--accent);" id="sub-stat-delivery">+0 ₽</span>
       </div>
       <div class="hero-substat">
         <span class="sub-lbl">ДОП. ДОХОД</span>
@@ -725,35 +802,43 @@
     </div>
   </section>
 
-  <!-- BENTO СЕТКА МЕТРИК -->
+  <!-- BENTO СЕТКА С ИКОНКАМИ -->
   <div class="bento-row">
     <div class="bento-card pressable">
-      <div class="bento-icon">⏱️</div>
-      <div class="bento-title">Чистыми в час</div>
-      <div class="bento-value" style="color:var(--neon-emerald);" id="bento-hourly">0 ₽/ч</div>
+      <div class="bento-header-line">
+        <span class="bento-title">В час</span>
+        <div class="bento-icon-badge">⏱️</div>
+      </div>
+      <div class="bento-value" style="color:var(--accent);" id="bento-hourly">0 ₽/ч</div>
       <div class="bento-note" id="bento-total-hours">0.0 ч на линии</div>
     </div>
     <div class="bento-card pressable">
-      <div class="bento-icon">📦</div>
-      <div class="bento-title">Заказы / Ср. чек</div>
+      <div class="bento-header-line">
+        <span class="bento-title">Заказы</span>
+        <div class="bento-icon-badge">📦</div>
+      </div>
       <div class="bento-value" id="bento-orders">0 шт</div>
       <div class="bento-note" id="bento-avg-order">ср. 0 ₽ / заказ</div>
     </div>
     <div class="bento-card pressable">
-      <div class="bento-icon">⛽</div>
-      <div class="bento-title">Топливо</div>
+      <div class="bento-header-line">
+        <span class="bento-title">Топливо</span>
+        <div class="bento-icon-badge">⛽</div>
+      </div>
       <div class="bento-value" style="color:var(--neon-amber);" id="bento-fuel">0 ₽</div>
       <div class="bento-note" id="bento-fuel-per100">0.0 л / 100 км</div>
     </div>
     <div class="bento-card pressable">
-      <div class="bento-icon">🛵</div>
-      <div class="bento-title">Себестоимость</div>
+      <div class="bento-header-line">
+        <span class="bento-title">1 км пути</span>
+        <div class="bento-icon-badge">🛵</div>
+      </div>
       <div class="bento-value" id="bento-cost-km">0 ₽/км</div>
       <div class="bento-note" id="bento-total-km">0 км накатал</div>
     </div>
   </div>
 
-  <!-- БЛОК ГАРАЖА И МАСЛА -->
+  <!-- БЛОК ГАРАЖА -->
   <section class="garage-hud">
     <div class="garage-top">
       <div class="garage-title">🔧 ГАРАЖ // МАСЛО И ТО</div>
@@ -774,7 +859,7 @@
     </div>
   </section>
 
-  <!-- КИБЕР-ПАНЕЛЬ ВВОДА СМЕН И ОПЕРАЦИЙ -->
+  <!-- КИБЕР-ПАНЕЛЬ ВВОДА -->
   <section class="cyber-panel">
     <div class="hud-tabs">
       <button class="hud-tab-btn active pressable" onclick="switchFormTab('shift', this)">+ СМЕНА</button>
@@ -785,7 +870,7 @@
     <!-- ФОРМА СМЕНЫ -->
     <form id="form-shift" onsubmit="handleShiftSubmit(event)" style="display:flex; flex-direction:column; gap:12px;">
       
-      <!-- ЧИПЫ ВЫБОРА ТРАНСПОРТА -->
+      <!-- ТРАНСПОРТ -->
       <div class="hud-field">
         <label>Транспорт</label>
         <div class="chips-row">
@@ -795,7 +880,7 @@
         </div>
       </div>
 
-      <!-- ЧИПЫ ВЫБОРА СЕРВИСА -->
+      <!-- СЕРВИС -->
       <div class="hud-field">
         <label>Сервис доставки</label>
         <div class="chips-row">
@@ -818,7 +903,6 @@
         </div>
       </div>
 
-      <!-- БЫСТРЫЕ КНОПКИ ДЛЯ СУММ -->
       <div class="quick-chips">
         <button type="button" class="quick-chip-btn pressable" onclick="addShiftCash(1000)">+1 000</button>
         <button type="button" class="quick-chip-btn pressable" onclick="addShiftCash(2000)">+2 000</button>
@@ -921,7 +1005,7 @@
     </form>
   </section>
 
-  <!-- ДИНАМИКА НА CHART.JS -->
+  <!-- ГРАФИК -->
   <section class="history-dock">
     <div class="history-dock-top">
       <h3>📈 ГРАФИК // ДИНАМИКА</h3>
@@ -942,7 +1026,7 @@
 
 </div>
 
-<!-- НАСТРОЙКИ МОДАЛКА -->
+<!-- НАСТРОЙКИ -->
 <div class="hud-modal-layer" id="settings-modal">
   <div class="hud-modal-card">
     <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -973,7 +1057,7 @@
   </div>
 </div>
 
-<!-- ТО И МАСЛО МОДАЛКА -->
+<!-- ТО И МАСЛО -->
 <div class="hud-modal-layer" id="garage-modal">
   <div class="hud-modal-card">
     <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -984,7 +1068,7 @@
     <div class="hud-field">
       <label>Интервал замены масла (км)</label>
       <input class="hud-input" type="number" id="cfg-oil-interval" placeholder="1500" step="100">
-      <span style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono);">Обычно 1000–1500 км для скутеров, 7000–8000 км для авто</span>
+      <span style="font-size:10px; color:var(--text-muted); font-family:var(--font-mono);">1000–1500 км для скутеров, 7000–8000 км для авто</span>
     </div>
 
     <div class="hud-field">
@@ -997,9 +1081,9 @@
 </div>
 
 <script>
-  // БАЗОВЫЕ ДАННЫЕ
   let appState = {
     userName: 'RESH // PILOT',
+    theme: 'matrix',
     dailyGoal: 5000,
     taxRate: 6,
     garage: {
@@ -1030,6 +1114,7 @@
       }
     }
     document.getElementById('hud-name-label').innerText = appState.userName || 'RESH // PILOT';
+    applyThemeDOM(appState.theme || 'matrix');
   }
 
   function saveState() {
@@ -1037,7 +1122,27 @@
     refreshUI();
   }
 
-  // ТАБЫ ФОРМЫ
+  function setTheme(t, el) {
+    haptic();
+    appState.theme = t;
+    applyThemeDOM(t);
+    document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+    if (el) el.classList.add('active');
+    saveState();
+  }
+
+  function applyThemeDOM(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    // Подсветим нужную точку в шапке
+    const dots = document.querySelectorAll('.theme-dot');
+    const map = { 'matrix': 0, 'ice': 1, 'sunset': 2, 'violet': 3 };
+    if (dots.length && map[t] !== undefined) {
+      dots.forEach(d => d.classList.remove('active'));
+      dots[map[t]].classList.add('active');
+    }
+    renderHUDChart();
+  }
+
   function switchFormTab(type, btn) {
     haptic();
     document.querySelectorAll('.hud-tab-btn').forEach(b => b.classList.remove('active'));
@@ -1089,7 +1194,6 @@
     }
   }
 
-  // ОБРАБОТКА ФОРМ
   function handleShiftSubmit(e) {
     e.preventDefault();
     haptic();
@@ -1150,7 +1254,7 @@
   }
 
   function deleteRecord(type, id) {
-    if (!confirm('Удалить эту запись из базы?')) return;
+    if (!confirm('Удалить эту запись?')) return;
     haptic();
     if (type === 'shift') appState.shifts = appState.shifts.filter(i => i.id !== id);
     if (type === 'extra') appState.extraIncomes = appState.extraIncomes.filter(i => i.id !== id);
@@ -1201,37 +1305,32 @@
       }
     });
 
-    // Налог
     const taxRate = appState.taxRate || 0;
     const taxAmount = taxRate > 0 ? Math.round(delIncome * (taxRate / 100)) : 0;
     const netTotal = (delIncome + extraSum) - expenseSum - taxAmount;
 
-    // Вывод в Hero HUD
     document.getElementById('hero-net-val').innerHTML = `${netTotal.toLocaleString('ru-RU')} <span>₽</span>`;
     document.getElementById('sub-stat-delivery').innerText = `+${delIncome.toLocaleString('ru-RU')} ₽`;
     document.getElementById('sub-stat-extra').innerText = `+${extraSum.toLocaleString('ru-RU')} ₽`;
     document.getElementById('sub-stat-expenses').innerText = `-${expenseSum.toLocaleString('ru-RU')} ₽`;
 
-    // Цель смены
     const goal = appState.dailyGoal || 5000;
     const pct = Math.max(0, Math.min(100, Math.round((netTotal / goal) * 100)));
     document.getElementById('goal-bar-elem').style.width = `${pct}%`;
     document.getElementById('goal-fraction-label').innerText = `${netTotal.toLocaleString('ru-RU')} / ${goal.toLocaleString('ru-RU')} ₽ (${pct}%)`;
 
-    // Ранг
     let rank = '🔰 СТАЖЕР';
     if (netTotal >= 3000) rank = '⚡ РЕЙДЕР';
     if (netTotal >= 5000) rank = '🚀 ФОРСАЖ';
     if (netTotal >= 8000) rank = '👑 ЛЕГЕНДА УЛИЦ';
     document.getElementById('hero-rank-badge').innerText = rank;
 
-    // Bento метрики
     const hourlyNet = hours > 0 ? Math.round(netTotal / hours) : 0;
     document.getElementById('bento-hourly').innerText = `${hourlyNet.toLocaleString('ru-RU')} ₽/ч`;
     document.getElementById('bento-total-hours').innerText = `${hours.toFixed(1)} ч на линии`;
 
     const avgCheck = orders > 0 ? Math.round(delIncome / orders) : 0;
-    document.getElementById('bento-orders').innerText = `${orders} заказов`;
+    document.getElementById('bento-orders').innerText = `${orders} шт`;
     document.getElementById('bento-avg-order').innerText = `ср. ${avgCheck} ₽ / зак`;
 
     document.getElementById('bento-fuel').innerText = `${fuelSum.toLocaleString('ru-RU')} ₽`;
@@ -1242,10 +1341,7 @@
     document.getElementById('bento-cost-km').innerText = `${costKm} ₽/км`;
     document.getElementById('bento-total-km').innerText = `${km.toFixed(0)} км пробега`;
 
-    // Гараж
     updateGarageHUD();
-
-    // Лента и графики
     renderFeedList(fShifts, fExtras, fExpenses);
     renderHUDChart();
   }
@@ -1305,7 +1401,7 @@
             <div class="feed-meta">${item.date} • ${item.orders || 0} зак • ${item.hours || 0}ч • ${item.km || 0}км</div>
           </div>
           <div style="display:flex; align-items:center;">
-            <span class="feed-amount" style="color:var(--neon-emerald);">+${sum.toLocaleString('ru-RU')} ₽</span>
+            <span class="feed-amount" style="color:var(--accent);">+${sum.toLocaleString('ru-RU')} ₽</span>
             <button class="trash-btn" onclick="deleteRecord('shift', ${item.id})">✕</button>
           </div>
         `;
@@ -1357,20 +1453,22 @@
 
     if (chartRef) chartRef.destroy();
 
+    const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#00f59b';
+
     chartRef = new Chart(ctx, {
       type: 'line',
       data: {
         labels: labels.length ? labels : ['--'],
         datasets: [{
           data: vals.length ? vals : [0],
-          borderColor: '#00f59b',
+          borderColor: accentColor,
           borderWidth: 2.4,
-          backgroundColor: 'rgba(0, 245, 155, 0.04)',
+          backgroundColor: 'rgba(255, 255, 255, 0.03)',
           fill: true,
           tension: 0.38,
           pointRadius: 3,
           pointHoverRadius: 6,
-          pointBackgroundColor: '#00f59b'
+          pointBackgroundColor: accentColor
         }]
       },
       options: {
@@ -1385,7 +1483,6 @@
     });
   }
 
-  // НАСТРОЙКИ
   function openSettingsModal() {
     haptic();
     document.getElementById('cfg-user-name').value = appState.userName || '';
@@ -1438,7 +1535,6 @@
     a.click();
   }
 
-  // СТАРТ
   loadState();
   document.getElementById('inp-extra-date').value = new Date().toISOString().split('T')[0];
   refreshUI();
