@@ -16,7 +16,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
-    /* ТЕМА 1: OLED MATRIX (DEFAULT) */
+    /* БАЗОВЫЕ ТЕМЫ */
     :root, [data-theme="matrix"] {
       --bg: #030508;
       --surface: rgba(10, 15, 26, 0.75);
@@ -30,7 +30,6 @@
       --aura-2: rgba(0, 245, 155, 0.08);
     }
 
-    /* ТЕМА 2: CYBERPUNK ICE */
     [data-theme="ice"] {
       --bg: #040812;
       --surface: rgba(12, 20, 38, 0.8);
@@ -44,7 +43,6 @@
       --aura-2: rgba(99, 102, 241, 0.1);
     }
 
-    /* ТЕМА 3: SUNSET DRIFT */
     [data-theme="sunset"] {
       --bg: #0d0705;
       --surface: rgba(26, 16, 12, 0.8);
@@ -58,7 +56,6 @@
       --aura-2: rgba(255, 42, 95, 0.1);
     }
 
-    /* ТЕМА 4: TOKYO VIOLET */
     [data-theme="violet"] {
       --bg: #080510;
       --surface: rgba(22, 14, 38, 0.8);
@@ -71,6 +68,13 @@
       --aura-1: rgba(176, 66, 255, 0.16);
       --aura-2: rgba(0, 210, 255, 0.08);
     }
+
+    /* ФИРМЕННЫЕ ЦВЕТА АГРЕГАТОРОВ */
+    --color-yandex: #ffcc00;
+    --color-magnit: #e11d48;
+    --color-samokat: #ff2a85;
+    --color-kuper: #10b981;
+    --color-ozon: #00aaff;
 
     :root {
       --neon-cyan: #00d2ff;
@@ -132,7 +136,7 @@
       transform: scale(0.96) !important;
     }
 
-    /* ШАПКА + БЫСТРЫЙ ПЕРЕКЛЮЧАТЕЛЬ ТЕМ */
+    /* ШАПКА */
     .hud-header {
       display: flex;
       justify-content: space-between;
@@ -189,8 +193,6 @@
       align-items: center;
       gap: 8px;
     }
-    
-    /* БЫСТРЫЙ СЕЛЕКТОР ТЕМ В ШАПКЕ */
     .theme-quick-bar {
       display: flex;
       background: var(--surface);
@@ -212,7 +214,6 @@
       transform: scale(1.08);
       box-shadow: 0 0 10px rgba(255,255,255,0.4);
     }
-
     .hud-icon-btn {
       width: 40px;
       height: 40px;
@@ -228,7 +229,36 @@
       cursor: pointer;
     }
 
-    /* HERO HUD (ГЛАВНЫЙ БАЛАНС) */
+    /* ПЕРИОДЫ */
+    .period-dock {
+      display: flex;
+      background: rgba(14, 21, 37, 0.6);
+      border: 1px solid var(--border);
+      padding: 5px;
+      border-radius: 18px;
+      gap: 5px;
+      backdrop-filter: blur(20px);
+    }
+    .period-tab {
+      flex: 1;
+      padding: 10px 0;
+      text-align: center;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 13px;
+      cursor: pointer;
+    }
+    .period-tab.active {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    }
+
+    /* HERO КАРТОЧКА ПРИБЫЛИ */
     .hero-hud-card {
       background: radial-gradient(circle at 80% 20%, var(--accent-subtle), transparent 70%),
                   linear-gradient(160deg, rgba(16, 24, 42, 0.8), rgba(6, 10, 18, 0.95));
@@ -265,13 +295,12 @@
       box-shadow: 0 0 14px var(--accent-glow);
       transition: all 0.3s;
     }
-
     .hero-cash-val {
       font-size: 46px;
       font-weight: 900;
       letter-spacing: -1.8px;
       color: #fff;
-      margin: 2px 0 12px;
+      margin: 2px 0 6px;
       display: flex;
       align-items: baseline;
       gap: 6px;
@@ -283,6 +312,22 @@
       color: var(--accent);
       text-shadow: 0 0 16px var(--accent-glow);
       transition: color 0.3s;
+    }
+
+    /* БЕЙДЖ НАЛОГА В HERO КАРТОЧКЕ */
+    .tax-hud-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 42, 95, 0.12);
+      border: 1px solid rgba(255, 42, 95, 0.3);
+      color: #ff6b8b;
+      padding: 4px 10px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      margin-bottom: 12px;
     }
 
     .goal-gauge {
@@ -338,36 +383,7 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* СЕЛЕКТОР ПЕРИОДОВ */
-    .period-dock {
-      display: flex;
-      background: rgba(14, 21, 37, 0.6);
-      border: 1px solid var(--border);
-      padding: 5px;
-      border-radius: 18px;
-      gap: 5px;
-      backdrop-filter: blur(20px);
-    }
-    .period-tab {
-      flex: 1;
-      padding: 10px 0;
-      text-align: center;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 800;
-      border-radius: 13px;
-      cursor: pointer;
-    }
-    .period-tab.active {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-    }
-
-    /* BENTO-GRID МЕТРИКИ (С КРУПНЫМИ 3D-ИКОНКАМИ) */
+    /* BENTO-GRID */
     .bento-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -478,7 +494,7 @@
       cursor: pointer;
     }
 
-    /* КИБЕР-ПАНЕЛЬ ВВОДА */
+    /* ПАНЕЛЬ ВВОДА */
     .cyber-panel {
       background: var(--surface-card);
       border: 1px solid var(--border);
@@ -515,7 +531,7 @@
       border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
-    /* ЧИПЫ */
+    /* ЧИПЫ АГРЕГАТОРОВ И ТРАНСПОРТА */
     .chips-row {
       display: flex;
       gap: 8px;
@@ -539,12 +555,45 @@
       gap: 6px;
       white-space: nowrap;
       flex-shrink: 0;
+      transition: all 0.25s ease;
     }
-    .chip-item.active {
-      background: var(--accent-subtle);
-      border-color: var(--accent);
-      color: #fff;
-      box-shadow: 0 0 16px var(--accent-glow);
+
+    /* СТИЛИ АКТИВНЫХ ЧИПОВ АГРЕГАТОРОВ */
+    .chip-item.active-yandex {
+      background: rgba(255, 204, 0, 0.16) !important;
+      border-color: #ffcc00 !important;
+      color: #ffcc00 !important;
+      box-shadow: 0 0 16px rgba(255, 204, 0, 0.4) !important;
+    }
+    .chip-item.active-magnit {
+      background: rgba(225, 29, 72, 0.18) !important;
+      border-color: #e11d48 !important;
+      color: #fb7185 !important;
+      box-shadow: 0 0 16px rgba(225, 29, 72, 0.45) !important;
+    }
+    .chip-item.active-samokat {
+      background: rgba(255, 42, 133, 0.18) !important;
+      border-color: #ff2a85 !important;
+      color: #ff6baf !important;
+      box-shadow: 0 0 16px rgba(255, 42, 133, 0.45) !important;
+    }
+    .chip-item.active-kuper {
+      background: rgba(16, 185, 129, 0.18) !important;
+      border-color: #10b981 !important;
+      color: #34d399 !important;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.45) !important;
+    }
+    .chip-item.active-ozon {
+      background: rgba(0, 170, 255, 0.18) !important;
+      border-color: #00aaff !important;
+      color: #38bdf8 !important;
+      box-shadow: 0 0 16px rgba(0, 170, 255, 0.45) !important;
+    }
+    .chip-item.active-default {
+      background: var(--accent-subtle) !important;
+      border-color: var(--accent) !important;
+      color: #fff !important;
+      box-shadow: 0 0 16px var(--accent-glow) !important;
     }
 
     /* ИНПУТЫ */
@@ -604,7 +653,7 @@
 
     .cyber-btn {
       margin-top: 4px;
-      background: linear-gradient(135deg, var(--accent), #00b875);
+      background: var(--accent);
       color: var(--accent-text);
       border: none;
       padding: 16px;
@@ -620,7 +669,7 @@
       box-shadow: 0 6px 25px var(--accent-glow);
       text-transform: uppercase;
       font-family: var(--font-display);
-      transition: background 0.3s, box-shadow 0.3s, color 0.3s;
+      transition: all 0.3s ease;
     }
     .cyber-btn.blue {
       background: linear-gradient(135deg, var(--neon-cyan), #008cb3);
@@ -633,7 +682,7 @@
       box-shadow: 0 6px 25px var(--neon-rose-glow);
     }
 
-    /* ИСТОРИЯ И ГРАФИК */
+    /* ИСТОРИЯ И ЛЕНТА */
     .history-dock {
       background: var(--surface-card);
       border: 1px solid var(--border);
@@ -736,17 +785,16 @@
 
 <div class="app-viewport">
 
-  <!-- ШАПКА В СТИЛЕ ТАКТИЧЕСКОГО HUD С БЫСТРЫМИ ТЕМАМИ -->
+  <!-- ШАПКА -->
   <header class="hud-header">
     <div class="hud-profile">
-      <div class="avatar-hex">⚡</div>
+      <div class="avatar-hex" id="avatar-icon">⚡</div>
       <div class="hud-title-col">
         <h1 id="hud-name-label">RESH // PILOT</h1>
         <span>ONLINE // TRACKING</span>
       </div>
     </div>
     <div class="header-controls">
-      <!-- БЫСТРЫЕ ТЕМЫ -->
       <div class="theme-quick-bar">
         <div class="theme-dot active" style="background:#00f59b;" onclick="setTheme('matrix', this)" title="Matrix"></div>
         <div class="theme-dot" style="background:#00d2ff;" onclick="setTheme('ice', this)" title="Ice"></div>
@@ -758,7 +806,7 @@
     </div>
   </header>
 
-  <!-- ПЕРЕКЛЮЧАТЕЛЬ ПЕРИОДОВ -->
+  <!-- ПЕРИОДЫ -->
   <div class="period-dock">
     <button class="period-tab active pressable" onclick="setPeriod('today', this)">СЕГОДНЯ</button>
     <button class="period-tab pressable" onclick="setPeriod('week', this)">НЕДЕЛЯ</button>
@@ -774,6 +822,14 @@
     </div>
 
     <div class="hero-cash-val" id="hero-net-val">0 <span>₽</span></div>
+
+    <!-- ЯВНЫЙ БЕЙДЖ НАЛОГА -->
+    <div id="hero-tax-badge-wrap" style="display:none;">
+      <div class="tax-hud-badge">
+        <span>🏛️ НАЛОГ САМОЗАНЯТОГО:</span>
+        <strong id="hero-tax-amount">-0 ₽</strong>
+      </div>
+    </div>
 
     <!-- ПРОГРЕСС ЦЕЛИ СМЕНЫ -->
     <div class="goal-gauge">
@@ -802,7 +858,7 @@
     </div>
   </section>
 
-  <!-- BENTO СЕТКА С ИКОНКАМИ -->
+  <!-- BENTO СЕТКА -->
   <div class="bento-row">
     <div class="bento-card pressable">
       <div class="bento-header-line">
@@ -874,21 +930,21 @@
       <div class="hud-field">
         <label>Транспорт</label>
         <div class="chips-row">
-          <div class="chip-item active pressable" onclick="selectTransport('🛵 Скутер', this)">🛵 Скутер</div>
+          <div class="chip-item active-default pressable" onclick="selectTransport('🛵 Скутер', this)">🛵 Скутер</div>
           <div class="chip-item pressable" onclick="selectTransport('🚗 Авто', this)">🚗 Авто</div>
           <div class="chip-item pressable" onclick="selectTransport('🚶 Пеший', this)">🚶 Пеший</div>
         </div>
       </div>
 
-      <!-- СЕРВИС -->
+      <!-- СЕРВИС С ДИНАМИЧЕСКИМ ЦВЕТОМ И АКЦЕНТОМ -->
       <div class="hud-field">
-        <label>Сервис доставки</label>
+        <label>Сервис доставки (меняет акцент темы)</label>
         <div class="chips-row">
-          <div class="chip-item active pressable" onclick="selectService('Яндекс Доставка', this)">⚡ Яндекс</div>
-          <div class="chip-item pressable" onclick="selectService('Магнит Доставка', this)">🛒 Магнит</div>
-          <div class="chip-item pressable" onclick="selectService('Самокат', this)">🚲 Самокат</div>
-          <div class="chip-item pressable" onclick="selectService('Купер', this)">📦 Купер</div>
-          <div class="chip-item pressable" onclick="selectService('Ozon Fresh', this)">🔵 Ozon Fresh</div>
+          <div class="chip-item active-yandex pressable" data-service="Яндекс Доставка" onclick="selectService('Яндекс Доставка', this)">⚡ Яндекс</div>
+          <div class="chip-item pressable" data-service="Магнит Доставка" onclick="selectService('Магнит Доставка', this)">🛒 Магнит</div>
+          <div class="chip-item pressable" data-service="Самокат" onclick="selectService('Самокат', this)">🚲 Самокат</div>
+          <div class="chip-item pressable" data-service="Купер" onclick="selectService('Купер', this)">📦 Купер</div>
+          <div class="chip-item pressable" data-service="Ozon Fresh" onclick="selectService('Ozon Fresh', this)">🔵 Ozon Fresh</div>
         </div>
       </div>
 
@@ -925,7 +981,7 @@
         </div>
       </div>
 
-      <button type="submit" class="cyber-btn pressable">⚡ ЗАПИСАТЬ СМЕНУ</button>
+      <button type="submit" id="shift-submit-btn" class="cyber-btn pressable">⚡ ЗАПИСАТЬ СМЕНУ</button>
     </form>
 
     <!-- ФОРМА ДОП. ДОХОДА -->
@@ -1095,6 +1151,14 @@
     expenses: []
   };
 
+  const serviceColors = {
+    'Яндекс Доставка': { color: '#ffcc00', glow: 'rgba(255, 204, 0, 0.4)', text: '#1f1600', class: 'active-yandex', icon: '⚡' },
+    'Магнит Доставка': { color: '#e11d48', glow: 'rgba(225, 29, 72, 0.45)', text: '#ffffff', class: 'active-magnit', icon: '🛒' },
+    'Самокат': { color: '#ff2a85', glow: 'rgba(255, 42, 133, 0.45)', text: '#ffffff', class: 'active-samokat', icon: '🚲' },
+    'Купер': { color: '#10b981', glow: 'rgba(16, 185, 129, 0.45)', text: '#021a10', class: 'active-kuper', icon: '📦' },
+    'Ozon Fresh': { color: '#00aaff', glow: 'rgba(0, 170, 255, 0.45)', text: '#02151c', class: 'active-ozon', icon: '🔵' }
+  };
+
   let selectedTransport = '🛵 Скутер';
   let selectedService = 'Яндекс Доставка';
   let currentPeriod = 'today';
@@ -1133,13 +1197,14 @@
 
   function applyThemeDOM(t) {
     document.documentElement.setAttribute('data-theme', t);
-    // Подсветим нужную точку в шапке
     const dots = document.querySelectorAll('.theme-dot');
     const map = { 'matrix': 0, 'ice': 1, 'sunset': 2, 'violet': 3 };
     if (dots.length && map[t] !== undefined) {
       dots.forEach(d => d.classList.remove('active'));
       dots[map[t]].classList.add('active');
     }
+    // Восстанавливаем акцент выбранного сервиса поверх темы
+    applyServiceAccent(selectedService);
     renderHUDChart();
   }
 
@@ -1156,15 +1221,35 @@
   function selectTransport(val, el) {
     haptic();
     selectedTransport = val;
-    el.parentElement.querySelectorAll('.chip-item').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
+    el.parentElement.querySelectorAll('.chip-item').forEach(c => c.classList.remove('active-default'));
+    el.classList.add('active-default');
   }
 
-  function selectService(val, el) {
+  function selectService(serviceName, el) {
     haptic();
-    selectedService = val;
-    el.parentElement.querySelectorAll('.chip-item').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
+    selectedService = serviceName;
+    
+    // Снимаем классы активности со всех сервисных чипов
+    el.parentElement.querySelectorAll('.chip-item').forEach(c => {
+      c.className = 'chip-item pressable';
+    });
+
+    const info = serviceColors[serviceName] || serviceColors['Яндекс Доставка'];
+    el.classList.add(info.class);
+
+    // Применяем динамический цвет на кнопку записи и акцент интерфейса
+    applyServiceAccent(serviceName);
+  }
+
+  function applyServiceAccent(serviceName) {
+    const info = serviceColors[serviceName] || serviceColors['Яндекс Доставка'];
+    const submitBtn = document.getElementById('shift-submit-btn');
+    if (submitBtn) {
+      submitBtn.style.background = info.color;
+      submitBtn.style.color = info.text;
+      submitBtn.style.boxShadow = `0 6px 25px ${info.glow}`;
+      submitBtn.innerHTML = `${info.icon} ЗАПИСАТЬ СМЕНУ (${serviceName})`;
+    }
   }
 
   function addShiftCash(val) {
@@ -1254,7 +1339,7 @@
   }
 
   function deleteRecord(type, id) {
-    if (!confirm('Удалить эту запись?')) return;
+    if (!confirm('Удалить эту запись из базы?')) return;
     haptic();
     if (type === 'shift') appState.shifts = appState.shifts.filter(i => i.id !== id);
     if (type === 'extra') appState.extraIncomes = appState.extraIncomes.filter(i => i.id !== id);
@@ -1305,26 +1390,41 @@
       }
     });
 
+    // Расчет налога
     const taxRate = appState.taxRate || 0;
     const taxAmount = taxRate > 0 ? Math.round(delIncome * (taxRate / 100)) : 0;
     const netTotal = (delIncome + extraSum) - expenseSum - taxAmount;
 
+    // Вывод в Hero HUD
     document.getElementById('hero-net-val').innerHTML = `${netTotal.toLocaleString('ru-RU')} <span>₽</span>`;
+    
+    // Отображение налога
+    const taxBadgeWrap = document.getElementById('hero-tax-badge-wrap');
+    if (taxRate > 0) {
+      taxBadgeWrap.style.display = 'block';
+      document.getElementById('hero-tax-amount').innerText = `-${taxAmount.toLocaleString('ru-RU')} ₽ (${taxRate}%)`;
+    } else {
+      taxBadgeWrap.style.display = 'none';
+    }
+
     document.getElementById('sub-stat-delivery').innerText = `+${delIncome.toLocaleString('ru-RU')} ₽`;
     document.getElementById('sub-stat-extra').innerText = `+${extraSum.toLocaleString('ru-RU')} ₽`;
     document.getElementById('sub-stat-expenses').innerText = `-${expenseSum.toLocaleString('ru-RU')} ₽`;
 
+    // Цель смены
     const goal = appState.dailyGoal || 5000;
     const pct = Math.max(0, Math.min(100, Math.round((netTotal / goal) * 100)));
     document.getElementById('goal-bar-elem').style.width = `${pct}%`;
     document.getElementById('goal-fraction-label').innerText = `${netTotal.toLocaleString('ru-RU')} / ${goal.toLocaleString('ru-RU')} ₽ (${pct}%)`;
 
+    // Ранг
     let rank = '🔰 СТАЖЕР';
     if (netTotal >= 3000) rank = '⚡ РЕЙДЕР';
     if (netTotal >= 5000) rank = '🚀 ФОРСАЖ';
     if (netTotal >= 8000) rank = '👑 ЛЕГЕНДА УЛИЦ';
     document.getElementById('hero-rank-badge').innerText = rank;
 
+    // Bento метрики
     const hourlyNet = hours > 0 ? Math.round(netTotal / hours) : 0;
     document.getElementById('bento-hourly').innerText = `${hourlyNet.toLocaleString('ru-RU')} ₽/ч`;
     document.getElementById('bento-total-hours').innerText = `${hours.toFixed(1)} ч на линии`;
@@ -1395,20 +1495,25 @@
 
       if (item._kind === 'shift') {
         const sum = (item.income || 0) + (item.tips || 0);
+        const sInfo = serviceColors[item.service] || { color: '#fff', icon: '🛵' };
+        row.style.borderColor = `${sInfo.color}33`;
+
         row.innerHTML = `
           <div>
-            <div class="feed-title">${item.transport} ${item.service}</div>
+            <div class="feed-title" style="color:${sInfo.color};">
+              <span>${item.transport}</span> ${sInfo.icon} ${item.service}
+            </div>
             <div class="feed-meta">${item.date} • ${item.orders || 0} зак • ${item.hours || 0}ч • ${item.km || 0}км</div>
           </div>
           <div style="display:flex; align-items:center;">
-            <span class="feed-amount" style="color:var(--accent);">+${sum.toLocaleString('ru-RU')} ₽</span>
+            <span class="feed-amount" style="color:${sInfo.color};">+${sum.toLocaleString('ru-RU')} ₽</span>
             <button class="trash-btn" onclick="deleteRecord('shift', ${item.id})">✕</button>
           </div>
         `;
       } else if (item._kind === 'extra') {
         row.innerHTML = `
           <div>
-            <div class="feed-title">💎 ${item.category}</div>
+            <div class="feed-title" style="color:var(--neon-cyan);">💎 ${item.category}</div>
             <div class="feed-meta">${item.date} ${item.desc ? '• ' + item.desc : ''}</div>
           </div>
           <div style="display:flex; align-items:center;">
@@ -1419,7 +1524,7 @@
       } else {
         row.innerHTML = `
           <div>
-            <div class="feed-title">${item.category} ${item.liters ? '(' + item.liters + ' л)' : ''}</div>
+            <div class="feed-title" style="color:var(--neon-rose);">${item.category} ${item.liters ? '(' + item.liters + ' л)' : ''}</div>
             <div class="feed-meta">${item.date} ${item.notes ? '• ' + item.notes : ''}</div>
           </div>
           <div style="display:flex; align-items:center;">
@@ -1537,6 +1642,7 @@
 
   loadState();
   document.getElementById('inp-extra-date').value = new Date().toISOString().split('T')[0];
+  applyServiceAccent('Яндекс Доставка');
   refreshUI();
 </script>
 
